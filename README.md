@@ -1,4 +1,3 @@
-<html><pre>
 # CA1-Oriens-Lacunosum-Moleculare---Lawrence-et-al.-2006
 Lawrence JJ, Saraga F, Churchill JF, Statland JM, Travis KE, Skinner FK, McBain CJ (2006) Somatodendritic Kv7-KCNQ-M channels control interspike interval in hippocampal interneurons. J Neurosci 26:12325-38
 
@@ -23,8 +22,6 @@ Drag and drop the extracted folder onto the mknrndll icon.  Drag and drop the mo
 
 ----------
 Once the simulation starts you can create subplots of Fig 9 by clicking the appropriately labeled buttons or you can create the whole figure by clicking the create all of fig 9 button (lower right in control box).
-
-<img src="./screenshot.jpg" alt="screenshot">
 
 Note: The variable step method was used in this demo, if you would like to run the simulation as in the publication you can run cvode_active(0).
 
