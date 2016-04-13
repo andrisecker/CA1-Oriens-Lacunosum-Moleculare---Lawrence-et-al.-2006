@@ -6,7 +6,6 @@
     <ionChannel id="IMminret" conductance="1pS" type="ionChannelHH" species="k">
         
         <gateHHtauInf id="m" instances="1">
-            <q10Settings type="q10ExpTemp" q10Factor="3" experimentalTemp="24 degC"/>
             <timeCourse type="Lawrence2006_IMmintau_tau"/>
             <steadyState type="HHSigmoidVariable" rate="1" midpoint="-60mV" scale="7mV"/>
         </gateHHtauInf>

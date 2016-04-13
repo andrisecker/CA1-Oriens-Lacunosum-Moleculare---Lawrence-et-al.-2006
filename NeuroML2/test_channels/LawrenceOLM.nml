@@ -11,8 +11,8 @@
     <Include file="../Ih.nml"/>
     <Include file="../IMmintau.nml"/>
 
-    <ionChannelHH id="leak" conductance="0.05nS" />
-    <ionChannelHH id="Kleak" conductance="0.05nS" />
+    <ionChannelPassive id="leak" conductance="0.05nS" species="non_specific"/>
+    <!-- <ionChannelPassive id="Kleak" conductance="0.05nS" species="k" /> -->
     
 <!-- Cellular properties -->
 
@@ -36,7 +36,7 @@
 
             <membraneProperties>
                 <channelDensity condDensity="0.01123mS_per_cm2" id="passive" ionChannel="leak" erev="-64.164 mV" ion="non_specific"/>
-                <channelDensity condDensity="0.0032258mS_per_cm2" id="Kpassive" ionChannel="Kleak" erev="-95 mV" ion="k"/>
+                <!-- <channelDensity condDensity="0.0032258mS_per_cm2" id="Kpassive" ionChannel="Kleak" erev="-95 mV" ion="k"/> -->
                 <!-- 1 pS_per_um2 = 0.1 mS_per_cm2 -->
                 <channelDensity condDensity="10.7mS_per_cm2" id="Nasoma" ionChannel="Nasoma" erev="90.0 mV" ion="na"/> <!-- 10.7 -->
                 <channelDensity condDensity="0.6mS_per_cm2" id="Ikdrf" ionChannel="Ikdrf" erev="-95.0 mV" ion="k"/> <!-- 0.6 -->

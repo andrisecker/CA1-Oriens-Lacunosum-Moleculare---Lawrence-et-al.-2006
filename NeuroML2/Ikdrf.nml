@@ -6,13 +6,13 @@
     <ionChannel id="Ikdrf" conductance="0.6pS" type="ionChannelHH" species="k">
         
         <gateHHtauInf id="m" instances="1">
-            <q10Settings type="q10ExpTemp" q10Factor="3" experimentalTemp="24 degC"/>
+            <q10Settings type="q10ExpTemp" q10Factor="3" experimentalTemp="23 degC"/>
             <timeCourse type="Lawrence2006_Ikdrfm_tau"/>
             <steadyState type="Lawrence2006_Ikdrfm_ss"/>
         </gateHHtauInf>
         
         <gateHHtauInf id="h" instances="1">
-            <q10Settings type="q10ExpTemp" q10Factor="3" experimentalTemp="24 degC"/>
+            <q10Settings type="q10ExpTemp" q10Factor="3" experimentalTemp="23 degC"/>
             <timeCourse type="fixedTimeCourse" tau="1000ms"/>
             <steadyState type="Lawrence2006_Ikdrfh_ss"/>
         </gateHHtauInf>
@@ -29,7 +29,7 @@
 
         <Dynamics>
             <DerivedVariable name="V" dimension="none" value="v / VOLT_SCALE"/>
-            <DerivedVariable name="t" exposure="t" dimension="time" value="( (27.8 * exp((V+33)/14.1)) / (1 + exp((V+33)/10)) ) * TIME_SCALE"/>
+            <DerivedVariable name="t" exposure="t" dimension="time" value="( (27.7778 * exp((V+33)/14.2857)) / (1 + exp((V+33)/10)) ) * TIME_SCALE"/>
         </Dynamics>
 
     </ComponentType>

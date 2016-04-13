@@ -6,13 +6,13 @@
     <ionChannel id="IKa" conductance="0.25pS" type="ionChannelHH" species="k">
         
         <gateHHtauInf id="m" instances="1">
-            <q10Settings type="q10ExpTemp" q10Factor="3" experimentalTemp="24 degC"/>
+            <q10Settings type="q10ExpTemp" q10Factor="3" experimentalTemp="23 degC"/>
             <timeCourse type="fixedTimeCourse" tau="0.5ms"/>
             <steadyState type="Lawrence2006_IKam_ss"/>
         </gateHHtauInf>
         
         <gateHHtauInf id="h" instances="1">
-            <q10Settings type="q10ExpTemp" q10Factor="3" experimentalTemp="24 degC"/>
+            <q10Settings type="q10ExpTemp" q10Factor="3" experimentalTemp="23 degC"/>
             <timeCourse type="Lawrence2006_IKah_tau"/>
             <steadyState type="HHSigmoidVariable" rate="1" midpoint="-78.5mV" scale="-6mV"/>
         </gateHHtauInf>
@@ -44,6 +44,12 @@
             <DerivedVariable name="V" dimension="none" value="v / VOLT_SCALE"/>
             <DerivedVariable name="t" exposure="t" dimension="time" value="( 0.17*(V + 105) ) * TIME_SCALE"/>
         </Dynamics>
+
+            <DerivedVariable name="tmp" value="( 0.17*(V + 105) ) * TIME_SCALE" dimension="time"/>
+            <ConditionalDerivedVariable name="t" exposure="t" dimension="time">
+                <Case condition="tmp .geq. 5/q10 * TIME_SCALE" value="tmp"/>
+                <Case condition="tmp .lt. 5/q10 * TIME_SCALE" value="5q10 * TIME_SCALE"/>
+            </ConditionalDerivedVariable>
 
     </ComponentType>
 

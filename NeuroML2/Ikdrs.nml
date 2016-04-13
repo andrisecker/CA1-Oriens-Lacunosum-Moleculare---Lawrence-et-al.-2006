@@ -6,13 +6,13 @@
     <ionChannel id="Ikdrs" conductance="0.23pS" type="ionChannelHH" species="k">
         
         <gateHHtauInf id="m" instances="1">
-            <q10Settings type="q10ExpTemp" q10Factor="3" experimentalTemp="24 degC"/>
+            <q10Settings type="q10ExpTemp" q10Factor="3" experimentalTemp="23 degC"/>
             <timeCourse type="Lawrence2006_Ikdrsm_tau"/>
             <steadyState type="Lawrence2006_Ikdrsm_ss"/>
         </gateHHtauInf>
         
         <gateHHtauInf id="h" instances="1">
-            <q10Settings type="q10ExpTemp" q10Factor="3" experimentalTemp="24 degC"/>
+            <q10Settings type="q10ExpTemp" q10Factor="3" experimentalTemp="23 degC"/>
             <timeCourse type="fixedTimeCourse" tau="1000ms"/>
             <steadyState type="Lawrence2006_Ikdrsh_ss"/>
         </gateHHtauInf>
@@ -29,7 +29,13 @@
 
         <Dynamics>
             <DerivedVariable name="V" dimension="none" value="v / VOLT_SCALE"/>
-            <DerivedVariable name="t" exposure="t" dimension="time" value="( (66.7 * exp((V+25)/13.3)) / (1 + exp((V+25)/6.7)) ) * TIME_SCALE"/>
+
+            <DerivedVariable name="tmp" value="( (66.6667 * exp((V+25)/13.3333)) / (1 + exp((V+25)/6.6667)) ) * TIME_SCALE" dimension="time"/>
+            <ConditionalDerivedVariable name="t" exposure="t" dimension="time">
+                <Case condition="tmp .geq. 7 * TIME_SCALE" value="tmp"/>
+                <Case condition="tmp .lt. 7 * TIME_SCALE" value="7 * TIME_SCALE"/>
+            </ConditionalDerivedVariable>
+
         </Dynamics>
 
     </ComponentType>
@@ -47,7 +53,7 @@
 
     </ComponentType>
     
-    <ComponentType name="Lawrence2006_Ikdrfsh_ss"
+    <ComponentType name="Lawrence2006_Ikdrsh_ss"
                    extends="baseVoltageDepVariable"
                    description="steadyState parameter to describe Ikdrs in Lawrence 2006">
         
