@@ -1,28 +1,16 @@
-# CA1-Oriens-Lacunosum-Moleculare---Lawrence-et-al.-2006
-Lawrence JJ, Saraga F, Churchill JF, Statland JM, Travis KE, Skinner FK, McBain CJ (2006) Somatodendritic Kv7-KCNQ-M channels control interspike interval in hippocampal interneurons. J Neurosci 26:12325-38
+## CA1 Oriens Lacunosum Moleculare Lawrence et al. 2006
 
-This is the readme for the model associated with the paper:
+Model from: Somatodendritic Kv7-KCNQ-M channels control interspike interval in hippocampal interneurons. Lawrence JJ, Saraga F, Churchill JF, Statland JM, Travis KE, Skinner FK, McBain CJ (2006) [J Neurosci 26:12325-38](http://www.jneurosci.org/content/26/47/12325.long)
 
-Lawrence JJ, Saraga F, Churchill JF, Statland JM, Travis KE, Skinner FK, McBain CJ (2006) Somatodendritic Kv7-KCNQ-M channels control interspike interval in hippocampal interneurons. J Neurosci 26:12325-38
+### NEURON version of model:
 
-Usage:
-Download and extract the archive and then under
+This model was originally developed in [NEURON](https://www.neuron.yale.edu/neuron/)
 
-ms-win
-------
-Compile the mod files by running mknrndll and changing to the extracted folder and selecting to create the nrnmech.dll. Then double click on the mosinit.hoc file
+More details on the original NEURON version of this model [here](https://github.com/andrisecker/CA1-Oriens-Lacunosum-Moleculare---Lawrence-et-al.-2006/tree/master/NEURON) (The repository was forked from @agmccrei).
 
-linux/unix
-----------
-Compile the mod files by running nrnivmodl in the extracted folder. Then run "nrngui mosinit.hoc"
+-------------------------------------------------------------------------------------------------------------------------------
 
-mac os x
---------
-Drag and drop the extracted folder onto the mknrndll icon.  Drag and drop the mosinit.hoc file from the extracted folder onto the nrngui icon.
+### NeuroML2/LEMS version of model
 
-----------
-Once the simulation starts you can create subplots of Fig 9 by clicking the appropriately labeled buttons or you can create the whole figure by clicking the create all of fig 9 button (lower right in control box).
+This model will be converted to NeuroML2/LEMS ...
 
-Note: The variable step method was used in this demo, if you would like to run the simulation as in the publication you can run cvode_active(0).
-
-The model files were supplied by Dr Saraga.
