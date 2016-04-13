@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Lems>
+
+  <!-- CA1 OLM cell -->
+
+    <Target component="sim1"/>
+
+    <Include file="Cells.xml"/>
+    <Include file="Networks.xml"/>
+    <Include file="Simulation.xml"/>
+
+    <Include file="LawrenceOLM.nml"/>
+ 
+<!-- Simulation specifications -->
+
+    <Simulation id="sim1" length="300ms" step="0.001ms" target="net1">
+
+        <Display id="d1" title="Lawrence 2006 CA1 OLM cell with 2pA input" timeScale="1ms" xmin="-10" xmax="310" ymin="-80" ymax="40">
+            <Line id="OLM V" quantity="pop/0/olm1/v" scale="1mV" color="#0000FF" timeScale="1ms"/>
+        </Display>
+    
+        <OutputFile id="of0" fileName="lawrenceolm.dat">
+            <OutputColumn id="olm" quantity="pop/0/olm1/v"/>
+        </OutputFile>
+      
+    </Simulation>
+  
+</Lems>

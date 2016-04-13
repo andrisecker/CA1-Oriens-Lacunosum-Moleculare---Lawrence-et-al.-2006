@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<neuroml xmlns="http://www.neuroml.org/schema/neuroml2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.neuroml.org/schema/neuroml2 https://raw.github.com/NeuroML/NeuroML2/development/Schemas/NeuroML2/NeuroML_v2beta4.xsd" id="Golgi_KC">
+
+    <notes>ChannelML file containing a single Channel description from Lawrence et al 2006</notes>
+
+    <ionChannel id="IMmintau" conductance="1pS" type="ionChannelHH" species="k">
+        
+        <gateHHtauInf id="m" instances="1">
+            <q10Settings type="q10ExpTemp" q10Factor="3" experimentalTemp="24 degC"/>
+            <timeCourse type="Lawrence2006_IMmintau_tau"/>
+            <steadyState type="HHSigmoidVariable" rate="1" midpoint="-27mV" scale="7mV"/>
+        </gateHHtauInf>
+    
+    </ionChannel>
+    
+    
+    <ComponentType name="Lawrence2006_IMmintau_tau"
+                   extends="baseVoltageDepTime"
+                   description="Tau parameter to describe IM in Lawrence 2006">
+        
+        <Constant name="TIME_SCALE" dimension="time" value="1 ms"/>
+        <Constant name="VOLT_SCALE" dimension="voltage" value="1 mV"/>
+
+        <Dynamics>
+            <DerivedVariable name="V" dimension="none" value="v / VOLT_SCALE"/>
+            
+            <DerivedVariable name="tmp" value="( 1 / ((0.003)/(exp((V+63)/-15)) + (0.003)/(exp((V+63)/15))) ) * TIME_SCALE" dimension="time"/>
+            <ConditionalDerivedVariable name="t" exposure="t" dimension="time">
+                <Case condition="tmp .geq. 7 * TIME_SCALE" value="tmp"/>
+                <Case condition="tmp .lt. 7 * TIME_SCALE" value="7 * TIME_SCALE"/>
+            </ConditionalDerivedVariable>
+        </Dynamics>
+
+    </ComponentType>
+
+</neuroml>

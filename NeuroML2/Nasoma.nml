@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<neuroml xmlns="http://www.neuroml.org/schema/neuroml2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.neuroml.org/schema/neuroml2 https://raw.github.com/NeuroML/NeuroML2/development/Schemas/NeuroML2/NeuroML_v2beta4.xsd" id="Golgi_KC">
+
+    <notes>ChannelML file containing a single Channel description from Lawrence et al 2006</notes>
+
+    <ionChannel id="Nasoma" conductance="107pS" type="ionChannelHH" species="na">
+        
+        <gateHHrates id="m" instances="3">
+            <q10Settings type="q10ExpTemp" q10Factor="3" experimentalTemp="24 degC"/>
+            <forwardRate type="HHExpLinearRate" rate="1per_ms" midpoint="-38mV" scale="10mV"/>
+            <reverseRate type="HHExpRate" rate="4per_ms" midpoint="-63mV" scale="-18mV"/>  <!-- article: midpoint: -65mV-->
+        </gateHHrates>
+    
+        <gateHHrates id="h" instances="1">
+            <q10Settings type="q10ExpTemp" q10Factor="3" experimentalTemp="24 degC"/>
+            <forwardRate type="HHExpRate" rate="0.07per_ms" midpoint="-63mV" scale="-20mV"/>
+            <reverseRate type="HHSigmoidRate" rate="1per_ms" midpoint="-33mV" scale="10mV"/>
+        </gateHHrates>
+                            
+    </ionChannel>
+
+    <!--  Original NEURON version:
+    <ComponentType name="Lawrence2006_INa_rate"
+                   extends="baseHHRate"
+                   description="conditional ExpLinearRate to describe INa in Saraga 2003">
+
+        <Dynamics>         
+            <DerivedVariable name="tmp" value="(v - midpoint)/scale" dimension="none"/>
+
+            <ConditionalDerivedVariable name="r" exposure="r" dimension="per_time">
+                <Case condition="abs(tmp) .lt. 1e-6" value="scale * (1 + tmp/2)"/>
+                <Case condition="abs(tmp) .geq. 1e-6" value="(rate * tmp) / (1 - exp(-tmp) )"/>
+            </ConditionalDerivedVariable>
+        </Dynamics>
+
+    </ComponentType>
+    -->
+    
+</neuroml>
