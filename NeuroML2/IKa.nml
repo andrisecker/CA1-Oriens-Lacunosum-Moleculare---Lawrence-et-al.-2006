@@ -39,17 +39,19 @@
         
         <Constant name="TIME_SCALE" dimension="time" value="1 ms"/>
         <Constant name="VOLT_SCALE" dimension="voltage" value="1 mV"/>
+        
+        <Requirement name="rateScale" dimension="none"/>
 
         <Dynamics>
             <DerivedVariable name="V" dimension="none" value="v / VOLT_SCALE"/>
-            <DerivedVariable name="t" exposure="t" dimension="time" value="( 0.17*(V + 105) ) * TIME_SCALE"/>
-        </Dynamics>
-
-            <DerivedVariable name="tmp" value="( 0.17*(V + 105) ) * TIME_SCALE" dimension="time"/>
+            
+            <DerivedVariable name="tmp" value="0.17*(V + 105)" dimension="none"/>
             <ConditionalDerivedVariable name="t" exposure="t" dimension="time">
-                <Case condition="tmp .geq. 5/q10 * TIME_SCALE" value="tmp"/>
-                <Case condition="tmp .lt. 5/q10 * TIME_SCALE" value="5q10 * TIME_SCALE"/>
+                <Case condition="tmp .lt. (5/rateScale)" value="(5/rateScale) * TIME_SCALE"/>
+                <Case value="tmp * TIME_SCALE"/>
             </ConditionalDerivedVariable>
+            
+        </Dynamics>
 
     </ComponentType>
 
