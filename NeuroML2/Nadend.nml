@@ -3,7 +3,7 @@
 
     <notes>ChannelML file containing a single Channel description from Lawrence et al 2006</notes>
 
-    <ionChannel id="Nasoma" conductance="107pS" type="ionChannelHH" species="na">
+    <ionChannel id="Nadend" conductance="117pS" type="ionChannelHH" species="na">
         
         <gateHHrates id="m" instances="3">
             <forwardRate type="HHExpLinearRate" rate="1per_ms" midpoint="-45mV" scale="10mV"/>
