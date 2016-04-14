@@ -47,7 +47,7 @@
             
             <DerivedVariable name="tmp" value="0.17*(V + 105)" dimension="none"/>
             <ConditionalDerivedVariable name="t" exposure="t" dimension="time">
-                <Case condition="tmp .lt. (5/rateScale)" value="(5/rateScale) * TIME_SCALE"/>
+                <Case condition="(tmp/rateScale) .lt. (5/rateScale)" value="5 * TIME_SCALE"/>
                 <Case value="tmp * TIME_SCALE"/>
             </ConditionalDerivedVariable>
             
