@@ -12,7 +12,6 @@
         </gateHHtauInf>
         
         <gateHHtauInf id="h" instances="1">
-            <q10Settings type="q10ExpTemp" q10Factor="3" experimentalTemp="23 degC"/>
             <timeCourse type="fixedTimeCourse" tau="1000ms"/>
             <steadyState type="Lawrence2006_Ikdrfh_ss"/>
         </gateHHtauInf>

@@ -3,22 +3,21 @@
 
     <notes>ChannelML file containing a single Channel description from Lawrence et al 2006</notes>
 
-    <ionChannel id="Nadend" conductance="117pS" type="ionChannelHH" species="na">
+    <ionChannel id="Nasoma" conductance="107pS" type="ionChannelHH" species="na">
         
         <gateHHrates id="m" instances="3">
-            <q10Settings type="q10ExpTemp" q10Factor="3" experimentalTemp="24 degC"/>
             <forwardRate type="HHExpLinearRate" rate="1per_ms" midpoint="-45mV" scale="10mV"/>
             <reverseRate type="HHExpRate" rate="4per_ms" midpoint="-70mV" scale="-18mV"/>
         </gateHHrates>
     
         <gateHHrates id="h" instances="1">
             <q10Settings type="q10ExpTemp" q10Factor="3" experimentalTemp="24 degC"/>
-            <forwardRate type="HHExpRate" rate="0.07per_ms" midpoint="-70mV" scale="-20mV"/>
-            <reverseRate type="HHSigmoidRate" rate="1per_ms" midpoint="-40mV" scale="10mV"/>
+            <forwardRate type="HHExpRate" rate="0.07per_ms" midpoint="-63mV" scale="-20mV"/>
+            <reverseRate type="HHSigmoidRate" rate="1per_ms" midpoint="-33mV" scale="10mV"/>
         </gateHHrates>
                             
     </ionChannel>
-    
+
     <!--  Original NEURON version:
     <ComponentType name="Lawrence2006_INa_rate"
                    extends="baseHHRate"
@@ -35,5 +34,5 @@
 
     </ComponentType>
     -->
-
+    
 </neuroml>
