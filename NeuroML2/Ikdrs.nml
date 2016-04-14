@@ -33,8 +33,8 @@
 
             <DerivedVariable name="tmp" value="( (66.6667 * exp((V+25)/13.3333)) / (1 + exp((V+25)/6.6667)) )" dimension="none"/>
             <ConditionalDerivedVariable name="t" exposure="t" dimension="time">
-                <Case condition="(tmp * rateScale) .lt. 7" value="7 * TIME_SCALE"/>
-                <Case value="tmp * rateScale * TIME_SCALE"/>                
+                <Case condition="(tmp / rateScale) .lt. 7" value="7 * rateScale * TIME_SCALE"/>
+                <Case value="tmp * TIME_SCALE"/>                
             </ConditionalDerivedVariable>
 
         </Dynamics>
