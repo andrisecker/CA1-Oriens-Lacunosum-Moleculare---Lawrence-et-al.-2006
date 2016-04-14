@@ -12,7 +12,6 @@
         </gateHHtauInf>
         
         <gateHHtauInf id="h" instances="1">
-            <q10Settings type="q10ExpTemp" q10Factor="3" experimentalTemp="23 degC"/>
             <timeCourse type="fixedTimeCourse" tau="1000ms"/>
             <steadyState type="Lawrence2006_Ikdrsh_ss"/>
         </gateHHtauInf>
@@ -26,14 +25,16 @@
         
         <Constant name="TIME_SCALE" dimension="time" value="1 ms"/>
         <Constant name="VOLT_SCALE" dimension="voltage" value="1 mV"/>
+        
+        <Requirement name="rateScale" dimension="none"/>
 
         <Dynamics>
             <DerivedVariable name="V" dimension="none" value="v / VOLT_SCALE"/>
 
-            <DerivedVariable name="tmp" value="( (66.6667 * exp((V+25)/13.3333)) / (1 + exp((V+25)/6.6667)) ) * TIME_SCALE" dimension="time"/>
+            <DerivedVariable name="tmp" value="( (66.6667 * exp((V+25)/13.3333)) / (1 + exp((V+25)/6.6667)) )" dimension="none"/>
             <ConditionalDerivedVariable name="t" exposure="t" dimension="time">
-                <Case condition="tmp .geq. 7 * TIME_SCALE" value="tmp"/>
-                <Case condition="tmp .lt. 7 * TIME_SCALE" value="7 * TIME_SCALE"/>
+                <Case condition="(tmp * rateScale) .lt. 7" value="7 * TIME_SCALE"/>
+                <Case value="tmp * rateScale * TIME_SCALE"/>                
             </ConditionalDerivedVariable>
 
         </Dynamics>
