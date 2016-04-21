@@ -3,7 +3,7 @@
 
     <notes>ChannelML file containing a single Ca++ dependent K+ channel description from Lawrence et al 2006</notes>
 
-    <ionChannel id="IKCa" conductance="0.055pS" type="ionChannelHH" species="ca">
+    <ionChannel id="IKCa" conductance="0.055pS" type="ionChannelHH" species="k">
         
         <gateHHrates id="o" instances="1">
             <forwardRate type="Lawrence2006_IKCa_alphao"/>
@@ -27,12 +27,14 @@
         <Constant name="R" dimension="idealGasConstantDims" value="8.313424 J_per_K_per_mol"/>
         
         <Dynamics>
-            <DerivedVariable name="mV" dimension="voltage" value="v * 1000"/>
-            <DerivedVariable name="ca_conc" dimension="none" value="caConc / CONC_SCALE"/>
+            <DerivedVariable name="ca_conc_i" dimension="none" value="caConc / CONC_SCALE"/>
             
-            <DerivedVariable name="tmp" dimension="none" value="(-2*0.84*FARADAY*mV) / (R*temperature)"/>
-            <DerivedVariable name="volt_dep" dimension="none" value="4.8e-04 * exp(tmp))"/>
-            <DerivedVariable name="r" extends="r" value="((0.28*ca_conc) / (ca_conc + volt_dep)) / TIME_SCALE" dimension="per_time"/>
+            <DerivedVariable name="tmp" dimension="none" value="(-2*0.84*FARADAY*v) / (R*temperature)"/>
+            <DerivedVariable name="volt_dep" dimension="none" value="4.8e-04 * exp(tmp)"/>
+            <ConditionalDerivedVariable name="r" extends="r" dimension="per_time">
+                <Case condition="ca_conc_i .neq. 0" value="((0.28*ca_conc_i) / (ca_conc_i + volt_dep)) / TIME_SCALE"/>
+                <Case condition="ca_conc_i .eq. 0" value="1e-10 / TIME_SCALE"/>
+            </ConditionalDerivedVariable>
         </Dynamics>
           
     </ComponentType>
@@ -50,12 +52,14 @@
         <Constant name="R" dimension="idealGasConstantDims" value="8.313424 J_per_K_per_mol"/>
         
         <Dynamics>
-            <DerivedVariable name="mV" dimension="voltage" value="v * 1000"/>
-            <DerivedVariable name="ca_conc" dimension="none" value="caConc / CONC_SCALE"/>
+            <DerivedVariable name="ca_conc_i" dimension="none" value="caConc / CONC_SCALE"/>
             
-            <DerivedVariable name="tmp" dimension="none" value="(-2*FARADAY*mV) / (R*temperature)"/>
+            <DerivedVariable name="tmp" dimension="none" value="(-2*FARADAY*v) / (R*temperature)"/>
             <DerivedVariable name="volt_dep" dimension="none" value="1.3e-07 * exp(tmp)"/>
-            <DerivedVariable name="r" extends="r" value="((0.48*ca_conc) / (1 + (ca_conc/volt_dep))) / TIME_SCALE" dimension="per_time"/>
+            <ConditionalDerivedVariable name="r" extends="r" dimension="per_time">
+                <Case condition="ca_conc_i .neq. 0" value="(0.48 / (1 + (ca_conc_i/volt_dep))) / TIME_SCALE"/>
+                <Case condition="ca_conc_i .eq. 0" value="1e-10 / TIME_SCALE"/>
+            </ConditionalDerivedVariable>        
         </Dynamics>
           
     </ComponentType>

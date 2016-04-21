@@ -9,11 +9,6 @@
 
     <ionChannelPassive id="leak" conductance="0.05nS" species="non_specific"/>
     
-    <concentrationModel id="OLM_CaPool" type="decayingPoolConcentrationModel"
-                        restingConc="7.55e-11 mol_per_cm3"
-                        decayConstant="10.0 ms"
-                        shellThickness="8.4e-6 cm"/>
-    
 <!-- Cellular properties -->
 
     <cell id="olm1">
@@ -46,9 +41,6 @@
             </membraneProperties>
 
             <intracellularProperties>
-                
-                
-                <species id="ca" ion="ca" concentrationModel="OLM_CaPool" initialConcentration="5.0e-11 mol_per_cm3" initialExtConcentration="2.0e-6 mol_per_cm3"/>
                 
                 <species id="ca" ion="ca" concentrationModel="CaClamp" initialConcentration="5.0e-11 mol_per_cm3" initialExtConcentration="2.0e-6 mol_per_cm3"/>
                 
