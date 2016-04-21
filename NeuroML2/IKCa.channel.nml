@@ -30,8 +30,9 @@
             <DerivedVariable name="mV" dimension="voltage" value="v * 1000"/>
             <DerivedVariable name="ca_conc" dimension="none" value="caConc / CONC_SCALE"/>
             
-            <DerivedVariable name="tmp" dimension="none" value="4.8e-04*exp((-2*0.84*FARADAY*mV) / (R*temperature))"/>
-            <DerivedVariable name="r" extends="r" value="(0.28*ca_conc / (ca_conc + tmp)) / TIME_SCALE" dimension="per_time"/>
+            <DerivedVariable name="tmp" dimension="none" value="(-2*0.84*FARADAY*mV) / (R*temperature)"/>
+            <DerivedVariable name="volt_dep" dimension="none" value="4.8e-04 * exp(tmp))"/>
+            <DerivedVariable name="r" extends="r" value="((0.28*ca_conc) / (ca_conc + volt_dep)) / TIME_SCALE" dimension="per_time"/>
         </Dynamics>
           
     </ComponentType>
@@ -52,8 +53,9 @@
             <DerivedVariable name="mV" dimension="voltage" value="v * 1000"/>
             <DerivedVariable name="ca_conc" dimension="none" value="caConc / CONC_SCALE"/>
             
-            <DerivedVariable name="tmp" dimension="none" value="1.3e-07*exp((-2*FARADAY*mV) / (R*temperature))"/>
-            <DerivedVariable name="r" extends="r" value="(0.48*ca_conc / (1 + (ca_conc/tmp))) / TIME_SCALE" dimension="per_time"/>
+            <DerivedVariable name="tmp" dimension="none" value="(-2*FARADAY*mV) / (R*temperature)"/>
+            <DerivedVariable name="volt_dep" dimension="none" value="1.3e-07 * exp(tmp)"/>
+            <DerivedVariable name="r" extends="r" value="((0.48*ca_conc) / (1 + (ca_conc/volt_dep))) / TIME_SCALE" dimension="per_time"/>
         </Dynamics>
           
     </ComponentType>
