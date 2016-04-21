@@ -31,6 +31,7 @@
         <Text name="ion"/> <!-- TODO: Ideally this needs to be a property of ionChannel only!
                                 But it's here as it makes it easier to select channelPopulations transmitting specific ions...-->
         <Dynamics>
+            <DerivedVariable name="mV" dimension="voltage" value="v*1000"/>
             <DerivedVariable name="ca_conc_i" dimension="none" value="caConc / CONC_SCALE"/>
             <DerivedVariable name="ca_conc_ext" dimension="none" value="caConcExt / CONC_SCALE"/>
             <DerivedVariable name="TEMPERATURE" dimension="none" value="temperature / TEMP_SCALE"/>
@@ -42,8 +43,8 @@
             <DerivedVariable name="tmp" dimension="voltage" value="(25/(2*293.15) * TEMPERATURE) * VOLT_SCALE"/>
             
             <ConditionalDerivedVariable name="pOpen" dimension="voltage">
-                <Case caondition="v/tmp .eq. 0" value="-1*tmp * (1 - (ca_conc_i/ca_conc_ext)*exp(v/tmp)) * (1 - tmp/(2 * VOLT_SCALE))"/>
-                <Case condition="v/tmp .neq. 0" value="-1*tmp * (1 - (ca_conc_i/ca_conc_ext)*exp(v/tmp)) * ((v/tmp)/(exp(v/tmp)-1))"/>
+                <Case caondition="mV/tmp .eq. 0" value="-1*tmp * (1 - (ca_conc_i/ca_conc_ext)*exp(mV/tmp)) * (1 - tmp/(2 * VOLT_SCALE))"/>
+                <Case condition="mV/tmp .neq. 0" value="-1*tmp * (1 - (ca_conc_i/ca_conc_ext)*exp(mV/tmp)) * ((mV/tmp)/(exp(mV/tmp)-1))"/>
             </ConditionalDerivedVariable>
             
             <DerivedVariable name="h" dimension="none" value="0.001/(0.001 + ca_conc_i)"/>
