@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<neuroml xmlns="http://www.neuroml.org/schema/neuroml2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.neuroml.org/schema/neuroml2 https://raw.github.com/NeuroML/NeuroML2/development/Schemas/NeuroML2/NeuroML_v2beta4.xsd" id="Golgi_KC">
+
+    <notes>ChannelML file containing a single T-type Ca++ channel description from Lawrence et al 2006</notes>
+
+    <ionChannel id="ICaT" conductance="0.25pS" type="ionChannelHH" species="ca">
+        
+        <gateHHrates id="m" instances="2">
+            <forwardRate type="HHExpLinearRate" rate="2per_ms" midpoint="19.26mV" scale="10mV"/>
+            <reverseRate type="HHExpRate" rate="0.009per_ms" midpoint="0mV" scale="-22.03mV"/>
+        </gateHHrates>
+        
+        <gateHHrates id="h" instances="1">
+            <forwardRate type="HHExpRate" rate="1e-06per_ms" midpoint="0mV" scale="-16.26mV"/>
+            <reverseRate type="HHSigmoidRate" rate="1per_ms" midpoint="29.79mV" scale="10mV"/>
+        </gateHHrates>
+                            
+    </ionChannel>
+    
+    
+    <ComponentType name="channelDensity_Lawrence2006_ICaT"
+        extends="baseChannelDensityCond"  
+        description="time varying conductance density, _gDensity, which is distributed on an area of the cell, producing a current density _iDensity">
+       
+        <!-- baseCahnnelDensity has the parameter condDensity -->
+        
+        <Requirement name="temperature" dimension="temperature"/>
+        <Requirement name="caConc" dimension="concentration"/>
+        <Requirement name="caConcExt" dimension="concentration"/>
+        
+        <Constant name="VOLT_SCALE" dimension="voltage" value="1 mV"/>
+        <Constant name="CONC_SCALE" dimension="concentration" value="1 mM"/>
+        <Constant name="TEMP_SCALE" dimension="temperature" value="1 K"/>
+
+        <!-- TODO: Ensure Text elements are inherited from base type -->
+        <Text name="segmentGroup"/>
+
+        <Text name="ion"/> <!-- TODO: Ideally this needs to be a property of ionChannel only!
+                                But it's here as it makes it easier to select channelPopulations transmitting specific ions...-->
+        <Dynamics>
+            <DerivedVariable name="ca_conc_i" dimension="none" value="caConc / CONC_SCALE"/>
+            <DerivedVariable name="ca_conc_ext" dimension="none" value="caConcExt / CONC_SCALE"/>
+            <DerivedVariable name="TEMPERATURE" dimension="none" value="temperature / TEMP_SCALE"/>
+
+            <DerivedVariable name="channelf" dimension="none" select="ionChannel/fopen"/>
+            
+            <DerivedVariable name="gDensity" dimension="conductanceDensity" exposure="gDensity" value="condDensity * channelf"/>
+            
+            <DerivedVariable name="tmp" dimension="voltage" value="(25/(2*293.15) * TEMPERATURE) * VOLT_SCALE"/>
+            
+            <ConditionalDerivedVariable name="pOpen" dimension="voltage">
+                <Case caondition="v/tmp .eq. 0" value="-1*tmp * (1 - (ca_conc_i/ca_conc_ext)*exp(v/tmp)) * (1 - tmp/(2 * VOLT_SCALE))"/>
+                <Case condition="v/tmp .neq. 0" value="-1*tmp * (1 - (ca_conc_i/ca_conc_ext)*exp(v/tmp)) * ((v/tmp)/(exp(v/tmp)-1))"/>
+            </ConditionalDerivedVariable>
+
+            <ConditionalDerivedVariable name="iDensity"  dimension="currentDensity" exposure="iDensity">
+	            <Case condition="ca_conc_ext .gt. 0" value="gDensity *pOpen"/>
+	            <Case condition="ca_conc_ext .leq. 0" value="0"/>
+	    </ConditionalDerivedVariable>
+
+        </Dynamics>
+        
+        <Structure>
+            <ChildInstance component="ionChannel"/>
+        </Structure>
+        
+    </ComponentType>
+    
+</neuroml>

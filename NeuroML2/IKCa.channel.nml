@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<neuroml xmlns="http://www.neuroml.org/schema/neuroml2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.neuroml.org/schema/neuroml2 https://raw.github.com/NeuroML/NeuroML2/development/Schemas/NeuroML2/NeuroML_v2beta4.xsd" id="Golgi_KC">
+
+    <notes>ChannelML file containing a single Ca++ dependent K+ channel description from Lawrence et al 2006</notes>
+
+    <ionChannel id="IKCa" conductance="0.055pS" type="ionChannelHH" species="ca">
+        
+        <gateHHrates id="o" instances="1">
+            <forwardRate type="Lawrence2006_IKCa_alphao"/>
+            <reverseRate type="Lawrence2006_IKCa_betao"/>
+        </gateHHrates>
+        
+    </ionChannel>
+    
+    <!-- TODO: check dimensions -->
+       
+       
+    <ComponentType name="Lawrence2006_IKCa_alphao"
+            extends="baseVoltageConcDepRate"
+            description="forward rate to describe IKCa in Lawrence 2006">
+        
+        <Requirement name="temperature" dimension="temperature"/>
+      
+        <Constant name="TIME_SCALE" dimension="time" value="1 ms"/>
+        <Constant name="CONC_SCALE" dimension="concentration" value="1 mM"/>
+        <Constant name="FARADAY" dimension="charge_per_mole" value="96485.3329 C_per_mol"/>
+        <Constant name="R" dimension="idealGasConstantDims" value="8.313424 J_per_K_per_mol"/>
+        
+        <Dynamics>
+            <DerivedVariable name="V" dimension="voltage" value="v * 0.001"/>
+            <DerivedVariable name="ca_conc" dimension="none" value="caConc / CONC_SCALE"/>
+            
+            <DerivedVariable name="tmp" dimension="none" value="4.8e-04*exp((-2*0.84*FARADAY*V) / (R*temperature))"/>
+            <DerivedVariable name="r" extends="r" value="(0.28*ca_conc / (ca_conc + tmp)) / TIME_SCALE" dimension="per_time"/>
+        </Dynamics>
+          
+    </ComponentType>
+    
+    
+    <ComponentType name="Lawrence2006_IKCa_betao"
+            extends="baseVoltageConcDepRate"
+            description="reverse rate to describe IKCa in Lawrence 2006">
+        
+        <Requirement name="temperature" dimension="temperature"/>
+      
+        <Constant name="TIME_SCALE" dimension="time" value="1 ms"/>
+        <Constant name="CONC_SCALE" dimension="concentration" value="1 mM"/>
+        <Constant name="FARADAY" dimension="charge_per_mole" value="96485.3329 C_per_mol"/>
+        <Constant name="R" dimension="idealGasConstantDims" value="8.313424 J_per_K_per_mol"/>
+        
+        <Dynamics>
+            <DerivedVariable name="V" dimension="voltage" value="v * 0.001"/>
+            <DerivedVariable name="ca_conc" dimension="none" value="caConc / CONC_SCALE"/>
+            
+            <DerivedVariable name="tmp" dimension="none" value="1.3e-07*exp((-2*FARADAY*V) / (R*temperature))"/>
+            <DerivedVariable name="r" extends="r" value="(0.48*ca_conc / (1 + (ca_conc/tmp))) / TIME_SCALE" dimension="per_time"/>
+        </Dynamics>
+          
+    </ComponentType>
+                            
+    
+    
+</neuroml>
