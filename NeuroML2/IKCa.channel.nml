@@ -27,10 +27,10 @@
         <Constant name="R" dimension="idealGasConstantDims" value="8.313424 J_per_K_per_mol"/>
         
         <Dynamics>
-            <DerivedVariable name="V" dimension="voltage" value="v * 0.001"/>
+            <DerivedVariable name="mV" dimension="voltage" value="v * 1000"/>
             <DerivedVariable name="ca_conc" dimension="none" value="caConc / CONC_SCALE"/>
             
-            <DerivedVariable name="tmp" dimension="none" value="4.8e-04*exp((-2*0.84*FARADAY*V) / (R*temperature))"/>
+            <DerivedVariable name="tmp" dimension="none" value="4.8e-04*exp((-2*0.84*FARADAY*mV) / (R*temperature))"/>
             <DerivedVariable name="r" extends="r" value="(0.28*ca_conc / (ca_conc + tmp)) / TIME_SCALE" dimension="per_time"/>
         </Dynamics>
           
@@ -49,10 +49,10 @@
         <Constant name="R" dimension="idealGasConstantDims" value="8.313424 J_per_K_per_mol"/>
         
         <Dynamics>
-            <DerivedVariable name="V" dimension="voltage" value="v * 0.001"/>
+            <DerivedVariable name="mV" dimension="voltage" value="v * 1000"/>
             <DerivedVariable name="ca_conc" dimension="none" value="caConc / CONC_SCALE"/>
             
-            <DerivedVariable name="tmp" dimension="none" value="1.3e-07*exp((-2*FARADAY*V) / (R*temperature))"/>
+            <DerivedVariable name="tmp" dimension="none" value="1.3e-07*exp((-2*FARADAY*mV) / (R*temperature))"/>
             <DerivedVariable name="r" extends="r" value="(0.48*ca_conc / (1 + (ca_conc/tmp))) / TIME_SCALE" dimension="per_time"/>
         </Dynamics>
           
