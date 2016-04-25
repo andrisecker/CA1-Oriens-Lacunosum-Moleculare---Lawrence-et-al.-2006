@@ -14,3 +14,6 @@ More details on the original NEURON version of this model [here](https://github.
 
 This model will be converted to NeuroML2/LEMS ...
 
+
+[![Build Status](https://travis-ci.org/andrisecker/CA1-Oriens-Lacunosum-Moleculare---Lawrence-et-al.-2006.svg?branch=master)](https://travis-ci.org/andrisecker/CA1-Oriens-Lacunosum-Moleculare---Lawrence-et-al.-2006)
+
