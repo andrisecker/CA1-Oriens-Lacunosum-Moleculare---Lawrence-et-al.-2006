@@ -11,7 +11,7 @@
     
     <Include file="../Nasoma.channel.nml"/>
     <Include file="../Ikdrf.channel.nml"/>
-    <Include file="../IKdrs.channel.nml"/>
+    <Include file="../Ikdrs.channel.nml"/>
     <Include file="../IKa.channel.nml"/>
     <Include file="../Ih.channel.nml"/>
     <Include file="../IMmintau.channel.nml"/>
