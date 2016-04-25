@@ -1,0 +1,18 @@
+objref recv, dump
+
+recv = new Vector()
+dump = new File()
+
+recv.record(&OLMcells[0].soma.v(0.5))
+
+run()
+
+dump.wopen("lawrenceolm.dat")
+
+dtSI = 0.000001 // in SI (just for saving...)
+
+for i=0, recv.size()-1 {
+    dump.printf("%g %g\n", dtSI*i, recv.x(i)*0.001)
+}
+
+dump.close()
