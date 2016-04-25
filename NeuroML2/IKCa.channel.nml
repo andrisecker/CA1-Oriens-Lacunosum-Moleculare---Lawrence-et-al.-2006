@@ -21,20 +21,25 @@
         
         <Requirement name="temperature" dimension="temperature"/>
       
+        <Constant name="VOLT_SCALE" dimension="voltage" value="1 mV"/>
         <Constant name="TIME_SCALE" dimension="time" value="1 ms"/>
+        <Constant name="TEMP_SCALE" dimension="temperature" value="1 K"/>
         <Constant name="CONC_SCALE" dimension="concentration" value="1 mM"/>
-        <Constant name="FARADAY" dimension="charge_per_mole" value="96485.3329 C_per_mol"/>
-        <Constant name="R" dimension="idealGasConstantDims" value="8.313424 J_per_K_per_mol"/>
+        <Constant name="FARADAY" dimension="none" value="96485.3329"/>
+        <Constant name="R" dimension="none" value="8.313424"/>
         
         <Dynamics>
+            <DerivedVariable name="V" dimension="none" value="v / VOLT_SCALE"/>
+            <DerivedVariable name="T" dimension="none" value="temperature / TEMP_SCALE"/>
             <DerivedVariable name="ca_conc_i" dimension="none" value="caConc / CONC_SCALE"/>
             
-            <DerivedVariable name="tmp" dimension="none" value="(-2*0.84*FARADAY*v) / (R*temperature)"/>
-            <DerivedVariable name="volt_dep" dimension="none" value="4.8e-04 * exp(tmp)"/>
+            <DerivedVariable name="tmp" dimension="none" value="(-2*0.84*FARADAY*0.001) / (R*T)"/>
+            <DerivedVariable name="volt_dep" dimension="none" value="4.8e-04 * exp(tmp * V)"/>
             <ConditionalDerivedVariable name="r" extends="r" dimension="per_time">
-                <Case condition="ca_conc_i .neq. 0" value="((0.28*ca_conc_i) / (ca_conc_i + volt_dep)) / TIME_SCALE"/>
-                <Case condition="ca_conc_i .eq. 0" value="1e-10 / TIME_SCALE"/>
-            </ConditionalDerivedVariable>
+                <Case condition="volt_dep .neq. 0." value="((0.28*ca_conc_i) / (ca_conc_i + volt_dep)) / TIME_SCALE"/>
+                <Case condition="volt_dep .eq. 0." value="0 / TIME_SCALE"/>
+            </ConditionalDerivedVariable>>
+            
         </Dynamics>
           
     </ComponentType>
@@ -46,20 +51,26 @@
         
         <Requirement name="temperature" dimension="temperature"/>
       
+        <Constant name="VOLT_SCALE" dimension="voltage" value="1 mV"/>
         <Constant name="TIME_SCALE" dimension="time" value="1 ms"/>
+        <Constant name="TEMP_SCALE" dimension="temperature" value="1 K"/>
         <Constant name="CONC_SCALE" dimension="concentration" value="1 mM"/>
-        <Constant name="FARADAY" dimension="charge_per_mole" value="96485.3329 C_per_mol"/>
-        <Constant name="R" dimension="idealGasConstantDims" value="8.313424 J_per_K_per_mol"/>
+        <Constant name="FARADAY" dimension="none" value="96485.3329"/>
+        <Constant name="R" dimension="none" value="8.313424"/>
         
         <Dynamics>
+            <DerivedVariable name="V" dimension="none" value="v / VOLT_SCALE"/>
+            <DerivedVariable name="T" dimension="none" value="temperature / TEMP_SCALE"/>
             <DerivedVariable name="ca_conc_i" dimension="none" value="caConc / CONC_SCALE"/>
             
-            <DerivedVariable name="tmp" dimension="none" value="(-2*FARADAY*v) / (R*temperature)"/>
-            <DerivedVariable name="volt_dep" dimension="none" value="1.3e-07 * exp(tmp)"/>
+            <DerivedVariable name="tmp" dimension="none" value="(-2*FARADAY*0.001) / (R*T)"/>
+            <DerivedVariable name="volt_dep" dimension="none" value="1.3e-07 * exp(tmp * V)"/>
+            
             <ConditionalDerivedVariable name="r" extends="r" dimension="per_time">
-                <Case condition="ca_conc_i .neq. 0" value="(0.48 / (1 + (ca_conc_i/volt_dep))) / TIME_SCALE"/>
-                <Case condition="ca_conc_i .eq. 0" value="1e-10 / TIME_SCALE"/>
-            </ConditionalDerivedVariable>        
+                <Case condition="volt_dep .neq. 0." value="(0.48 / (1.0 + (ca_conc_i/volt_dep))) / TIME_SCALE"/>
+                <Case condition="volt_dep .eq. 0." value="0.48 / TIME_SCALE"/>
+            </ConditionalDerivedVariable>
+            
         </Dynamics>
           
     </ComponentType>

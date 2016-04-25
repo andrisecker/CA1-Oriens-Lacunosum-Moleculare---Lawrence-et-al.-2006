@@ -55,7 +55,7 @@
             </ConditionalDerivedVariable>
 
             <ConditionalDerivedVariable name="iDensity"  dimension="currentDensity" exposure="iDensity">
-	            <Case condition="ca_conc_ext .gt. 0" value="gDensity *pOpen"/>
+	            <Case condition="ca_conc_ext .gt. 0" value="gDensity * pOpen"/>
 	            <Case condition="ca_conc_ext .leq. 0" value="0"/>
 	    </ConditionalDerivedVariable>
 
