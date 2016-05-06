@@ -9,57 +9,26 @@
             <forwardRate type="HHExpLinearRate" rate="156.9per_ms" midpoint="81.5mV" scale="10mV"/>
             <reverseRate type="HHExpRate" rate="0.29per_ms" midpoint="0mV" scale="-10.86mV"/>
         </gateHHrates>
+        
+        <gateHHtauInf id="h" instances="1">
+            <timeCourse type="fixedTimeCourse" tau="1ms"/>
+            <steadyState type="Lawrence2006_ICaL_ss"/>
+        </gateHHtauInf>
                             
     </ionChannel>
     
     
-    <ComponentType name="channelDensity_Lawrence2006_ICaL"
-        extends="baseChannelDensityCond"  
-        description="time varying conductance density, _gDensity, which is distributed on an area of the cell, producing a current density _iDensity">
+    <ComponentType name="Lawrence2006_ICaL_ss"
+                   extends="baseVoltageConcDepVariable"
+                   description="steadyState parameter to describe ICaL in Lawrence 2006">
         
-        <Requirement name="temperature" dimension="temperature"/>
-        <Requirement name="caConc" dimension="concentration"/>
-        <Requirement name="caConcExt" dimension="concentration"/>
-        
-        <Constant name="VOLT_SCALE" dimension="voltage" value="1 mV"/>
         <Constant name="CONC_SCALE" dimension="concentration" value="1 mM"/>
-        <Constant name="TEMP_SCALE" dimension="temperature" value="1 K"/>
 
-        <!-- TODO: Ensure Text elements are inherited from base type -->
-        <Text name="segmentGroup"/>
-
-        <Text name="ion"/> <!-- TODO: Ideally this needs to be a property of ionChannel only!
-                                But it's here as it makes it easier to select channelPopulations transmitting specific ions...-->
         <Dynamics>
-            <DerivedVariable name="mV" dimension="voltage" value="v*1000"/>
             <DerivedVariable name="ca_conc_i" dimension="none" value="caConc / CONC_SCALE"/>
-            <DerivedVariable name="ca_conc_ext" dimension="none" value="caConcExt / CONC_SCALE"/>
-            <DerivedVariable name="TEMPERATURE" dimension="none" value="temperature / TEMP_SCALE"/>
-
-            <DerivedVariable name="channelf" dimension="none" select="ionChannel/fopen"/>
-            
-            <DerivedVariable name="gDensity" dimension="conductanceDensity" exposure="gDensity" value="condDensity * channelf"/>
-            
-            <DerivedVariable name="tmp" dimension="voltage" value="(25/(2*293.15) * TEMPERATURE) * VOLT_SCALE"/>
-            
-            <ConditionalDerivedVariable name="pOpen" dimension="voltage">
-                <Case caondition="mV/tmp .eq. 0" value="-1*tmp * (1 - (ca_conc_i/ca_conc_ext)*exp(mV/tmp)) * (1 - tmp/(2 * VOLT_SCALE))"/>
-                <Case condition="mV/tmp .neq. 0" value="-1*tmp * (1 - (ca_conc_i/ca_conc_ext)*exp(mV/tmp)) * ((mV/tmp)/(exp(mV/tmp)-1))"/>
-            </ConditionalDerivedVariable>
-            
-            <DerivedVariable name="h" dimension="none" value="0.001/(0.001 + ca_conc_i)"/>
-
-            <ConditionalDerivedVariable name="iDensity"  dimension="currentDensity" exposure="iDensity">
-	            <Case condition="ca_conc_ext .gt. 0" value="gDensity * h * pOpen"/>
-	            <Case condition="ca_conc_ext .leq. 0" value="0"/>
-	    </ConditionalDerivedVariable>
-
+            <DerivedVariable name="x" exposure="x" dimension="none" value="0.001 / (0.001 + ca_conc_i)"/>
         </Dynamics>
-        
-        <Structure>
-            <ChildInstance component="ionChannel"/>
-        </Structure>
-        
+
     </ComponentType>
     
 </neuroml>
