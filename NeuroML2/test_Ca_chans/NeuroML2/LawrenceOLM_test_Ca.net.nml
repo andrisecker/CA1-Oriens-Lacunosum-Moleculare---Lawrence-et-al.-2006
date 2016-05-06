@@ -8,6 +8,7 @@
     <include href="../../ICaL.channel.nml"/>
     <include href="../../ICaT.channel.nml"/>
     <include href="../../channelDensityGHK2.xml"/>
+    <include href="CaClamp.nml"/>
 
     <!-- Passive conductance -->
     <ionChannel id="leak" type="ionChannelPassive" conductance="10pS" species="non_specific"/>
@@ -50,14 +51,15 @@
 
             </membraneProperties>
 
-
             <intracellularProperties>
-
+               
                 <species id="ca"
                  ion="ca"
                  concentrationModel="simple_decay"
                  initialConcentration="5e-6 mM"
                  initialExtConcentration="2 mM"/>
+                               
+                <!--<species id="ca" ion="ca" concentrationModel="CaClamp"/>-->
 
                 <resistivity value="0.1 kohm_cm"/>
 
