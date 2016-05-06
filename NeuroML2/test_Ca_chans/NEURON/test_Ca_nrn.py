@@ -13,10 +13,10 @@ def create_comp(name = 'soma'):
     comp.insert('cat')
     comp.insert('kca')
 
-    # comp.insert('cabuff')
+    comp.insert('cabuff')
     comp.insert('pas')
 
-    comp.insert('CaClamp')
+    # comp.insert('CaClamp')
 
     comp.nseg = 1
     comp.L = 10
@@ -33,7 +33,7 @@ def create_comp(name = 'soma'):
     area = h.area(0.5)
     phi = 3e-3
     print '0.1 * phi * area to be used in lems', 0.1 * phi * area 
-    # comp(0.5).cabuff.phi = phi
+    comp(0.5).cabuff.phi = phi
 
     h.cao0_ca_ion = 2
     h.cai0_ca_ion = 5e-6
