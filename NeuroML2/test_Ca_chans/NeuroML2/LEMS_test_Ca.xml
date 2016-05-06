@@ -16,16 +16,19 @@
     <!-- Simulation specifications -->
     <Simulation id="sim1" length="50ms" step="0.001ms" target="net1">
 
-      <Display id="d1" title="Membrane Potential (mV)" timeScale="1ms" xmin="0" xmax="50" ymin="-80" ymax="40">
+      <Display id="d1" title="Membrane Potential (mV)" timeScale="1ms" xmin="0" xmax="50" ymin="-70" ymax="-10">
         <Line id="V" quantity="pop/0/olm1/v" scale="1mV"  color="#ffffff" timeScale="1ms"/>
       </Display>
 
-      <Display id="d2" title="Ca current density (uA_per_cm2)" timeScale="1ms" xmin="0" xmax="50" ymin="0" ymax="3">
+      <Display id="d2" title="CaL current density (uA_per_cm2)" timeScale="1ms" xmin="0" xmax="50" ymin="1e-3" ymax="-0.06">
         <Line id="CaL iDensity GHK" quantity="pop/0/olm1/biophys/membraneProperties/cal_all/iDensity" scale="1uA_per_cm2"  color="#00ff00" timeScale="1ms"/>
-        <Line id="CaT iDensity GHK" quantity="pop/0/olm1/biophys/membraneProperties/cat_all/iDensity" scale="1uA_per_cm2"  color="#ff0000" timeScale="1ms"/>
+      </Display>
+      
+      <Display id="d3" title="CaT current density (uA_per_cm2)" timeScale="1ms" xmin="0" xmax="50" ymin="1e-5" ymax="-3.5e-4">
+        <Line id="CaT iDensity GHK" quantity="pop/0/olm1/biophys/membraneProperties/cat_all/iDensity" scale="1uA_per_cm2"  color="#0000ff" timeScale="1ms"/>
       </Display>
 
-      <Display id="d3" title="Internal Ca concentration (mM)" timeScale="1ms" xmin="0" xmax="50" ymin="0" ymax="45">
+      <Display id="d4" title="Internal Ca concentration (mM)" timeScale="1ms" xmin="0" xmax="50" ymin="2.8" ymax="5.2">
         <Line id="caConc" quantity="pop/0/olm1/caConc" scale="1e-6 mM"  color="#ff0000" timeScale="1ms"/>
       </Display>
 
