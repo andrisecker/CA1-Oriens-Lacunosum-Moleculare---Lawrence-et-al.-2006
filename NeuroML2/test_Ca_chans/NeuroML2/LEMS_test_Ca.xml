@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Lems>
+
+    <Target component="sim1"/>
+
+    <Include file="Cells.xml"/>
+    <Include file="Networks.xml"/>
+    <Include file="Simulation.xml"/>
+
+    <Include file="../../IKCa.channel.nml"/>
+    <Include file="../../ICaL.channel.nml"/>
+    <Include file="../../ICaT.channel.nml"/>
+    <Include file="../../channelDensityGHK2.xml"/>
+    <Include file="LawrenceOLM_test_Ca.net.nml"/>
+ 
+    <!-- Simulation specifications -->
+    <Simulation id="sim1" length="50ms" step="0.001ms" target="net1">
+
+      <Display id="d1" title="Membrane Potential (mV)" timeScale="1ms" xmin="0" xmax="50" ymin="-80" ymax="40">
+        <Line id="V" quantity="pop/0/olm1/v" scale="1mV"  color="#ffffff" timeScale="1ms"/>
+      </Display>
+
+      <Display id="d2" title="Ca current density (uA_per_cm2)" timeScale="1ms" xmin="0" xmax="50" ymin="0" ymax="3">
+        <Line id="CaL iDensity GHK" quantity="pop/0/olm1/biophys/membraneProperties/cal_all/iDensity" scale="1uA_per_cm2"  color="#00ff00" timeScale="1ms"/>
+        <Line id="CaT iDensity GHK" quantity="pop/0/olm1/biophys/membraneProperties/cat_all/iDensity" scale="1uA_per_cm2"  color="#ff0000" timeScale="1ms"/>
+      </Display>
+
+      <Display id="d3" title="Internal Ca concentration (mM)" timeScale="1ms" xmin="0" xmax="50" ymin="0" ymax="45">
+        <Line id="caConc" quantity="pop/0/olm1/caConc" scale="1e-6 mM"  color="#ff0000" timeScale="1ms"/>
+      </Display>
+
+      <OutputFile id="of0" fileName="lems_ca.dat">
+        <OutputColumn id="v" quantity="pop/0/olm1/v"/>
+        <OutputColumn id="ical" quantity="pop/0/olm1/biophys/membraneProperties/cal_all/iDensity"/>
+        <OutputColumn id="icat" quantity="pop/0/olm1/biophys/membraneProperties/cat_all/iDensity"/>
+        <OutputColumn id="ca" quantity="pop/0/olm1/caConc"/>
+      </OutputFile>
+    
+    </Simulation>
+  
+</Lems>
