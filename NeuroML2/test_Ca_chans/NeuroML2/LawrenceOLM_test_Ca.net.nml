@@ -52,17 +52,17 @@
             </membraneProperties>
 
             <intracellularProperties>
-                
+                <!-- 
                 <species id="ca" ion="ca"
                     concentrationModel="simple_decay"
                     initialConcentration="5e-6 mM"
                     initialExtConcentration="2 mM"/>
-                <!--            
+                -->            
                 <species id="ca" ion="ca"
                     concentrationModel="CaClamp"
                     initialConcentration="5e-6 mM"
                     initialExtConcentration="2 mM"/>
-                --> 
+                
                 <resistivity value="0.1 kohm_cm"/>
 
             </intracellularProperties>
@@ -72,7 +72,7 @@
     </cell>
 
     <!-- Point process: Current clamp -->
-    <pulseGenerator id="IClamp" delay="4ms" duration="6ms" amplitude="0.005nA" />
+    <pulseGenerator id="IClamp" delay="4ms" duration="30ms" amplitude="0.005nA"/>
 
 
     <!-- Create a single-cell network -->
