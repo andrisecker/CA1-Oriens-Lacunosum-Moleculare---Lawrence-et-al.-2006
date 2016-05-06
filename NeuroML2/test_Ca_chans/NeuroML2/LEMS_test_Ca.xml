@@ -12,6 +12,7 @@
     <Include file="../../ICaT.channel.nml"/>
     <Include file="../../channelDensityGHK2.xml"/>
     <Include file="LawrenceOLM_test_Ca.net.nml"/>
+    <Include file="CaClamp.nml"/>
  
     <!-- Simulation specifications -->
     <Simulation id="sim1" length="50ms" step="0.001ms" target="net1">
@@ -28,7 +29,7 @@
         <Line id="CaT iDensity GHK" quantity="pop/0/olm1/biophys/membraneProperties/cat_all/iDensity" scale="1uA_per_cm2"  color="#0000ff" timeScale="1ms"/>
       </Display>
 
-      <Display id="d4" title="Internal Ca concentration (mM)" timeScale="1ms" xmin="0" xmax="50" ymin="2.8" ymax="5.2">
+      <Display id="d4" title="Internal Ca concentration (mM)" timeScale="1ms" xmin="0" xmax="50" ymin="-0.1" ymax="5.1">
         <Line id="caConc" quantity="pop/0/olm1/caConc" scale="1e-6 mM"  color="#ff0000" timeScale="1ms"/>
       </Display>
 

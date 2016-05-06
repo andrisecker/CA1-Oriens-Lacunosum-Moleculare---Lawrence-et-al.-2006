@@ -4,8 +4,7 @@
          xsi:schemaLocation="http://www.neuroml.org/schema/neuroml2 https://raw.github.com/NeuroML/NeuroML2/development/Schemas/NeuroML2/NeuroML_v2beta4.xsd" 
          id="CaClamp">
 
-    <caClamp id="CaClamp" conc0="0mM" conc1="0mM"  delay="10.0ms" duration="20.0ms" ion="ca"/>
-
+    <caClamp id="CaClamp" conc0="0mM" conc1="5e-6mM"  delay="30.0ms" duration="15.0ms" ion="ca"/>
     
     <ComponentType name="caClamp"
                    extends="concentrationModel"

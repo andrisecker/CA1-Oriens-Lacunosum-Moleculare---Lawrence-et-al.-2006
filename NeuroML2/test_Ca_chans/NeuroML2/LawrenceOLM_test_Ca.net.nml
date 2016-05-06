@@ -52,14 +52,16 @@
             </membraneProperties>
 
             <intracellularProperties>
-               
-                <species id="ca"
-                 ion="ca"
-                 concentrationModel="simple_decay"
-                 initialConcentration="5e-6 mM"
-                 initialExtConcentration="2 mM"/>
-                               
-                <!--<species id="ca" ion="ca" concentrationModel="CaClamp"/>-->
+                <!--
+                <species id="ca" ion="ca"
+                    concentrationModel="simple_decay"
+                    initialConcentration="5e-6 mM"
+                    initialExtConcentration="2 mM"/>
+                -->             
+                <species id="ca" ion="ca"
+                    concentrationModel="CaClamp"
+                    initialConcentration="5e-6 mM"
+                    initialExtConcentration="2 mM"/>
 
                 <resistivity value="0.1 kohm_cm"/>
 
