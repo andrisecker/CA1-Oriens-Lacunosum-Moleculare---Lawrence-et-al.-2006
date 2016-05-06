@@ -3,6 +3,18 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.neuroml.org/schema/neuroml2 https://raw.github.com/NeuroML/NeuroML2/development/Schemas/NeuroML2/NeuroML_v2beta4.xsd"
     id = "NeuroML2_file_exported_from_NEURON">
+    
+    <include href="ICaL.channel.nml"/>
+    <include href="ICaT.channel.nml"/>
+    <include href="IKCa.channel.nml"/>
+    <include href="IMmintau.channel.nml"/>
+    <include href="Ih.channel.nml"/>
+    <include href="Ikdrf.channel.nml"/>
+    <include href="Ikdrs.channel.nml"/>
+    <include href="Kleak_chan.channel.nml"/>
+    <include href="Nadend.channel.nml"/>
+    <include href="Nasoma.channel.nml"/>
+    <include href="leak_chan.channel.nml"/>
 
   <cell id="LawrenceOLM">
 
@@ -6211,7 +6223,7 @@
         <member segment = "1032"/>
       </segmentGroup>
 
-      <segmentGroup id="all"> <!-- Replacing subset name ModelViewParmSubset_0 with all, as it contains all sections -->
+      <segmentGroup id="all">
         <include segmentGroup = "soma_0"/>
         <include segmentGroup = "dendrite_2"/>
         <include segmentGroup = "dendrite_1"/>
@@ -6277,6 +6289,17 @@
         <include segmentGroup = "dendrite_48"/>
         <include segmentGroup = "axon_4"/>
         <include segmentGroup = "axon_3"/>
+      </segmentGroup>
+      
+      <segmentGroup id="soma_group"> 
+        <include segmentGroup = "soma_0"/>
+        <include segmentGroup = "soma_1"/>
+        <include segmentGroup = "soma_3"/>
+        <include segmentGroup = "soma_2"/>
+        <include segmentGroup = "soma_5"/>
+        <include segmentGroup = "soma_4"/>
+        <include segmentGroup = "soma_6"/>
+        <include segmentGroup = "soma_7"/>
       </segmentGroup>
 
       <segmentGroup id="dendrite_group"> 
@@ -6334,70 +6357,7 @@
         <include segmentGroup = "dendrite_48"/>
       </segmentGroup>
 
-      <segmentGroup id="ModelViewParmSubset_2"> 
-        <include segmentGroup = "soma_0"/>
-        <include segmentGroup = "dendrite_2"/>
-        <include segmentGroup = "dendrite_1"/>
-        <include segmentGroup = "dendrite_0"/>
-        <include segmentGroup = "soma_1"/>
-        <include segmentGroup = "dendrite_6"/>
-        <include segmentGroup = "dendrite_5"/>
-        <include segmentGroup = "dendrite_4"/>
-        <include segmentGroup = "dendrite_3"/>
-        <include segmentGroup = "soma_3"/>
-        <include segmentGroup = "soma_2"/>
-        <include segmentGroup = "dendrite_9"/>
-        <include segmentGroup = "dendrite_8"/>
-        <include segmentGroup = "dendrite_7"/>
-        <include segmentGroup = "dendrite_10"/>
-        <include segmentGroup = "soma_5"/>
-        <include segmentGroup = "soma_4"/>
-        <include segmentGroup = "dendrite_12"/>
-        <include segmentGroup = "dendrite_11"/>
-        <include segmentGroup = "dendrite_18"/>
-        <include segmentGroup = "dendrite_17"/>
-        <include segmentGroup = "dendrite_16"/>
-        <include segmentGroup = "dendrite_15"/>
-        <include segmentGroup = "dendrite_14"/>
-        <include segmentGroup = "dendrite_13"/>
-        <include segmentGroup = "soma_6"/>
-        <include segmentGroup = "dendrite_26"/>
-        <include segmentGroup = "dendrite_25"/>
-        <include segmentGroup = "dendrite_24"/>
-        <include segmentGroup = "dendrite_23"/>
-        <include segmentGroup = "dendrite_22"/>
-        <include segmentGroup = "dendrite_20"/>
-        <include segmentGroup = "dendrite_19"/>
-        <include segmentGroup = "dendrite_21"/>
-        <include segmentGroup = "soma_7"/>
-        <include segmentGroup = "dendrite_34"/>
-        <include segmentGroup = "dendrite_33"/>
-        <include segmentGroup = "dendrite_32"/>
-        <include segmentGroup = "dendrite_31"/>
-        <include segmentGroup = "dendrite_30"/>
-        <include segmentGroup = "dendrite_28"/>
-        <include segmentGroup = "dendrite_27"/>
-        <include segmentGroup = "dendrite_29"/>
-        <include segmentGroup = "dendrite_43"/>
-        <include segmentGroup = "dendrite_42"/>
-        <include segmentGroup = "dendrite_41"/>
-        <include segmentGroup = "dendrite_40"/>
-        <include segmentGroup = "dendrite_39"/>
-        <include segmentGroup = "dendrite_38"/>
-        <include segmentGroup = "dendrite_37"/>
-        <include segmentGroup = "dendrite_36"/>
-        <include segmentGroup = "dendrite_35"/>
-        <include segmentGroup = "dendrite_47"/>
-        <include segmentGroup = "dendrite_46"/>
-        <include segmentGroup = "dendrite_45"/>
-        <include segmentGroup = "dendrite_44"/>
-        <include segmentGroup = "dendrite_51"/>
-        <include segmentGroup = "dendrite_50"/>
-        <include segmentGroup = "dendrite_49"/>
-        <include segmentGroup = "dendrite_48"/>
-      </segmentGroup>
-
-      <segmentGroup id="ModelViewParmSubset_3"> 
+      <segmentGroup id="IM_group">  <!-- soma + some of the dendrites whose have M current-->
         <include segmentGroup = "soma_0"/>
         <include segmentGroup = "dendrite_2"/>
         <include segmentGroup = "dendrite_1"/>
@@ -6410,17 +6370,6 @@
         <include segmentGroup = "soma_4"/>
         <include segmentGroup = "dendrite_15"/>
         <include segmentGroup = "dendrite_13"/>
-        <include segmentGroup = "soma_6"/>
-        <include segmentGroup = "soma_7"/>
-      </segmentGroup>
-
-      <segmentGroup id="soma_group"> 
-        <include segmentGroup = "soma_0"/>
-        <include segmentGroup = "soma_1"/>
-        <include segmentGroup = "soma_3"/>
-        <include segmentGroup = "soma_2"/>
-        <include segmentGroup = "soma_5"/>
-        <include segmentGroup = "soma_4"/>
         <include segmentGroup = "soma_6"/>
         <include segmentGroup = "soma_7"/>
       </segmentGroup>
@@ -6439,61 +6388,46 @@
 
     <biophysicalProperties id="biophys"> 
 
-      <membraneProperties> 
+      <membraneProperties>
+          
+        <channelDensity ionChannel="leak_chan" id="leak_soma_group" condDensity="0.011231 mS_per_cm2" segmentGroup="soma_group"  erev="-70mV" ion="non_specific"/>
+        <channelDensity ionChannel="Kleak_chan" id="Kleak_soma_group" condDensity="0.0032258 mS_per_cm2" segmentGroup="soma_group"  erev="-95mV" ion="k"/>
+        <channelDensity ionChannel="Nasoma" id="Nasoma_soma_group" condDensity="10.7mS_per_cm2" segmentGroup="soma_group"  erev="900mV" ion="na"/>
+        <channelDensity ionChannel="IKa" id="IKa_soma_group" condDensity="0.25mS_per_cm2" segmentGroup="soma_group"  erev="-95mV" ion="k"/>
+        <channelDensity ionChannel="Ikdrf" id="Ikdrf_soma_group" condDensity="0.6 mS_per_cm2" segmentGroup="soma_group" erev="-95mV" ion="k"/>
+        <channelDensity ionChannel="Ikdrs" id="Ikdrs_soma_grop" condDensity="0.23 mS_per_cm2" segmentGroup="soma_group" erev="-95mV" ion="k"/>
+        <channelDensity ionChannel="Ih" id="Ih_soma_group" condDensity="0.05 mS_per_cm2" segmentGroup="soma_group" erev="-32.9mV" ion="h"/>
+        
+        <channelDensity ionChannel="leak_chan" id="leak_dendrite_group" condDensity="0.011231 mS_per_cm2" segmentGroup="dendrite_group"  erev="-70mV" ion="non_specific"/>
+        <channelDensity ionChannel="Kleak_chan" id="Kleak_dendrite_group" condDensity="0.0032258 mS_per_cm2" segmentGroup="dendrite_group"  erev="-95mV" ion="k"/>
+        <channelDensity ionChannel="Nadend" id="Nadend_dendrite_group" condDensity="11.7mS_per_cm2" segmentGroup="dendrite_group"  erev="90mV" ion="na"/>
+        <channelDensity ionChannel="IKa" id="IKa_dendrite_group" condDensity="0.25mS_per_cm2" segmentGroup="dendrite_group" erev="-95mV" ion="k"/>    
+        <channelDensity ionChannel="Ikdrf" id="Ikdrf_dendrite_group" condDensity="0.6 mS_per_cm2" segmentGroup="dendrite_group" erev="-95mV" ion="k"/>
+        <channelDensity ionChannel="Ikdrs" id="Ikdrs_dendrite_grop" condDensity="0.23 mS_per_cm2" segmentGroup="dendrite_group" erev="-95mV" ion="k"/>
+        <channelDensity ionChannel="IKCa" id="IKCa_dendrite_group" condDensity="0.55 mS_per_cm2" segmentGroup="dendrite_group" erev="-95mV" ion="k"/>
+        <channelDensityGHK2 ionChannel="ICaL" id="ICaL_dendrite_group" condDensity="2.5mS_per_cm2" segmentGroup="dendrite_group" ion="ca"/>
+        <channelDensityGHK2 ionChannel="ICaT" id="ICaT_dendrite_group" condDensity="0.25mS_per_cm2" segmentGroup="dendrite_group" ion="ca"/>
+        
+        <channelDensity ionChannel="IMmintau" id="IM_IM_group" condDensity="0.3mS_per_cm2" segmentGroup="IM_group" erev="-95mV" ion="k"/>
 
-        <channelDensityGHK2 ionChannel="cal" id="cal_dendrite_group" condDensity="2.5 mS_per_cm2" segmentGroup="dendrite_group" ion="ca"/>
-        <channelDensityGHK2 ionChannel="cat" id="cat_dendrite_group" condDensity="0.25 mS_per_cm2" segmentGroup="dendrite_group" ion="ca"/>
+        <channelDensity ionChannel="leak_chan" id="leak_axon_group" condDensity="0.061771mS_per_cm2" segmentGroup="axon_group"  erev="-66.164mV" ion="non_specific"/>
+        <channelDensity ionChannel="Kleak_chan" id="Kleak_axon_group" condDensity="0.017742mS_per_cm2" segmentGroup="axon_group"  erev="-95mV" ion="k"/> 
+        <channelDensity ionChannel="Nasoma" id="Nasoma_axon_group" condDensity="11.7mS_per_cm2" segmentGroup="axon_group"  erev="90mV" ion="na"/>
+        <channelDensity ionChannel="Ikdrf" id="Ikdrf_axon_group" condDensity="0.6mS_per_cm2" segmentGroup="axon_group"  erev="-95mV" ion="k"/>
+        <channelDensity ionChannel="Ikdrs" id="Ikdrs_axon_group" condDensity="0.23mS_per_cm2" segmentGroup="axon_group"  erev="-95mV" ion="k"/>
 
-        <channelDensity ionChannel="kca" id="kca_XXX"  condDensity = "0.55 mS_per_cm2" segmentGroup="ModelViewParmSubset_1"  erev="-95.000000mV" />
-
-        <channelDensity ionChannel="Ika" id="Ika_XXX"  condDensity = "0.25 mS_per_cm2" segmentGroup="ModelViewParmSubset_2"  erev="-95.000000mV" />
-
-        <channelDensity ionChannel="IM" id="IM_XXX"  condDensity = "0.3 mS_per_cm2" segmentGroup="ModelViewParmSubset_3"  erev="-95.000000mV" />
-
-        <channelDensity ionChannel="Ih" id="Ih_XXX"  condDensity = "0.05 mS_per_cm2" segmentGroup="ModelViewParmSubset_4"  erev="-32.900000mV" />
-
-        <channelDensity ionChannel="Ikdrf" id="Ikdrf_XXX"  condDensity = "0.6 mS_per_cm2" segmentGroup="ModelViewParmSubset_2"  erev="-95.000000mV" />
-
-        <channelDensity ionChannel="Ikdrfaxon" id="Ikdrfaxon_XXX"  condDensity = "0.6 mS_per_cm2" segmentGroup="ModelViewParmSubset_5"  erev="-95.000000mV" />
-
-        <channelDensity ionChannel="Ikdrs" id="Ikdrs_XXX"  condDensity = "0.23 mS_per_cm2" segmentGroup="ModelViewParmSubset_2"  erev="-95.000000mV" />
-
-        <channelDensity ionChannel="Ikdrsaxon" id="Ikdrsaxon_XXX"  condDensity = "0.23 mS_per_cm2" segmentGroup="ModelViewParmSubset_5"  erev="-95.000000mV" />
-
-        <channelDensity ionChannel="Kleakaxon" id="Kleakaxon_XXX"  condDensity = "0.017742 mS_per_cm2" segmentGroup="ModelViewParmSubset_5"  erev="-95.000000mV" />
-
-        <channelDensity ionChannel="Kleaksd" id="Kleaksd_XXX"  condDensity = "0.0032258 mS_per_cm2" segmentGroup="ModelViewParmSubset_2"  erev="-95.000000mV" />
-
-        <channelDensity ionChannel="passaxon" id="passaxon_XXX"  condDensity = "0.061771 mS_per_cm2" segmentGroup="ModelViewParmSubset_5"  erev="-70.000000mV" />
-
-        <channelDensity ionChannel="passsd" id="passsd_XXX"  condDensity = "0.011231 mS_per_cm2" segmentGroup="ModelViewParmSubset_2"  erev="-70.000000mV" />
-
-        <channelDensity ionChannel="Naaxon" id="Naaxon_XXX"  condDensity = "10.7 mS_per_cm2" segmentGroup="ModelViewParmSubset_5"  erev="90.000000mV" />
-
-        <channelDensity ionChannel="Nadend" id="Nadend_XXX"  condDensity = "11.7 mS_per_cm2" segmentGroup="ModelViewParmSubset_1"  erev="90.000000mV" />
-
-        <channelDensity ionChannel="Nasoma" id="Nasoma_XXX"  condDensity = "10.7 mS_per_cm2" segmentGroup="ModelViewParmSubset_4"  erev="90.000000mV" />
-
+        <spikeThresh value="0 mV"/>
         <specificCapacitance  value="0.9 uF_per_cm2" />
+        <initMembPotential value="-65.0 mV"/>
 
       </membraneProperties> 
 
       <intracellularProperties>
-
         <resistivity value="0.3 kohm_cm" />
-
       </intracellularProperties>
 
     </biophysicalProperties>
 
   </cell> 
-
-  <network id="network" type="networkWithTemperature" temperature="24 degC">
-    <population id="Pop_LawrenceOLM_0_0" component="LawrenceOLM_0_0" size="1" type="populationList">
-        <instance id="0">
-            <location x="0" y="0" z="0"/>
-        </instance>
-    </population>
-  </network>
  
 </neuroml>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<neuroml xmlns="http://www.neuroml.org/schema/neuroml2"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.neuroml.org/schema/neuroml2 https://raw.github.com/NeuroML/NeuroML2/development/Schemas/NeuroML2/NeuroML_v2beta4.xsd"
+    id = "NeuroML2_network_from_exported_cell">
+    
+    <include href="LawrenceOLM.cell.nml"/>
+
+    <!-- Point process: Current clamp -->  
+    <pulseGenerator id="IClamp0" delay="0ms" duration="500ms" amplitude="0.1nA" />
+    
+    <!-- Create a single-cell network -->
+    <network id="network" type="networkWithTemperature" temperature="24 degC">
+        
+        <population id="Pop_LawrenceOLM" component="LawrenceOLM" size="1" type="populationList">
+            <instance id="0">
+                <location x="0" y="0" z="0"/>
+            </instance>
+        </population>
+
+        <inputList id="IClamp0" component="IClamp0" population="pop">
+            <input id="0" target="../Pop_SaragaOLM_Case2/0/SaragaOLM_Case2" destination="synapses"/>
+        </inputList>
+
+    </network>
+  
+</neuroml>
