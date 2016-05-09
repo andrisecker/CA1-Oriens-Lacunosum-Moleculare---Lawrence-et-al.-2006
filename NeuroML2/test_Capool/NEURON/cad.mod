@@ -140,6 +140,11 @@ PROCEDURE factors() {
 LOCAL dsq, dsqvol0, dsqvol1, dsqvol2, dsqvol3
 
 DERIVATIVE state {
+    : The STATEs ca[] are intensive variables (concentration, or mass/volume), [...] flux is the time derivative of an extensive variable.
+    : This disparity is corrected by specifying STATE volumes with the COMPARTMENT statement...
+    : The volume merely multiplies the dSTATE/dt left hand side of the equivalent differential equations,
+    : converting it to an extensive quantity and making it consistent with flux terms in units of absolute quantity per time.
+
     COMPARTMENT diam*diam*vrat0 {ca0 CaBuffer0 Buffer0}
     COMPARTMENT diam*diam*vrat1 {ca1 CaBuffer1 Buffer1}
     COMPARTMENT diam*diam*vrat2 {ca2 CaBuffer2 Buffer2}
