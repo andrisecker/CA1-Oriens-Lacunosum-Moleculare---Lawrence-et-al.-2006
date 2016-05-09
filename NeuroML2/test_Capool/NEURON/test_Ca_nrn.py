@@ -10,7 +10,7 @@ def create_comp(name = 'soma'):
     comp = h.Section('soma')
 
     
-    comp.insert('cad_orig')
+    comp.insert('cad')
 
     comp.nseg = 1
     comp.L = 1
@@ -33,7 +33,7 @@ def plot_timeseries(vdict, varlist):
     t = vdict['t']
     for n in varlist:
         figure()
-        plot(t, vdict[n], label=n)
+        plot(t, vdict[n], label=n, color='r')
         title(n)
     
     show()
@@ -74,7 +74,7 @@ stim.delay = 4
 stim.dur = 6.0
 stim.amp = 0.005
 
-varlist = ['v', 'cai', 'cao']
+varlist = ['v', 'cai', 'cao', 'debugVal_cad']
 ds = create_dumps(comp, varlist)
 
 run(50, 0.001)
