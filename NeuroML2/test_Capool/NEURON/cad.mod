@@ -98,7 +98,7 @@ INITIAL {
     : 2nd step of initialization -> initialize state variables
     Kd = k2buf/k1buf
 
-    pump = TotalPump :/ (1 + 1.e-18*k4/k3 * cao)
+    pump = TotalPump / (1 + 1.e-18*k4/k3 * cao)
     pumpca = PCa0
 
     ca0 = cai
@@ -180,33 +180,39 @@ DERIVATIVE state {
 
 : =====================================================================================================
 
-    LOCAL dsq, dsqvol0, dsqvol1, dsqvol2, dsqvol3, f_flux, b_flux
+    LOCAL dsq, parea, dsqvol0, dsqvol1, dsqvol2, dsqvol3, ca0_efl, ca0_dif, ca0_buf, ca0_pump, f_flux, b_flux
 
     dsq = diam*diam
+    parea = diam*PI*(1e10)
     dsqvol0 = dsq*vrat0
     dsqvol1 = dsq*vrat1
     dsqvol2 = dsq*vrat2
     dsqvol3 = dsq*vrat3
 
-    ca0' = (- ((ica-last_ipump)*PI*diam) / (2*FARADAY)  - (DCa*frat1)*ca0 + (DCa*frat1)*ca1 - (k1buf*dsqvol0)*ca0*Buffer0 + (k2buf*dsqvol0)*CaBuffer0) - ((1.e-8)*k1*area)*ca0*pump + ((1.e10)*k2*area)*pumpca / dsqvol0
-    ca1' = ((DCa*frat1)*ca0 - ((DCa*frat1)+(DCa*frat2))*ca1 + (DCa*frat2)*ca2 - (k1buf*dsqvol1)*ca1*Buffer1 + (k2buf*dsqvol1)*CaBuffer1) / dsqvol1
-    ca2' = ((DCa*frat2)*ca1 - ((DCa*frat2)+(DCa*frat3))*ca2 + (DCa*frat3)*ca3 - (k1buf*dsqvol2)*ca2*Buffer2 + (k2buf*dsqvol2)*CaBuffer2) / dsqvol2
-    ca3' = ((DCa*frat3)*ca2 - (DCa*frat3)*ca3 - (k1buf*dsqvol3)*ca3*Buffer3 + (k2buf*dsqvol3)*CaBuffer3) / dsqvol3
+    ca0_efl  = - (ica-last_ipump)*PI*diam/1(um2)) / (2*FARADAY
+    ca0_dif  = - (DCa*frat1/dsqvol0)*ca0 + (DCa*frat1/dsqvol0)*ca1
+    ca0_buf  = - k1buf*ca0*Buffer0 + k2buf*CaBuffer0
+    ca0_pump = - ((1.e-8)*k1*area/parea/1(um2))*ca0*pump + ((1.e10)*k2*area/parea/1(um2))*pumpca
+
+    ca0' = ca0_efl + ca0_dif + ca0_buf + ca0_pump 
+    ca1' = (DCa*frat1/dsqvol1)*ca0 - ((DCa*frat1/dsqvol1)+(DCa*frat2/dsqvol1))*ca1 + (DCa*frat2/dsqvol1)*ca2 - k1buf*ca1*Buffer1 + k2buf*CaBuffer1 
+    ca2' = (DCa*frat2/dsqvol2)*ca1 - ((DCa*frat2/dsqvol2)+(DCa*frat3/dsqvol2))*ca2 + (DCa*frat3/dsqvol2)*ca3 - k1buf*ca2*Buffer2 + k2buf*CaBuffer2
+    ca3' = (DCa*frat3/dsqvol3)*ca2 - (DCa*frat3/dsqvol3)*ca3 - k1buf*ca3*Buffer3 + k2buf*CaBuffer3
     
-    Buffer0' =   (-(k1buf*dsqvol0)*ca0*Buffer0 + (k2buf*dsqvol0)*CaBuffer0) / dsqvol0
-    CaBuffer0' = ((k1buf*dsqvol0)*ca0*Buffer0 - (k2buf*dsqvol0)*CaBuffer0) / dsqvol0
-    Buffer1' =   (-(k1buf*dsqvol1)*ca1*Buffer1 + (k2buf*dsqvol1)*CaBuffer1) / dsqvol1
-    CaBuffer1' = ((k1buf*dsqvol1)*ca1*Buffer1 - (k2buf*dsqvol1)*CaBuffer1) / dsqvol1
-    Buffer2' =   (-(k1buf*dsqvol2)*ca2*Buffer2 + (k2buf*dsqvol2)*CaBuffer2) / dsqvol2
-    CaBuffer2' = ((k1buf*dsqvol2)*ca2*Buffer2 - (k2buf*dsqvol2)*CaBuffer2) / dsqvol2
-    Buffer3' =   (-(k1buf*dsqvol3)*ca3*Buffer3 + (k2buf*dsqvol3)*CaBuffer3) / dsqvol3
-    CaBuffer3' = ((k1buf*dsqvol3)*ca3*Buffer3 - (k2buf*dsqvol3)*CaBuffer3) / dsqvol3
+    Buffer0'   = -k1buf*ca0*Buffer0 + k2buf*CaBuffer0
+    CaBuffer0' =  k1buf*ca0*Buffer0 - k2buf*CaBuffer0
+    Buffer1'   = -k1buf*ca1*Buffer1 + k2buf*CaBuffer1
+    CaBuffer1' =  k1buf*ca1*Buffer1 - k2buf*CaBuffer1
+    Buffer2'   = -k1buf*ca2*Buffer2 + k2buf*CaBuffer2
+    CaBuffer2' =  k1buf*ca2*Buffer2 - k2buf*CaBuffer2
+    Buffer3'   = -k1buf*ca3*Buffer3 + k2buf*CaBuffer3
+    CaBuffer3' =  k1buf*ca3*Buffer3 - k2buf*CaBuffer3
     
-    pump' =    (-((1.e-11)*k1*area)*ca0*pump + (((1.e10)*k2*area)+((1.e10)*k3*area))*pumpca - ((1.e-8)*k4*area)*pump*cao/volo) / (1e10)*area
-    pumpca' =  (((1.e-11)*k1*area)*ca0*pump - (((1.e10)*k2*area)+((1.e10)*k3*area))*pumpca + ((1.e-8)*k4*area)*pump*cao/volo) / (1e10)*area
-    :cao' =     (((1.e7)*k3*area)*pumpca - ((1.e-11)*k4*area)*pump*cao) / (1e15)*volo
-    f_flux =   ((1.e10)*k3*area)*pumpca
-    b_flux =   ((1.e-8)*k4*area)*pump*cao
+    pump'   = -((1.e-8)*k1*area/parea/1(um))*ca0*pump + (((1.e10)*k2*area/parea/1(um))+((1.e10)*k3*area/parea/1(um)))*pumpca - ((1.e-8)*k4*area/parea/1(um))*pump*cao
+    pumpca' =  ((1.e-8)*k1*area/parea/1(um))*ca0*pump - (((1.e10)*k2*area/parea/1(um))+((1.e10)*k3*area/parea/1(um)))*pumpca + ((1.e-8)*k4*area/parea/1(um))*pump*cao
+
+    f_flux   = ((1.e10)*k3*area)*pumpca
+    b_flux   = ((1.e-8)*k4*area)*pump*cao
     ica_pump = 2*FARADAY*(f_flux-b_flux) / area
 
     cai = ca0
