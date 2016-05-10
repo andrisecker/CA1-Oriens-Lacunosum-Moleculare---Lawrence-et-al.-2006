@@ -11,7 +11,7 @@ NEURON {
 	SUFFIX cad_orig
 	USEION ca READ cao, cai, ica WRITE cai, ica
 	GLOBAL vol, Buffer0
-	RANGE ipump, debugVal
+	RANGE ipump, debugVal0, debugVal1, debugVal2, debugVal3
 }
 DEFINE NANN  4
 
@@ -46,7 +46,10 @@ ASSIGNED {
 	vol[NANN]	(1)	: gets extra cm2 when multiplied by diam^2
 	ipump           (mA/cm2)
 	last_ipump           (mA/cm2)
-    debugVal  (mM)
+    debugVal0  (mM)
+    debugVal1  (mM)
+    debugVal2  (mM)
+    debugVal3  (mM)
 
 }
 
@@ -59,33 +62,32 @@ STATE {
 
 }
 
-LOCAL totpump, kd,totbuf
+LOCAL coord_done, totpump, kd, totbuf
 
-INITIAL {
-           totpump = 0.2
-           pump=totpump/(1+1.e-18*k4*cao/k3)
-           pumpca=2.e-22
-	   ipump=0
+:INITIAL {
+    :totpump = 0.2
+    :pump=totpump/(1+1.e-18*k4*cao/k3)
+    :pumpca=2.e-22
+	:ipump=0
 
-           totbuf=1.2
-           kd=k2buf/k1buf
-           FROM i=0 TO NANN-1 {
-                ca[i] = cai
-		CaBuffer[i] =(totbuf*ca[i])/(kd+ca[i])
-		Buffer[i] = totbuf - CaBuffer[i]
-                }
-
-    VERBATIM
-    printf("init cai:%g, 0:%g, 1:%g, 2:%g, 3:%g\n",(cai, ca[0], ca[1], ca[2], ca[3]));
-    ENDVERBATIM
-
-}
+    :totbuf=1.2
+    :kd=k2buf/k1buf
+    :FROM i=0 TO NANN-1 {
+    :    ca[i] = cai
+	:	 CaBuffer[i] =(totbuf*ca[i])/(kd+ca[i])
+	:	 Buffer[i] = totbuf - CaBuffer[i]
+    :    }
+:}
 
 BREAKPOINT {
 	SOLVE state METHOD sparse
 	last_ipump=ipump
 	ica = ipump
-    debugVal = ca[1]
+
+    debugVal0 = ca[0]
+    debugVal1 = ca[1]
+    debugVal2 = ca[2]
+    debugVal3 = ca[3]
 
 }
 
@@ -96,11 +98,24 @@ INITIAL {
 		coord_done = 1
 		coord()
 	}
-	: note Buffer gets set to Buffer0 automatically
-	: and CaBuffer gets set to 0 (Default value of CaBuffer0) as well
-	FROM i=0 TO NANN-1 {
-		ca[i] = cai
-	}
+	:: note Buffer gets set to Buffer0 automatically
+	:: and CaBuffer gets set to 0 (Default value of CaBuffer0) as well
+	:FROM i=0 TO NANN-1 {
+	:	ca[i] = cai
+	:}
+
+    totbuf=1.2
+    kd=k2buf/k1buf
+    FROM i=0 TO NANN-1 {
+        ca[i] = cai
+		CaBuffer[i] =(totbuf*ca[i])/(kd+ca[i])
+		Buffer[i] = totbuf - CaBuffer[i]
+        }
+
+    totpump = 0.2
+    pump=totpump/(1+1.e-18*k4*cao/k3)
+    pumpca=2.e-22
+	ipump=0
 }
 
 LOCAL frat[NANN] 	: gets extra cm when multiplied by diam
@@ -131,10 +146,10 @@ LOCAL dsq, dsqvol : can't define local variable in KINETIC block or use
 		:  in COMPARTMENT
 KINETIC state {
 	COMPARTMENT i, diam*diam*vol[i]*1(um) {ca CaBuffer Buffer}
-        COMPARTMENT (1.e10)*area {pump pumpca}
-        COMPARTMENT (1.e15)*volo {cao}
+    COMPARTMENT (1.e10)*area {pump pumpca}
+    COMPARTMENT volo {cao} :(1.e15)*volo {cao}
 
-	:~ ca[0] << (-(ica-last_ipump)*PI*diam*frat[0]*1(um)/(2*FARADAY))
+	~ ca[0] << (-(ica-last_ipump)*PI*diam*frat[0]*1(um)/(2*FARADAY))
 	FROM i=0 TO NANN-2 {
 		~ ca[i] <-> ca[i+1] (DFree*frat[i+1]*1(um), DFree*frat[i+1]*1(um))
 	}

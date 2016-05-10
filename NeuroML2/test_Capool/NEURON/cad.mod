@@ -2,7 +2,7 @@
 NEURON {
     SUFFIX cad
     USEION ca READ cai, cao, ica WRITE cai, ica
-    RANGE ica_pump, debugVal
+    RANGE ica_pump, debugVal0, debugVal1, debugVal2, debugVal3
     GLOBAL vrat0, vrat1, vrat2, vrat3
     :read cai- to init buffer, reads ica- which is the Ca++ influx into outermost shell, reads cao- which is used in pump reaction scheme
     :and writes cai- because it computes Ca++ in the outermost shell, ica- writes pump current here
@@ -17,7 +17,7 @@ UNITS {
     (um) =     (micron)
     (mA) =     (milliamp)
     FARADAY =  (faraday) (10000 coulomb)
-    PI = (pi) (1)   
+    PI = (pi)  (1)   
 }
 
 PARAMETER {
@@ -43,7 +43,11 @@ ASSIGNED {
     Kd       (/mM) :dissociation constant for the buffer
     B0       (mM) :initial value of free buffer
     ica_pump (mA/cm2)
-    debugVal (mM)
+    last_ipump (mA/cm2)
+    debugVal0 (mM)
+    debugVal1 (mM)
+    debugVal2 (mM)
+    debugVal3 (mM)
 }
 
 CONSTANT { volo=1  (liter)} : extracellular volume
@@ -71,8 +75,12 @@ BREAKPOINT {
     SOLVE state METHOD cnexp
 
     ica = ica_pump :ensure that the pump current is reckoned in NEURON's calculation of cai
+    last_ipump = ica_pump
     
-    debugVal = ca1
+    debugVal0 = ca0
+    debugVal1 = ca1 
+    debugVal2 = ca2
+    debugVal3 = ca3
 }
 
 
@@ -88,6 +96,10 @@ INITIAL {
     : 2nd step of initialization -> initialize state variables
     Kd = k2buf/k1buf
     TotalBuffer = 1.2
+    TotalPump = 0.2
+
+    pump = TotalPump / (1 + 1.e-18*k4*cao/k3)
+    pumpca = 2.e-22
 
     ca0 = cai
     CaBuffer0 = (TotalBuffer*ca0) / (Kd + ca0)
@@ -103,13 +115,10 @@ INITIAL {
     Buffer3 = TotalBuffer - CaBuffer3
 
     VERBATIM
-    printf("init cai:%g, 0:%g, 1:%g, 2:%g, 3:%g\n",(cai, ca0, ca1, ca2, ca3));
+    //printf("init cai:%g, 0:%g, 1:%g, 2:%g, 3:%g\n",(cai, ca0, ca1, ca2, ca3));
     ENDVERBATIM
 
-    TotalPump = 0.2
-    pump = TotalPump / (1 + 1.e-18*k4*cao/k3)
-    pumpca = 2.e-22
-	ica_pump = 0
+    ica_pump = 0
 
 }
 
@@ -137,12 +146,12 @@ PROCEDURE factors() {
     :frats- scale rate constants (frat[i+1] = A[i+1]/dr : surface area between shells i, i+1 / distance between shell centers)
     vrat0 = 0.23998277
     frat0 = 1
-    vrat1 = 0.19634954
+    vrat1 = 0.34906585
     frat1 = 15.70796327
-    vrat2 = 0.15271631
-    frat2 = 12.56637061
-    vrat3 = 0.10908308
-    frat3 = 9.42477796
+    vrat2 = 0.17453293
+    frat2 = 9.42477796
+    vrat3 = 0.02181662
+    frat3 = 3.14159265
    
 }
 
@@ -183,10 +192,10 @@ DERIVATIVE state {
     dsqvol2 = dsq*vrat2
     dsqvol3 = dsq*vrat3
 
-    ca0' = (-((1.e-11)*k1*area)*ca0*pump + ((1.e7)*k2*area)*pumpca - (DCa*frat1)*ca0 + (DCa*frat1)*ca1 - (k1buf*dsqvol0)*ca0*Buffer0 + (k2buf*dsqvol0)*CaBuffer0) / dsqvol0 : - ((ica-ica_pump)*PI*diam) / (2*FARADAY)
-    ca1' =  ((DCa*frat1)*ca0 - ((DCa*frat1)+(DCa*frat1))*ca1 + (DCa*frat2)*ca2 - (k1buf*dsqvol1)*ca1*Buffer1 + (k2buf*dsqvol1)*CaBuffer1) / dsqvol1
-    ca2' =  ((DCa*frat2)*ca1 - ((DCa*frat2)+(DCa*frat3))*ca2 + (DCa*frat3)*ca3 - (k1buf*dsqvol2)*ca2*Buffer2 + (k2buf*dsqvol2)*CaBuffer2) / dsqvol2
-    ca3' =  ((DCa*frat3)*ca2 - (DCa*frat3)*ca3 - (k1buf*dsqvol3)*ca3*Buffer3 + (k2buf*dsqvol3)*CaBuffer3) / dsqvol3
+    ca0' = (- ((ica-last_ipump)*PI*diam) / (2*FARADAY)  - (DCa*frat1)*ca0 + (DCa*frat1)*ca1 - (k1buf*dsqvol0)*ca0*Buffer0 + (k2buf*dsqvol0)*CaBuffer0) - ((1.e-11)*k1*area)*ca0*pump + ((1.e7)*k2*area)*pumpca / dsqvol0
+    ca1' = ((DCa*frat1)*ca0 - ((DCa*frat1)+(DCa*frat2))*ca1 + (DCa*frat2)*ca2 - (k1buf*dsqvol1)*ca1*Buffer1 + (k2buf*dsqvol1)*CaBuffer1) / dsqvol1
+    ca2' = ((DCa*frat2)*ca1 - ((DCa*frat2)+(DCa*frat3))*ca2 + (DCa*frat3)*ca3 - (k1buf*dsqvol2)*ca2*Buffer2 + (k2buf*dsqvol2)*CaBuffer2) / dsqvol2
+    ca3' = ((DCa*frat3)*ca2 - (DCa*frat3)*ca3 - (k1buf*dsqvol3)*ca3*Buffer3 + (k2buf*dsqvol3)*CaBuffer3) / dsqvol3
     
     Buffer0' =   (-(k1buf*dsqvol0)*ca0*Buffer0 + (k2buf*dsqvol0)*CaBuffer0) / dsqvol0
     CaBuffer0' = ((k1buf*dsqvol0)*ca0*Buffer0 - (k2buf*dsqvol0)*CaBuffer0) / dsqvol0
@@ -197,8 +206,8 @@ DERIVATIVE state {
     Buffer3' =   (-(k1buf*dsqvol3)*ca3*Buffer3 + (k2buf*dsqvol3)*CaBuffer3) / dsqvol3
     CaBuffer3' = ((k1buf*dsqvol3)*ca3*Buffer3 - (k2buf*dsqvol3)*CaBuffer3) / dsqvol3
     
-    pump' =    (-((1.e-11)*k1*area)*ca0*pump + (((1.e7)*k2*area)+((1.e7)*k3*area))*pumpca - ((1.e-11)*k4*area)*pump*cao) / (1e10)*area
-    pumpca' =  (((1.e-11)*k1*area)*ca0*pump - (((1.e7)*k2*area)+((1.e7)*k3*area))*pumpca + ((1.e-11)*k4*area)*pump*cao) / (1e10)*area
+    pump' =    (-((1.e-11)*k1*area)*ca0*pump + (((1.e7)*k2*area)+((1.e7)*k3*area))*pumpca - ((1.e-11)*k4*area)*pump*cao/volo) / (1e10)*area
+    pumpca' =  (((1.e-11)*k1*area)*ca0*pump - (((1.e7)*k2*area)+((1.e7)*k3*area))*pumpca + ((1.e-11)*k4*area)*pump*cao/volo) / (1e10)*area
     :cao' =     (((1.e7)*k3*area)*pumpca - ((1.e-11)*k4*area)*pump*cao) / (1e15)*volo
     f_flux =   ((1.e7)*k3*area)*pumpca
     b_flux =   ((1.e-11)*k4*area)*pump*cao

@@ -74,7 +74,7 @@ stim.delay = 4
 stim.dur = 6.0
 stim.amp = 0.005
 
-varlist = ['v', 'cai', 'cao', 'debugVal_cad']
+varlist = ['debugVal0_cad', 'debugVal1_cad', 'debugVal2_cad', 'debugVal3_cad']
 ds = create_dumps(comp, varlist)
 
 run(50, 0.001)
