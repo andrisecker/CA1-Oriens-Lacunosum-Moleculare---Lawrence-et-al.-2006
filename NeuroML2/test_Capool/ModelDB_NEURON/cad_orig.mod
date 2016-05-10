@@ -29,15 +29,19 @@ PARAMETER {
 	DFree = .6	(um2/ms)
 	diam		(um)
 	:cao		(mM)
-	ica		(mA/cm2)
+	ica		    (mA/cm2)
 	k1buf = 500	(/mM-ms)
 	k2buf = 0.5	(/ms)
-        k1=1.e10            (um3/s)
-        k2=50.e7            (/s)	: k1*50.e-3
-        k3=1.e10            (/s)	: k1
-        k4=5.e6	            (um3/s)	: k1*5.e-4
-	area		(um2)
-} 
+    :k1=1.e10    (um3/s)
+    :k2=50.e7    (/s)	: k1*50.e-3
+    :k3=1.e10    (/s)	: k1
+    :k4=5.e6	    (um3/s): k1*5.e-4
+    k1=1.e7    (um3/ms)
+    k2=50.e4    (/ms)	
+    k3=1.e7    (/ms)	
+    k4=5.e3	    (um3/ms)
+	area		 (um2)
+}    
 CONSTANT { volo=1  (liter)}
 
 ASSIGNED {
@@ -66,7 +70,7 @@ LOCAL coord_done, totpump, kd, totbuf
 
 :INITIAL {
     :totpump = 0.2
-    :pump=totpump/(1+1.e-18*k4*cao/k3)
+    :pump=totpump/(1+1e-18*cao*k4/k3)
     :pumpca=2.e-22
 	:ipump=0
 
@@ -113,7 +117,7 @@ INITIAL {
         }
 
     totpump = 0.2
-    pump=totpump/(1+1.e-18*k4*cao/k3)
+    pump=totpump/(1 + 1e-18*cao*k4/k3)
     pumpca=2.e-22
 	ipump=0
 }
@@ -158,8 +162,8 @@ KINETIC state {
 		dsqvol = dsq*vol[i]
 		~ ca[i] + Buffer[i] <-> CaBuffer[i] (k1buf*dsqvol,k2buf*dsqvol)
 	}
-        ~ca[0] + pump <-> pumpca ((1.e-11)*k1*area, (1.e7)*k2*area)
-        ~pumpca       <-> pump + cao ((1.e7)*k3*area, (1.e-11)*k4*area)
+        ~ca[0] + pump <-> pumpca ((1.e-8)*k1*area, (1.e10)*k2*area)
+        ~pumpca       <-> pump + cao ((1.e10)*k3*area, (1.e-8)*k4*area)
 
         ipump = 2*FARADAY*(f_flux-b_flux)/area
 

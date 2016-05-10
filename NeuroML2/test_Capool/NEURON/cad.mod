@@ -21,33 +21,35 @@ UNITS {
 }
 
 PARAMETER {
-    DCa = 0.6   (um2/ms)
-    k1buf = 500 (/mM-ms)
-    k2buf = 0.5 (/ms)
-    k1=1.e10    (um3/s)
-    k2=50.e7    (/s)	: k1*50.e-3
-    k3=1.e10    (/s)	: k1
-    k4=5.e6	    (um3/s)	: k1*5.e-4
-	area		(um2)
+    DCa = 0.6         (um2/ms)
+    k1buf = 500       (/mM-ms)
+    k2buf = 0.5       (/ms)
+    TotalBuffer = 1.2 (mM)
+    k1=1.e7           (um3/ms)
+    k2=50.e4          (/ms)	 : k1*50.e-3
+    k3=1.e7           (/ms)	 : k1
+    k4=5.e3	          (um3/ms): k1*5.e-4
+    TotalPump = 0.2   (mol/cm2)
+    PCa0 = 2.e-22     (mol/cm2)
+	area		      (um2)
 }
 
 ASSIGNED {
-    diam     (um)
-    ica      (mA/cm2)
-    cai      (mM)
-    cao      (mM)
+    diam       (um)
+    ica        (mA/cm2)
+    cai        (mM)
+    cao        (mM)
     vrat0
     vrat1
     vrat2
     vrat3
-    Kd       (/mM) :dissociation constant for the buffer
-    B0       (mM) :initial value of free buffer
-    ica_pump (mA/cm2)
+    Kd         (mM) :dissociation constant for the buffer
+    ica_pump   (mA/cm2)
     last_ipump (mA/cm2)
-    debugVal0 (mM)
-    debugVal1 (mM)
-    debugVal2 (mM)
-    debugVal3 (mM)
+    debugVal0  (mM)
+    debugVal1  (mM)
+    debugVal2  (mM)
+    debugVal3  (mM)
 }
 
 CONSTANT { volo=1  (liter)} : extracellular volume
@@ -84,7 +86,7 @@ BREAKPOINT {
 }
 
 
-LOCAL factors_done, TotalBuffer, TotalPump
+LOCAL factors_done
 
 INITIAL {
     : 1st step of initialization -> set up the geometry (by computing vrat[] and frat[])
@@ -95,11 +97,9 @@ INITIAL {
     
     : 2nd step of initialization -> initialize state variables
     Kd = k2buf/k1buf
-    TotalBuffer = 1.2
-    TotalPump = 0.2
 
-    pump = TotalPump / (1 + 1.e-18*k4*cao/k3)
-    pumpca = 2.e-22
+    pump = TotalPump :/ (1 + 1.e-18*k4/k3 * cao)
+    pumpca = PCa0
 
     ca0 = cai
     CaBuffer0 = (TotalBuffer*ca0) / (Kd + ca0)
@@ -113,10 +113,6 @@ INITIAL {
     ca3 = cai
     CaBuffer3 = (TotalBuffer*ca3) / (Kd + ca3)
     Buffer3 = TotalBuffer - CaBuffer3
-
-    VERBATIM
-    //printf("init cai:%g, 0:%g, 1:%g, 2:%g, 3:%g\n",(cai, ca0, ca1, ca2, ca3));
-    ENDVERBATIM
 
     ica_pump = 0
 
@@ -166,8 +162,8 @@ DERIVATIVE state {
     :COMPARTMENT (1e15)*volo     {cao}
 
     : pump
-    :~ca[0] + pump <-> pumpca     ((1.e-11)*k1*area, (1.e7)*k2*area)
-    :~pumpca       <-> pump + cao ((1.e7)*k3*area, (1.e-11)*k4*area)
+    :~ca[0] + pump <-> pumpca     ((1.e-8)*k1*area, (1.e10)*k2*area)
+    :~pumpca       <-> pump + cao ((1.e10)*k3*area, (1.e-8)*k4*area)
     :ica_pump = 2*FARADAY*(f_flux-b_flux) / area
 
     : all currents except pump
@@ -192,7 +188,7 @@ DERIVATIVE state {
     dsqvol2 = dsq*vrat2
     dsqvol3 = dsq*vrat3
 
-    ca0' = (- ((ica-last_ipump)*PI*diam) / (2*FARADAY)  - (DCa*frat1)*ca0 + (DCa*frat1)*ca1 - (k1buf*dsqvol0)*ca0*Buffer0 + (k2buf*dsqvol0)*CaBuffer0) - ((1.e-11)*k1*area)*ca0*pump + ((1.e7)*k2*area)*pumpca / dsqvol0
+    ca0' = (- ((ica-last_ipump)*PI*diam) / (2*FARADAY)  - (DCa*frat1)*ca0 + (DCa*frat1)*ca1 - (k1buf*dsqvol0)*ca0*Buffer0 + (k2buf*dsqvol0)*CaBuffer0) - ((1.e-8)*k1*area)*ca0*pump + ((1.e10)*k2*area)*pumpca / dsqvol0
     ca1' = ((DCa*frat1)*ca0 - ((DCa*frat1)+(DCa*frat2))*ca1 + (DCa*frat2)*ca2 - (k1buf*dsqvol1)*ca1*Buffer1 + (k2buf*dsqvol1)*CaBuffer1) / dsqvol1
     ca2' = ((DCa*frat2)*ca1 - ((DCa*frat2)+(DCa*frat3))*ca2 + (DCa*frat3)*ca3 - (k1buf*dsqvol2)*ca2*Buffer2 + (k2buf*dsqvol2)*CaBuffer2) / dsqvol2
     ca3' = ((DCa*frat3)*ca2 - (DCa*frat3)*ca3 - (k1buf*dsqvol3)*ca3*Buffer3 + (k2buf*dsqvol3)*CaBuffer3) / dsqvol3
@@ -206,11 +202,11 @@ DERIVATIVE state {
     Buffer3' =   (-(k1buf*dsqvol3)*ca3*Buffer3 + (k2buf*dsqvol3)*CaBuffer3) / dsqvol3
     CaBuffer3' = ((k1buf*dsqvol3)*ca3*Buffer3 - (k2buf*dsqvol3)*CaBuffer3) / dsqvol3
     
-    pump' =    (-((1.e-11)*k1*area)*ca0*pump + (((1.e7)*k2*area)+((1.e7)*k3*area))*pumpca - ((1.e-11)*k4*area)*pump*cao/volo) / (1e10)*area
-    pumpca' =  (((1.e-11)*k1*area)*ca0*pump - (((1.e7)*k2*area)+((1.e7)*k3*area))*pumpca + ((1.e-11)*k4*area)*pump*cao/volo) / (1e10)*area
+    pump' =    (-((1.e-11)*k1*area)*ca0*pump + (((1.e10)*k2*area)+((1.e10)*k3*area))*pumpca - ((1.e-8)*k4*area)*pump*cao/volo) / (1e10)*area
+    pumpca' =  (((1.e-11)*k1*area)*ca0*pump - (((1.e10)*k2*area)+((1.e10)*k3*area))*pumpca + ((1.e-8)*k4*area)*pump*cao/volo) / (1e10)*area
     :cao' =     (((1.e7)*k3*area)*pumpca - ((1.e-11)*k4*area)*pump*cao) / (1e15)*volo
-    f_flux =   ((1.e7)*k3*area)*pumpca
-    b_flux =   ((1.e-11)*k4*area)*pump*cao
+    f_flux =   ((1.e10)*k3*area)*pumpca
+    b_flux =   ((1.e-8)*k4*area)*pump*cao
     ica_pump = 2*FARADAY*(f_flux-b_flux) / area
 
     cai = ca0
