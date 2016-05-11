@@ -17,6 +17,7 @@ UNITS {
     (um) =     (micron)
     (mA) =     (milliamp)
     FARADAY =  (faraday) (10000 coulomb)
+    FARADAY_mol =  (faraday) (10000 coulomb/mol)
     PI = (pi)  (1)   
 }
 
@@ -52,7 +53,7 @@ ASSIGNED {
     debugVal3  (mM)
 }
 
-CONSTANT { volo=1  (liter)} : extracellular volume
+:CONSTANT { volo=1  (liter)} : extracellular volume
 
 STATE {
     ca0       (mM) <1e-10> :ca0 is equivalent to cai
@@ -77,7 +78,6 @@ BREAKPOINT {
     SOLVE state METHOD cnexp
 
     ica = ica_pump :ensure that the pump current is reckoned in NEURON's calculation of cai
-    last_ipump = ica_pump
     
     debugVal0 = ca0
     debugVal1 = ca1 
@@ -152,11 +152,6 @@ PROCEDURE factors() {
 }
 
 DERIVATIVE state {
-    : The STATEs ca[] are intensive variables (concentration, or mass/volume), [...] flux is the time derivative of an extensive variable.
-    : This disparity is corrected by specifying STATE volumes with the COMPARTMENT statement...
-    : The volume merely multiplies the dSTATE/dt left hand side of the equivalent differential equations,
-    : converting it to an extensive quantity and making it consistent with flux terms in units of absolute quantity per time.
-
     :COMPARTMENT i, diam*diam*vol[i] {ca CaBuffer Buffer}
     :COMPARTMENT (1e10)*area     {pump pumpca}
     :COMPARTMENT (1e15)*volo     {cao}
@@ -180,25 +175,25 @@ DERIVATIVE state {
 
 : =====================================================================================================
 
-    LOCAL dsq, parea, dsqvol0, dsqvol1, dsqvol2, dsqvol3, ca0_efl, ca0_dif, ca0_buf, ca0_pump, f_flux, b_flux
+    LOCAL dsq, dsqvol0, dsqvol1, dsqvol2, dsqvol3, ca0_efl, ca0_dif, ca0_buf, ca0_pump, f_flux, b_flux
 
-    dsq = diam*diam
-    parea = diam*PI*(1e10)
+    dsq     = diam*diam
     dsqvol0 = dsq*vrat0
     dsqvol1 = dsq*vrat1
     dsqvol2 = dsq*vrat2
     dsqvol3 = dsq*vrat3
 
-    ca0_efl  = - (ica-last_ipump)*PI*diam/1(um2)) / (2*FARADAY
+    ca0_efl  = - (ica-ica_pump)*PI*diam*1(um) / (2*FARADAY_mol)
     ca0_dif  = - (DCa*frat1/dsqvol0)*ca0 + (DCa*frat1/dsqvol0)*ca1
     ca0_buf  = - k1buf*ca0*Buffer0 + k2buf*CaBuffer0
-    ca0_pump = - ((1.e-8)*k1*area/parea/1(um2))*ca0*pump + ((1.e10)*k2*area/parea/1(um2))*pumpca
+    ca0_pump = - ((1.e-8)*k1*area)*ca0*pump/dsqvol0 + ((1.e10)*k2*area)*pumpca/dsqvol0
+    :printf("ica: %g, ica_pump: %g, efflux: %g \n",ica, ica_pump, ca0_efl)
 
-    ca0' = ca0_efl + ca0_dif + ca0_buf + ca0_pump 
-    ca1' = (DCa*frat1/dsqvol1)*ca0 - ((DCa*frat1/dsqvol1)+(DCa*frat2/dsqvol1))*ca1 + (DCa*frat2/dsqvol1)*ca2 - k1buf*ca1*Buffer1 + k2buf*CaBuffer1 
+    ca0' = ca0_efl + ca0_dif + ca0_buf + ca0_pump
+    ca1' = (DCa*frat1/dsqvol1)*ca0 - ((DCa*frat1/dsqvol1)+(DCa*frat2/dsqvol1))*ca1 + (DCa*frat2/dsqvol1)*ca2 - k1buf*ca1*Buffer1 + k2buf*CaBuffer1
     ca2' = (DCa*frat2/dsqvol2)*ca1 - ((DCa*frat2/dsqvol2)+(DCa*frat3/dsqvol2))*ca2 + (DCa*frat3/dsqvol2)*ca3 - k1buf*ca2*Buffer2 + k2buf*CaBuffer2
     ca3' = (DCa*frat3/dsqvol3)*ca2 - (DCa*frat3/dsqvol3)*ca3 - k1buf*ca3*Buffer3 + k2buf*CaBuffer3
-    
+
     Buffer0'   = -k1buf*ca0*Buffer0 + k2buf*CaBuffer0
     CaBuffer0' =  k1buf*ca0*Buffer0 - k2buf*CaBuffer0
     Buffer1'   = -k1buf*ca1*Buffer1 + k2buf*CaBuffer1
@@ -208,17 +203,16 @@ DERIVATIVE state {
     Buffer3'   = -k1buf*ca3*Buffer3 + k2buf*CaBuffer3
     CaBuffer3' =  k1buf*ca3*Buffer3 - k2buf*CaBuffer3
     
-    pump'   = -((1.e-8)*k1*area/parea/1(um))*ca0*pump + (((1.e10)*k2*area/parea/1(um))+((1.e10)*k3*area/parea/1(um)))*pumpca - ((1.e-8)*k4*area/parea/1(um))*pump*cao
-    pumpca' =  ((1.e-8)*k1*area/parea/1(um))*ca0*pump - (((1.e10)*k2*area/parea/1(um))+((1.e10)*k3*area/parea/1(um)))*pumpca + ((1.e-8)*k4*area/parea/1(um))*pump*cao
-
-    f_flux   = ((1.e10)*k3*area)*pumpca
-    b_flux   = ((1.e-8)*k4*area)*pump*cao
+    :pump'   = (-((1.e-8)*k1*area)*ca0*pump + (((1.e10)*k2*area)+((1.e10)*k3*area))*pumpca - ((1.e-8)*k4*area)*pump*cao/volo) / (1e10)*area
+    :pumpca' =  (((1.e-8)*k1*area)*ca0*pump - (((1.e10)*k2*area)+((1.e10)*k3*area))*pumpca + ((1.e-8)*k4*area)*pump*cao/volo) / (1e10)*area
+    pump'   = -(1.e-18)*k1*ca0*pump + (k2+k3)*pumpca - (1.e-18)*k4*pump*cao
+    pumpca' =  (1.e-18)*k1*ca0*pump - (k2+k3)*pumpca + (1.e-18)*k4*pump*cao
+    f_flux =   ((1.e10)*k3*area)*pumpca
+    b_flux =   ((1.e-8)*k4*area)*pump*cao
     ica_pump = 2*FARADAY*(f_flux-b_flux) / area
+    :printf("f_flux: %g, b_flux: %g \n", f_flux, b_flux)
 
     cai = ca0
-    
-    
-
 
 }
 

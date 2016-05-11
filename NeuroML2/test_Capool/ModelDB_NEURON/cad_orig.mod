@@ -85,7 +85,7 @@ LOCAL coord_done, totpump, kd, totbuf
 
 BREAKPOINT {
 	SOLVE state METHOD sparse
-	last_ipump=ipump
+	:last_ipump=ipump
 	ica = ipump
 
     debugVal0 = ca[0]
@@ -153,7 +153,8 @@ KINETIC state {
     COMPARTMENT (1.e10)*area {pump pumpca}
     COMPARTMENT volo {cao} :(1.e15)*volo {cao}
 
-	~ ca[0] << (-(ica-last_ipump)*PI*diam*frat[0]*1(um)/(2*FARADAY))
+	~ ca[0] << (-(ica-ipump)*PI*diam*frat[0]*1(um)/(2*FARADAY))
+    :printf("ica: %g, ipump: %g, efflux: %g \n",ica, ipump, - ((ica-ipump)*PI*diam*frat[0]*1(um)) / (2*FARADAY))
 	FROM i=0 TO NANN-2 {
 		~ ca[i] <-> ca[i+1] (DFree*frat[i+1]*1(um), DFree*frat[i+1]*1(um))
 	}
@@ -166,6 +167,7 @@ KINETIC state {
         ~pumpca       <-> pump + cao ((1.e10)*k3*area, (1.e-8)*k4*area)
 
         ipump = 2*FARADAY*(f_flux-b_flux)/area
+        :printf("f_flux: %g, b_flux: %g \n", f_flux, b_flux)
 
 	cai = ca[0]
 }
