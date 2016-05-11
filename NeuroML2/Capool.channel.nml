@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<neuroml xmlns="http://www.neuroml.org/schema/neuroml2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.neuroml.org/schema/neuroml2 https://raw.github.com/NeuroML/NeuroML2/development/Schemas/NeuroML2/NeuroML_v2beta4.xsd" id="Golgi_KC">
+
+    <notes> ChannelML file containing internal Ca++ dynamics from Lawrence et al 2006 </notes>
+
+    <!-- Intracellular Calcium dynamics -->
+    <LawrenceCaConcentrationModel id="epic_Capool" ion="ca"
+                                  initialConcentration="5e-6 mM" initialExtConcentration="2 mM"
+                                  diam="1um" DCa="0.6per_ms" TotalBuffer="1.2mM" k1buf="500per_ms" k2buf="0.5per_ms"/>
+    
+        <ComponentType name="LawrenceCaConcentrationModel"
+                       extends="concentrationModel"
+                       description="Model of Capool (bufering, diffusion, pumping) to desrcibe Lawrence 2006">
+            
+        <Parameter name="diam" dimension="length"/>     <!-- TODO: this should not be a parameter ... -->
+        <Parameter name="DCa" dimension="per_time"/>    <!-- correct dimension: um2_per_time, corrected at: ca[] ... -->
+        <Parameter name="TotalBuffer" dimension="concentration"/>
+        <Parameter name="k1buf" dimension="per_time"/>  <!-- correct dimension: per_mol_time, corrected at: Kd, ca[], buffer[], caBuffer[] ... -->
+        <Parameter name="k2buf" dimension="per_time"/>  
+
+        <Constant name="FARADAY_mol" dimension="charge_per_mole" value="10000C_per_mol"/> <!-- that's in the original code...-->
+        <Constant name="PI" dimension="none" value="3.14159265"/>
+        
+        <Constant name="AREA_SCALEum2" dimension="area" value="1um2"/>
+        <Constant name="AREA_SCALEcm2" dimension="area" value="1cm2"/>
+        <Constant name="CONC_SCALE" dimension="concentration" value="1mM"/>
+        
+        <!-- vrats- scale shell volume (if d = 1uM), shell volume: diam^2 * vrat[i] -->  
+        <Constant name="vrat0" dimension="none" value="0.23998277"/>
+        <Constant name="vrat1" dimension="none" value="0.34906585"/>
+        <Constant name="vrat2" dimension="none" value="0.17453293"/>
+        <Constant name="vrat3" dimension="none" value="0.02181662"/>
+        <!-- frats- scale rate constants (frat[i+1] = A[i+1]/dr : surface area between shells i, i+1 / distance between shell centers) -->
+        <Constant name="frat0" dimension="none" value="1"/>
+        <Constant name="frat1" dimension="none" value="15.70796327"/>
+        <Constant name="frat2" dimension="none" value="9.42477796"/>
+        <Constant name="frat3" dimension="none" value="3.14159265"/>
+
+        <Requirement name="iCa" dimension="current"/>
+        
+        <Exposure name="concentration" dimension="concentration"/>
+        <Exposure name="ca1" dimension="concentration"/>
+        <Exposure name="ca2" dimension="concentration"/>
+        <Exposure name="ca3" dimension="concentration"/>
+        <Exposure name="buffer0" dimension="concentration"/>
+        <Exposure name="buffer1" dimension="concentration"/>
+        <Exposure name="buffer2" dimension="concentration"/>
+        <Exposure name="buffer3" dimension="concentration"/>
+        <Exposure name="caBuffer0" dimension="concentration"/>
+        <Exposure name="caBuffer1" dimension="concentration"/>
+        <Exposure name="caBuffer2" dimension="concentration"/>
+        <Exposure name="caBuffer3" dimension="concentration"/>
+
+        <Text name="ion"/> <!-- TODO: check why this isn't inherited from concentrationModel -->
+
+        <Dynamics>
+
+            <StateVariable name="concentration" exposure="concentration" dimension="concentration"/>
+            <StateVariable name="ca1" exposure="ca1" dimension="concentration"/>
+            <StateVariable name="ca2" exposure="ca2" dimension="concentration"/>
+            <StateVariable name="ca3" exposure="ca3" dimension="concentration"/>
+            <StateVariable name="buffer0" exposure="buffer0" dimension="concentration"/>
+            <StateVariable name="buffer1" exposure="buffer1" dimension="concentration"/>
+            <StateVariable name="buffer2" exposure="buffer2" dimension="concentration"/>
+            <StateVariable name="buffer3" exposure="buffer3" dimension="concentration"/>
+            <StateVariable name="caBuffer0" exposure="caBuffer0" dimension="concentration"/>
+            <StateVariable name="caBuffer1" exposure="caBuffer1" dimension="concentration"/>
+            <StateVariable name="caBuffer2" exposure="caBuffer2" dimension="concentration"/>
+            <StateVariable name="caBuffer3" exposure="caBuffer3" dimension="concentration"/>
+            <StateVariable name="extConcentration" exposure="extConcentration" dimension="concentration"/>
+            
+            <DerivedVariable name="dsqvol0" dimension="area" value="diam*diam*vrat0"/>
+            <DerivedVariable name="dsqvol1" dimension="area" value="diam*diam*vrat1"/>
+            <DerivedVariable name="dsqvol2" dimension="area" value="diam*diam*vrat2"/>
+            <DerivedVariable name="dsqvol3" dimension="area" value="diam*diam*vrat3"/>
+            
+            <DerivedVariable name="Kd" dimension="concentration" value="k2buf/k1buf * CONC_SCALE"/>
+            
+            <TimeDerivative variable="concentration" value="- ((iCa*1000/AREA_SCALEcm2)*PI*diam/dsqvol0 / (2*FARADAY_mol)) - (DCa*AREA_SCALEum2*frat1/dsqvol0)*concentration*1000 + (DCa*AREA_SCALEum2*frat1/dsqvol0)*ca1*1000 - (k1buf/CONC_SCALE)*concentration*1000*buffer0*1000 + k2buf*caBuffer0*1000"/>
+            <TimeDerivative variable="ca1" value="(DCa*AREA_SCALEum2*frat1/dsqvol1)*concentration*1000 - ((DCa*AREA_SCALEum2*frat1/dsqvol1)+(DCa*AREA_SCALEum2*frat2/dsqvol1))*ca1*1000 + (DCa*AREA_SCALEum2*frat2/dsqvol1)*ca2*1000 - (k1buf/CONC_SCALE)*ca1*1000*buffer1*1000 + k2buf*caBuffer1*1000"/>
+            <TimeDerivative variable="ca2" value="(DCa*AREA_SCALEum2*frat2/dsqvol2)*ca1*1000 - ((DCa*AREA_SCALEum2*frat2/dsqvol2)+(DCa*AREA_SCALEum2*frat3/dsqvol2))*ca2*1000 + (DCa*AREA_SCALEum2*frat3/dsqvol2)*ca3*1000 - (k1buf/CONC_SCALE)*ca2*1000*buffer2*1000 + k2buf*caBuffer2*1000"/>
+            <TimeDerivative variable="ca3" value="(DCa*AREA_SCALEum2*frat3/dsqvol3)*ca2*1000 - (DCa*AREA_SCALEum2*frat3/dsqvol3)*ca3*1000 - (k1buf/CONC_SCALE)*ca3*1000*buffer3*1000 + k2buf*caBuffer3*1000"/>
+            <TimeDerivative variable="buffer0" value=" -(k1buf/CONC_SCALE)*concentration*1000*buffer0*1000 + k2buf*caBuffer0*1000"/>
+            <TimeDerivative variable="buffer1" value=" -(k1buf/CONC_SCALE)*ca1*1000*buffer1*1000 + k2buf*caBuffer1*1000"/>
+            <TimeDerivative variable="buffer2" value=" -(k1buf/CONC_SCALE)*ca2*1000*buffer2*1000 + k2buf*caBuffer2*1000"/>
+            <TimeDerivative variable="buffer3" value=" -(k1buf/CONC_SCALE)*ca3*1000*buffer3*1000 + k2buf*caBuffer3*1000"/>
+            <TimeDerivative variable="caBuffer0" value="(k1buf/CONC_SCALE)*concentration*1000*buffer0*1000 - k2buf*caBuffer0*1000"/>
+            <TimeDerivative variable="caBuffer1" value="(k1buf/CONC_SCALE)*ca1*1000*buffer1*1000 - k2buf*caBuffer1*1000"/>
+            <TimeDerivative variable="caBuffer2" value="(k1buf/CONC_SCALE)*ca2*1000*buffer2*1000 - k2buf*caBuffer2*1000"/>
+            <TimeDerivative variable="caBuffer3" value="(k1buf/CONC_SCALE)*ca3*1000*buffer3*1000 - k2buf*caBuffer3*1000"/>
+
+            <OnStart>
+                <StateAssignment variable="concentration" value="10"/>
+                <StateAssignment variable="ca1" value="10"/>
+                <StateAssignment variable="ca2" value="10"/>
+                <StateAssignment variable="ca3" value="10"/>
+                <StateAssignment variable="caBuffer0" value="TotalBuffer * concentration / (Kd + concentration)"/>
+                <StateAssignment variable="caBuffer1" value="TotalBuffer * ca1 / (Kd + ca1)"/>
+                <StateAssignment variable="caBuffer2" value="TotalBuffer * ca2 / (Kd + ca2)"/>
+                <StateAssignment variable="caBuffer3" value="TotalBuffer * ca3 / (Kd + ca3)"/>
+                <StateAssignment variable="buffer0" value="TotalBuffer - caBuffer0"/>
+                <StateAssignment variable="buffer1" value="TotalBuffer - caBuffer1"/>
+                <StateAssignment variable="buffer2" value="TotalBuffer - caBuffer2"/>
+                <StateAssignment variable="buffer3" value="TotalBuffer - caBuffer3"/>
+                <StateAssignment variable="extConcentration" value="20"/>
+            </OnStart>
+            
+
+            <OnCondition test="concentration .lt. 0">
+                <StateAssignment variable="concentration" value="0"/>
+            </OnCondition>
+
+        </Dynamics>
+
+    </ComponentType>
+    
+</neuroml>
