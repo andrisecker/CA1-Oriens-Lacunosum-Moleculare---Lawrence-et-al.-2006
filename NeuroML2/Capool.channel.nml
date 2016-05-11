@@ -5,7 +5,6 @@
 
     <!-- Intracellular Calcium dynamics -->
     <LawrenceCaConcentrationModel id="epic_Capool" ion="ca"
-                                  initialConcentration="5e-6 mM" initialExtConcentration="2 mM"
                                   diam="1um" DCa="0.6per_ms" TotalBuffer="1.2mM" k1buf="500per_ms" k2buf="0.5per_ms"/>
     
         <ComponentType name="LawrenceCaConcentrationModel"
@@ -76,24 +75,29 @@
             
             <DerivedVariable name="Kd" dimension="concentration" value="k2buf/k1buf * CONC_SCALE"/>
             
-            <TimeDerivative variable="concentration" value="- ((iCa*1000/AREA_SCALEcm2)*PI*diam/dsqvol0 / (2*FARADAY_mol)) - (DCa*AREA_SCALEum2*frat1/dsqvol0)*concentration*1000 + (DCa*AREA_SCALEum2*frat1/dsqvol0)*ca1*1000 - (k1buf/CONC_SCALE)*concentration*1000*buffer0*1000 + k2buf*caBuffer0*1000"/>
-            <TimeDerivative variable="ca1" value="(DCa*AREA_SCALEum2*frat1/dsqvol1)*concentration*1000 - ((DCa*AREA_SCALEum2*frat1/dsqvol1)+(DCa*AREA_SCALEum2*frat2/dsqvol1))*ca1*1000 + (DCa*AREA_SCALEum2*frat2/dsqvol1)*ca2*1000 - (k1buf/CONC_SCALE)*ca1*1000*buffer1*1000 + k2buf*caBuffer1*1000"/>
-            <TimeDerivative variable="ca2" value="(DCa*AREA_SCALEum2*frat2/dsqvol2)*ca1*1000 - ((DCa*AREA_SCALEum2*frat2/dsqvol2)+(DCa*AREA_SCALEum2*frat3/dsqvol2))*ca2*1000 + (DCa*AREA_SCALEum2*frat3/dsqvol2)*ca3*1000 - (k1buf/CONC_SCALE)*ca2*1000*buffer2*1000 + k2buf*caBuffer2*1000"/>
-            <TimeDerivative variable="ca3" value="(DCa*AREA_SCALEum2*frat3/dsqvol3)*ca2*1000 - (DCa*AREA_SCALEum2*frat3/dsqvol3)*ca3*1000 - (k1buf/CONC_SCALE)*ca3*1000*buffer3*1000 + k2buf*caBuffer3*1000"/>
-            <TimeDerivative variable="buffer0" value=" -(k1buf/CONC_SCALE)*concentration*1000*buffer0*1000 + k2buf*caBuffer0*1000"/>
-            <TimeDerivative variable="buffer1" value=" -(k1buf/CONC_SCALE)*ca1*1000*buffer1*1000 + k2buf*caBuffer1*1000"/>
-            <TimeDerivative variable="buffer2" value=" -(k1buf/CONC_SCALE)*ca2*1000*buffer2*1000 + k2buf*caBuffer2*1000"/>
-            <TimeDerivative variable="buffer3" value=" -(k1buf/CONC_SCALE)*ca3*1000*buffer3*1000 + k2buf*caBuffer3*1000"/>
-            <TimeDerivative variable="caBuffer0" value="(k1buf/CONC_SCALE)*concentration*1000*buffer0*1000 - k2buf*caBuffer0*1000"/>
-            <TimeDerivative variable="caBuffer1" value="(k1buf/CONC_SCALE)*ca1*1000*buffer1*1000 - k2buf*caBuffer1*1000"/>
-            <TimeDerivative variable="caBuffer2" value="(k1buf/CONC_SCALE)*ca2*1000*buffer2*1000 - k2buf*caBuffer2*1000"/>
-            <TimeDerivative variable="caBuffer3" value="(k1buf/CONC_SCALE)*ca3*1000*buffer3*1000 - k2buf*caBuffer3*1000"/>
+            <!-- - ((iCa*1000/AREA_SCALEcm2)*PI*diam/dsqvol0 / (2*FARADAY_mol)) -(DCa*AREA_SCALEum2*frat1/dsqvol0)*concentration*1000 + (DCa*AREA_SCALEum2*frat1/dsqvol0)*ca1*1000 -->
+            <!-- (DCa*AREA_SCALEum2*frat1/dsqvol1)*concentration*1000 - ((DCa*AREA_SCALEum2*frat1/dsqvol1)+(DCa*AREA_SCALEum2*frat2/dsqvol1))*ca1*1000 + (DCa*AREA_SCALEum2*frat2/dsqvol1)*ca2*1000-->
+            <!-- (DCa*AREA_SCALEum2*frat2/dsqvol2)*ca1*1000 - ((DCa*AREA_SCALEum2*frat2/dsqvol2)+(DCa*AREA_SCALEum2*frat3/dsqvol2))*ca2*1000 + (DCa*AREA_SCALEum2*frat3/dsqvol2)*ca3*1000-->
+            <!-- (DCa*AREA_SCALEum2*frat3/dsqvol3)*ca2*1000 - (DCa*AREA_SCALEum2*frat3/dsqvol3)*ca3*1000 -->
+            
+            <TimeDerivative variable="concentration" value=" - (k1buf)*concentration*buffer0/CONC_SCALE + k2buf*caBuffer0"/>
+            <TimeDerivative variable="ca1" value=" - (k1buf/CONC_SCALE)*ca1*buffer1 + k2buf*caBuffer1"/>
+            <TimeDerivative variable="ca2" value=" - (k1buf/CONC_SCALE)*ca2*buffer2 + k2buf*caBuffer2"/>
+            <TimeDerivative variable="ca3" value=" - (k1buf/CONC_SCALE)*ca3*buffer3 + k2buf*caBuffer3"/>
+            <TimeDerivative variable="buffer0" value=" -(k1buf/CONC_SCALE)*concentration*buffer0 + k2buf*caBuffer0"/>
+            <TimeDerivative variable="buffer1" value=" -(k1buf/CONC_SCALE)*ca1*buffer1* + k2buf*caBuffer1"/>
+            <TimeDerivative variable="buffer2" value=" -(k1buf/CONC_SCALE)*ca2*buffer2 + k2buf*caBuffer2"/>
+            <TimeDerivative variable="buffer3" value=" -(k1buf/CONC_SCALE)*ca3*buffer3 + k2buf*caBuffer3"/>
+            <TimeDerivative variable="caBuffer0" value="(k1buf/CONC_SCALE)*concentration*buffer0 - k2buf*caBuffer0"/>
+            <TimeDerivative variable="caBuffer1" value="(k1buf/CONC_SCALE)*ca1*buffer1 - k2buf*caBuffer1"/>
+            <TimeDerivative variable="caBuffer2" value="(k1buf/CONC_SCALE)*ca2*buffer2 - k2buf*caBuffer2"/>
+            <TimeDerivative variable="caBuffer3" value="(k1buf/CONC_SCALE)*ca3*buffer3 - k2buf*caBuffer3"/>
 
             <OnStart>
-                <StateAssignment variable="concentration" value="10"/>
-                <StateAssignment variable="ca1" value="10"/>
-                <StateAssignment variable="ca2" value="10"/>
-                <StateAssignment variable="ca3" value="10"/>
+                <StateAssignment variable="concentration" value="initialConcentration"/>
+                <StateAssignment variable="ca1" value="initialConcentration"/>
+                <StateAssignment variable="ca2" value="initialConcentration"/>
+                <StateAssignment variable="ca3" value="initialConcentration"/>
                 <StateAssignment variable="caBuffer0" value="TotalBuffer * concentration / (Kd + concentration)"/>
                 <StateAssignment variable="caBuffer1" value="TotalBuffer * ca1 / (Kd + ca1)"/>
                 <StateAssignment variable="caBuffer2" value="TotalBuffer * ca2 / (Kd + ca2)"/>
@@ -102,7 +106,7 @@
                 <StateAssignment variable="buffer1" value="TotalBuffer - caBuffer1"/>
                 <StateAssignment variable="buffer2" value="TotalBuffer - caBuffer2"/>
                 <StateAssignment variable="buffer3" value="TotalBuffer - caBuffer3"/>
-                <StateAssignment variable="extConcentration" value="20"/>
+                <StateAssignment variable="extConcentration" value="initialExtConcentration"/>
             </OnStart>
             
 
