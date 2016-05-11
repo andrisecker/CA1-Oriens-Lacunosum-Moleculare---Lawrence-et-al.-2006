@@ -183,7 +183,7 @@ DERIVATIVE state {
     dsqvol2 = dsq*vrat2
     dsqvol3 = dsq*vrat3
 
-    ca0_efl  = - (ica-ica_pump)*PI*diam*1(um) / (2*FARADAY_mol)
+    ca0_efl  = - (ica-ica_pump)*PI*diam/dsqvol0 / (2*FARADAY_mol)
     ca0_dif  = - (DCa*frat1/dsqvol0)*ca0 + (DCa*frat1/dsqvol0)*ca1
     ca0_buf  = - k1buf*ca0*Buffer0 + k2buf*CaBuffer0
     ca0_pump = - ((1.e-8)*k1*area)*ca0*pump/dsqvol0 + ((1.e10)*k2*area)*pumpca/dsqvol0
