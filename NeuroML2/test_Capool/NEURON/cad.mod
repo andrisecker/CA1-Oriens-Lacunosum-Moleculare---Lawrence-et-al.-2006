@@ -15,9 +15,7 @@ UNITS {
     (molar) =  (1/liter)
     (mM) =     (millimolar)
     (um) =     (micron)
-    (mA) =     (milliamp)
-    FARADAY =  (faraday) (10000 coulomb)
-    FARADAY_mol =  (faraday) (10000 coulomb/mol)
+    FARADAY =  (faraday) (10000 coulomb/mol)
     PI = (pi)  (1)   
 }
 
@@ -183,7 +181,7 @@ DERIVATIVE state {
     dsqvol2 = dsq*vrat2
     dsqvol3 = dsq*vrat3
 
-    ca0_efl  = - (ica-ica_pump)*PI*diam/dsqvol0 / (2*FARADAY_mol)
+    ca0_efl  = - (ica-ica_pump)*PI*diam/dsqvol0 / (2*FARADAY)
     ca0_dif  = - (DCa*frat1/dsqvol0)*ca0 + (DCa*frat1/dsqvol0)*ca1
     ca0_buf  = - k1buf*ca0*Buffer0 + k2buf*CaBuffer0
     ca0_pump = - ((1.e-8)*k1*area)*ca0*pump/dsqvol0 + ((1.e10)*k2*area)*pumpca/dsqvol0
@@ -207,10 +205,10 @@ DERIVATIVE state {
     :pumpca' =  (((1.e-8)*k1*area)*ca0*pump - (((1.e10)*k2*area)+((1.e10)*k3*area))*pumpca + ((1.e-8)*k4*area)*pump*cao/volo) / (1e10)*area
     pump'   = -(1.e-18)*k1*ca0*pump + (k2+k3)*pumpca - (1.e-18)*k4*pump*cao
     pumpca' =  (1.e-18)*k1*ca0*pump - (k2+k3)*pumpca + (1.e-18)*k4*pump*cao
-    f_flux =   ((1.e10)*k3*area)*pumpca
-    b_flux =   ((1.e-8)*k4*area)*pump*cao
+    :f_flux =   ((1.e10)*k3*area)*pumpca
+    :b_flux =   ((1.e-8)*k4*area)*pump*cao
     ica_pump = 2*FARADAY*(f_flux-b_flux) / area
-    :printf("f_flux: %g, b_flux: %g \n", f_flux, b_flux)
+    printf("f_flux: %g, b_flux: %g \n", f_flux, b_flux)
 
     cai = ca0
 
