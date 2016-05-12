@@ -5,8 +5,8 @@
 
     <!-- Intracellular Calcium dynamics -->
     <LawrenceCaConcentrationModel id="epic_Capool" ion="ca"
-                                  diam="1um" L="1um" DCa="0.6per_ms" TotalBuffer="1.2mM" k1buf="500per_ms" k2buf="0.5per_ms"
-                                  TotalPump="0.2mol_per_cm2" PCa0="2e-22mol_per_cm2" k1="1e7per_ms" k2="50e4per_ms" k3="1e7per_ms" k4="5e3per_ms"/>
+                                  diam="1um" L="1um" DCa="0.6per_ms" TotalBuffer="1.2mM" k1buf="500per_ms" k2buf="0.5per_ms"/>
+                                  <!--TotalPump="0.2mol_per_cm2" PCa0="2e-22mol_per_cm2" k1="1e7per_ms" k2="50e4per_ms" k3="1e7per_ms" k4="5e3per_ms"/>-->
     
         <ComponentType name="LawrenceCaConcentrationModel"
                        extends="concentrationModel"
@@ -18,13 +18,14 @@
         <Parameter name="TotalBuffer" dimension="concentration"/>
         <Parameter name="k1buf" dimension="per_time"/>  <!-- correct dimension: per_M_time, corrected at: Kd, ca[], buffer[], caBuffer[] ... -->
         <Parameter name="k2buf" dimension="per_time"/>
+        <!--
         <Parameter name="TotalPump" dimension="substancedensity"/>
         <Parameter name="PCa0" dimension="substancedensity"/>
-        <Parameter name="k1" dimension="per_time"/>     <!-- correct dimension: per_M_time corrected at: ca[] ... -->
+        <Parameter name="k1" dimension="per_time"/>     correct dimension: per_M_time corrected at: ca[] ...
         <Parameter name="k2" dimension="per_time"/>
         <Parameter name="k3" dimension="per_time"/>
         <Parameter name="k4" dimension="per_time"/>
-        
+        -->
         <Constant name="FARADAY" dimension="charge_per_mole" value="10000C_per_mol"/> <!-- that's in the original code...-->
         <Constant name="PI" dimension="none" value="3.14159265"/>
         
@@ -60,12 +61,14 @@
         <Exposure name="caBuffer1" dimension="concentration"/>
         <Exposure name="caBuffer2" dimension="concentration"/>
         <Exposure name="caBuffer3" dimension="concentration"/>
+        <!--
         <Exposure name="pump" dimension="substancedensity"/>
         <Exposure name="pumpca" dimension="substancedensity"/>
-        
+         
         <Exposure name="f_flux" dimension="substance_per_time"/>
         <Exposure name="b_flux" dimension="substance_per_time"/>
-
+        -->
+            
         <Text name="ion"/> <!-- TODO: check why this isn't inherited from concentrationModel -->
 
         <Dynamics>
@@ -82,8 +85,10 @@
             <StateVariable name="caBuffer1" exposure="caBuffer1" dimension="concentration"/>
             <StateVariable name="caBuffer2" exposure="caBuffer2" dimension="concentration"/>
             <StateVariable name="caBuffer3" exposure="caBuffer3" dimension="concentration"/>
+            <!--
             <StateVariable name="pump" exposure="pump" dimension="substancedensity"/>
             <StateVariable name="pumpca" exposure="pumpca" dimension="substancedensity"/>
+            -->
             <StateVariable name="extConcentration" exposure="extConcentration" dimension="concentration"/>
             
             <DerivedVariable name="dsqvol0" dimension="area" value="diam*diam*vrat0"/>
@@ -92,11 +97,7 @@
             <DerivedVariable name="dsqvol3" dimension="area" value="diam*diam*vrat3"/>
             
             <DerivedVariable name="Kd" dimension="concentration" value="k2buf/k1buf * CONC_SCALE"/>
-            
-            <DerivedVariable name="f_flux" dimension="substance_per_time" value="((1e10*k3)*surfaceArea)*pumpca" exposure="f_flux"/>
-            <DerivedVariable name="b_flux" dimension="substance_per_time" value="((1e-8*k4/CONC_SCALEuM)*surfaceArea)*pump*extConcentration" exposure="b_flux"/>
-            <DerivedVariable name="ica_pump" dimension="currentDensity" value="2*FARADAY*(f_flux-b_flux) / surfaceArea"/>
-                    
+                  
             <TimeDerivative variable="concentration" value="-((iCa/AREA_SCALEcm2)*PI*diam/dsqvol0 / (2*FARADAY)) -(DCa*AREA_SCALEum2*frat1/dsqvol0)*concentration + (DCa*AREA_SCALEum2*frat1/dsqvol0)*ca1 - (k1buf/CONC_SCALE)*concentration*buffer0 + k2buf*caBuffer0"/> <!-- - (1e-8*k1/CONC_SCALEuM)*surfaceArea*concentration*pump/(dsqvol0*LENGTH_SCALE) + (1e10*k2)*surfaceArea*pumpca/(dsqvol0*LENGTH_SCALE)"/> -->
             <TimeDerivative variable="ca1" value="(DCa*AREA_SCALEum2*frat1/dsqvol1)*concentration - ((DCa*AREA_SCALEum2*frat1/dsqvol1)+(DCa*AREA_SCALEum2*frat2/dsqvol1))*ca1 + (DCa*AREA_SCALEum2*frat2/dsqvol1)*ca2- (k1buf/CONC_SCALE)*ca1*buffer1 + k2buf*caBuffer1"/>
             <TimeDerivative variable="ca2" value="(DCa*AREA_SCALEum2*frat2/dsqvol2)*ca1 - ((DCa*AREA_SCALEum2*frat2/dsqvol2)+(DCa*AREA_SCALEum2*frat3/dsqvol2))*ca2 + (DCa*AREA_SCALEum2*frat3/dsqvol2)*ca3 - (k1buf/CONC_SCALE)*ca2*buffer2 + k2buf*caBuffer2"/>
@@ -109,9 +110,17 @@
             <TimeDerivative variable="caBuffer1" value="(k1buf/CONC_SCALE)*ca1*buffer1 - k2buf*caBuffer1"/>
             <TimeDerivative variable="caBuffer2" value="(k1buf/CONC_SCALE)*ca2*buffer2 - k2buf*caBuffer2"/>
             <TimeDerivative variable="caBuffer3" value="(k1buf/CONC_SCALE)*ca3*buffer3 - k2buf*caBuffer3"/>
+            <!--
             <TimeDerivative variable="pump" value=" -(1e-18*k1/CONC_SCALEuM)*concentration*pump + (k2+k3)*pumpca - (1e-18*k4/CONC_SCALEuM)*pump*extConcentration"/>
             <TimeDerivative variable="pumpca" value="(1e-18*k1/CONC_SCALEuM)*concentration*pump - (k2+k3)*pumpca + (1e-18*k4/CONC_SCALEuM)*pump*extConcentration"/>
-
+            -->
+            
+            <!--
+            <DerivedVariable name="f_flux" dimension="substance_per_time" value="((1e10*k3)*surfaceArea)*pumpca" exposure="f_flux"/>
+            <DerivedVariable name="b_flux" dimension="substance_per_time" value="((1e-8*k4/CONC_SCALEuM)*surfaceArea)*pump*extConcentration" exposure="b_flux"/>
+            <DerivedVariable name="ica_pump" dimension="currentDensity" value="2*FARADAY*(f_flux-b_flux) / surfaceArea"/>
+            --> 
+            
             <DerivedVariable name="iCa" diemension="current" value="iCa" exposrure="iCa"/>
             
             <OnStart>
@@ -127,8 +136,10 @@
                 <StateAssignment variable="buffer1" value="TotalBuffer - caBuffer1"/>
                 <StateAssignment variable="buffer2" value="TotalBuffer - caBuffer2"/>
                 <StateAssignment variable="buffer3" value="TotalBuffer - caBuffer3"/>
+                <!--
                 <StateAssignment variable="pump" value="TotalPump / (1 + 1e-18*initialExtConcentration/CONC_SCALE * k4/k3)"/>
                 <StateAssignment variable="pumpca" value="PCa0"/>
+                -->
                 <StateAssignment variable="extConcentration" value="initialExtConcentration"/>
             </OnStart>
             
