@@ -41,7 +41,8 @@
 
             <intracellularProperties>
                 
-                <species id="ca" ion="ca" concentrationModel="epic_Capool"/>
+                <species id="ca" ion="ca" concentrationModel="epic_Capool"
+                         initialConcentration="5e-6 mM" initialExtConcentration="2 mM"/>
 
                 <resistivity value="0.1 kohm_cm"/>
 

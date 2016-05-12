@@ -37,12 +37,12 @@
       </Display>
       
       <!--
-      <Display id="d5" title="f_flux (mol/cm2)?" timeScale="1ms" xmin="0" xmax="50" ymin="0" ymax="1">
-        <Line id="f_flux" quantity="pop/0/olm1/biophysicalProperties/intracellularProperties/ca/epic_Capool/f_flux" scale="1 mol_per_ms"  color="#0ff0ff" timeScale="1ms"/>
+      <Display id="d5" title="pump (mol/cm2)" timeScale="1ms" xmin="0" xmax="50" ymin="0" ymax="1">
+        <Line id="pump" quantity="pop/0/olm1/biophysicalProperties/intracellularProperties/ca/epic_Capool/pump" scale="1 mol_per_cm2"  color="#0ff0ff" timeScale="1ms"/>
       </Display>
       
-      <Display id="d6" title="b_flux (mol/cm2)?" timeScale="1ms" xmin="0" xmax="50" ymin="0" ymax="1">
-        <Line id="b_flux" quantity="pop/0/olm1/biophysicalProperties/intracellularProperties/ca/epic_Capool/b_flux" scale="1 mol_per_ms"  color="#fff0ff" timeScale="1ms"/>
+      <Display id="d6" title="pumpca (mol/cm2)" timeScale="1ms" xmin="0" xmax="50" ymin="0" ymax="1">
+        <Line id="pumpca" quantity="pop/0/olm1/biophysicalProperties/intracellularProperties/ca/epic_Capool/pumpca" scale="1 mol_per_cm2"  color="#fff0ff" timeScale="1ms"/>
       </Display>
       -->
 
