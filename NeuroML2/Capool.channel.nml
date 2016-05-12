@@ -10,7 +10,7 @@
     
         <ComponentType name="LawrenceCaConcentrationModel"
                        extends="concentrationModel"
-                       description="Model of Capool (bufering, diffusion, pumping) to desrcibe Lawrence 2006">
+                       description="Model of Capool (bufering, diffusion-between shells, pumping) to desrcibe Lawrence 2006">
             
         <Parameter name="diam" dimension="length"/>     <!-- TODO: this should not be a parameter ... -->
         <Parameter name="L" dimension="length"/>        <!-- TODO: this should not be a parameter ... -->
@@ -28,10 +28,11 @@
         <Constant name="FARADAY" dimension="charge_per_mole" value="10000C_per_mol"/> <!-- that's in the original code...-->
         <Constant name="PI" dimension="none" value="3.14159265"/>
         
+        <Constant name="LENGTH_SCALE" dimension="length" value="1um"/>        
         <Constant name="AREA_SCALEum2" dimension="area" value="1um2"/>
         <Constant name="AREA_SCALEcm2" dimension="area" value="1cm2"/>
         <Constant name="CONC_SCALE" dimension="concentration" value="1mM"/>
-        <Constant name="CONC_SCALEuM" dimension="concentration" value="1uM"/>
+        <Constant name="CONC_SCALEuM" dimension="concentration" value="1mol_per_um3"/>
         
         <!-- vrats- scale shell volume (if d = 1uM), shell volume: diam^2 * vrat[i] -->  
         <Constant name="vrat0" dimension="none" value="0.23998277"/>
@@ -45,6 +46,7 @@
         <Constant name="frat3" dimension="none" value="3.14159265"/>
 
         <Requirement name="iCa" dimension="current"/>
+        <Requirement name="surfaceArea" dimension="area"/>
         
         <Exposure name="concentration" dimension="concentration"/>
         <Exposure name="ca1" dimension="concentration"/>
@@ -88,13 +90,12 @@
             
             <DerivedVariable name="Kd" dimension="concentration" value="k2buf/k1buf * CONC_SCALE"/>
             
-            <DerivedVariable name="surfaceArea" dimension="area" value="diam*PI*L"/>
-            <DerivedVariable name="f_flux" dimension="mol_per_time" value="((1e10*k3)*surfaceArea)*pumpca"/>
-            <DerivedVariable name="b_flux" dimension="mol_per_time" value="((1e-8*k4/CONC_SCALEuM)*surfaceArea)*pump*extConcentration"/>
+            <DerivedVariable name="f_flux" dimension="substance_per_time" value="((1e10*k3)*surfaceArea)*pumpca"/>
+            <DerivedVariable name="b_flux" dimension="substance_per_time" value="((1e-8*k4/CONC_SCALEuM)*surfaceArea)*pump*extConcentration"/>
             <DerivedVariable name="ica_pump" dimension="currentDensity" value="2*FARADAY*(f_flux-b_flux) / surfaceArea"/>
                     
-            <TimeDerivative variable="concentration" value="((iCa/AREA_SCALEcm2)*PI*diam/dsqvol0 / (2*FARADAY)) -(DCa*AREA_SCALEum2*frat1/dsqvol0)*concentration + (DCa*AREA_SCALEum2*frat1/dsqvol0)*ca1 - (k1buf/CONC_SCALE)*concentration*buffer0 + k2buf*caBuffer0 - ((1e-8)*k1/CONC_SCALEuM)*surfaceArea*concentration*pump/(dsqvol0*L) + ((1e10)*k2)*surfaceArea*pumpca/(dsqvol0*L)"/>
-            <TimeDerivative variable="ca1" value=" (DCa*AREA_SCALEum2*frat1/dsqvol1)*concentration - ((DCa*AREA_SCALEum2*frat1/dsqvol1)+(DCa*AREA_SCALEum2*frat2/dsqvol1))*ca1 + (DCa*AREA_SCALEum2*frat2/dsqvol1)*ca2- (k1buf/CONC_SCALE)*ca1*buffer1 + k2buf*caBuffer1"/>
+            <TimeDerivative variable="concentration" value="-((iCa/AREA_SCALEcm2)*PI*diam/dsqvol0 / (2*FARADAY)) -(DCa*AREA_SCALEum2*frat1/dsqvol0)*concentration + (DCa*AREA_SCALEum2*frat1/dsqvol0)*ca1 - (k1buf/CONC_SCALE)*concentration*buffer0 + k2buf*caBuffer0"/> <!-- - (1e-8*k1/CONC_SCALEuM)*surfaceArea*concentration*pump/(dsqvol0*LENGTH_SCALE) + (1e10*k2)*surfaceArea*pumpca/(dsqvol0*LENGTH_SCALE)"/> -->
+            <TimeDerivative variable="ca1" value="(DCa*AREA_SCALEum2*frat1/dsqvol1)*concentration - ((DCa*AREA_SCALEum2*frat1/dsqvol1)+(DCa*AREA_SCALEum2*frat2/dsqvol1))*ca1 + (DCa*AREA_SCALEum2*frat2/dsqvol1)*ca2- (k1buf/CONC_SCALE)*ca1*buffer1 + k2buf*caBuffer1"/>
             <TimeDerivative variable="ca2" value="(DCa*AREA_SCALEum2*frat2/dsqvol2)*ca1 - ((DCa*AREA_SCALEum2*frat2/dsqvol2)+(DCa*AREA_SCALEum2*frat3/dsqvol2))*ca2 + (DCa*AREA_SCALEum2*frat3/dsqvol2)*ca3 - (k1buf/CONC_SCALE)*ca2*buffer2 + k2buf*caBuffer2"/>
             <TimeDerivative variable="ca3" value="(DCa*AREA_SCALEum2*frat3/dsqvol3)*ca2 - (DCa*AREA_SCALEum2*frat3/dsqvol3)*ca3 - (k1buf/CONC_SCALE)*ca3*buffer3 + k2buf*caBuffer3"/>
             <TimeDerivative variable="buffer0" value=" -(k1buf/CONC_SCALE)*concentration*buffer0 + k2buf*caBuffer0"/>
@@ -108,7 +109,7 @@
             <TimeDerivative variable="pump" value=" -(1e-18*k1/CONC_SCALEuM)*concentration*pump + (k2+k3)*pumpca - (1e-18*k4/CONC_SCALEuM)*pump*extConcentration"/>
             <TimeDerivative variable="pumpca" value="(1e-18*k1/CONC_SCALEuM)*concentration*pump - (k2+k3)*pumpca + (1e-18*k4/CONC_SCALEuM)*pump*extConcentration"/>
 
-            <!-- TODO: iCa = ica_pump ...-->
+            <DerivedVariable name="iCa" diemension="current" value="iCa" exposrure="iCa"/>
             
             <OnStart>
                 <StateAssignment variable="concentration" value="initialConcentration"/>
