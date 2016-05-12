@@ -121,7 +121,7 @@
             <DerivedVariable name="ica_pump" dimension="currentDensity" value="2*FARADAY*(f_flux-b_flux) / surfaceArea"/>
             --> 
             
-            <DerivedVariable name="iCa" diemension="current" value="iCa" exposrure="iCa"/>
+            <!--<DerivedVariable name="iCa" diemension="current" value="iCa" exposrure="iCa"/>-->
             
             <OnStart>
                 <StateAssignment variable="concentration" value="initialConcentration"/>
