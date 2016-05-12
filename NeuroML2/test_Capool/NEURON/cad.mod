@@ -2,7 +2,7 @@
 NEURON {
     SUFFIX cad
     USEION ca READ cai, cao, ica WRITE cai, ica
-    RANGE ica_pump, debugVal0, debugVal1, debugVal2, debugVal3
+    RANGE ica_pump
     GLOBAL vrat0, vrat1, vrat2, vrat3
     :read cai- to init buffer, reads ica- which is the Ca++ influx into outermost shell, reads cao- which is used in pump reaction scheme
     :and writes cai- because it computes Ca++ in the outermost shell, ica- writes pump current here
@@ -45,10 +45,6 @@ ASSIGNED {
     Kd         (mM) :dissociation constant for the buffer
     ica_pump   (mA/cm2)
     last_ipump (mA/cm2)
-    debugVal0  (mM)
-    debugVal1  (mM)
-    debugVal2  (mM)
-    debugVal3  (mM)
 }
 
 :CONSTANT { volo=1  (liter)} : extracellular volume
@@ -76,11 +72,6 @@ BREAKPOINT {
     SOLVE state METHOD cnexp
 
     ica = ica_pump :ensure that the pump current is reckoned in NEURON's calculation of cai
-    
-    debugVal0 = ca0
-    debugVal1 = ca1 
-    debugVal2 = ca2
-    debugVal3 = ca3
 }
 
 
@@ -205,10 +196,10 @@ DERIVATIVE state {
     :pumpca' =  (((1.e-8)*k1*area)*ca0*pump - (((1.e10)*k2*area)+((1.e10)*k3*area))*pumpca + ((1.e-8)*k4*area)*pump*cao/volo) / (1e10)*area
     pump'   = -(1.e-18)*k1*ca0*pump + (k2+k3)*pumpca - (1.e-18)*k4*pump*cao
     pumpca' =  (1.e-18)*k1*ca0*pump - (k2+k3)*pumpca + (1.e-18)*k4*pump*cao
-    :f_flux =   ((1.e10)*k3*area)*pumpca
-    :b_flux =   ((1.e-8)*k4*area)*pump*cao
+    f_flux =   ((1.e10)*k3*area)*pumpca
+    b_flux =   ((1.e-8)*k4*area)*pump*cao
     ica_pump = 2*FARADAY*(f_flux-b_flux) / area
-    printf("f_flux: %g, b_flux: %g \n", f_flux, b_flux)
+    :printf("f_flux: %g, b_flux: %g \n", f_flux, b_flux)
 
     cai = ca0
 

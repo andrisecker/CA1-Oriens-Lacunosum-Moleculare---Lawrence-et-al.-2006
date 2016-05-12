@@ -11,6 +11,7 @@ def create_comp(name = 'soma'):
 
     
     comp.insert('cad_orig')
+    comp.insert('ica_clamp')
 
     comp.nseg = 1
     comp.L = 1
@@ -69,15 +70,15 @@ def run(tstop=10, dt=0.001):
 
 comp = create_comp('soma')
 
-stim = h.IClamp(0.5, sec=comp)
-stim.delay = 4
-stim.dur = 6.0
-stim.amp = 0.005
+#stim = h.IClamp(0.5, sec=comp)
+#stim.delay = 4
+#stim.dur = 6.0
+#stim.amp = 0.005
 
-varlist = ['debugVal0_cad_orig', 'debugVal1_cad_orig', 'debugVal2_cad_orig', 'debugVal3_cad_orig']
+varlist = ['debugVal0_cad_orig', 'debugVal1_cad_orig', 'debugVal2_cad_orig', 'debugVal3_cad_orig', 'pump_cad_orig', 'pumpca_cad_orig', 'ica']
 ds = create_dumps(comp, varlist)
 
-run(50, 0.001)
+run(500, 0.001)
 
 plot_timeseries(ds, varlist)
 dump_to_file(ds, varlist)

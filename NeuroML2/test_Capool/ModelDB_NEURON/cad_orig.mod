@@ -40,6 +40,10 @@ PARAMETER {
     k2=50.e4    (/ms)	
     k3=1.e7    (/ms)	
     k4=5.e3	    (um3/ms)
+    :k1=1    (/mM-ms)
+    :k2=0.005    (/ms)	
+    :k3=1   (/ms)	
+    :k4=0.005	    (/mM-ms)
 	area		 (um2)
 }    
 CONSTANT { volo=1  (liter)}
@@ -117,7 +121,7 @@ INITIAL {
         }
 
     totpump = 0.2
-    pump=totpump/(1 + 1e-18*cao*k4/k3)
+    pump=totpump/(1+1e-18*cao*5e6/1e10)
     pumpca=2.e-22
 	ipump=0
 }
