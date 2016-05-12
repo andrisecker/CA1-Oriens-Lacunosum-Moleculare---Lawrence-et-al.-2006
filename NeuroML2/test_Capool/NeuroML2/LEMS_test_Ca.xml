@@ -9,26 +9,48 @@
 
     <Include file="../../Capool.channel.nml"/>
     <Include file="LawrenceOLM_test_Ca.net.nml"/>
+    
+    <Dimension name="substancedensity" n="1" l="-2"/>
+    <Unit symbol="mol_per_cm2" dimension="substancedensity" power="-4"/>
+    <Dimension name="substance_per_time" n="1" t="-1"/>
+    <Unit symbol="mol_per_ms" dimension="substance_per_time" power="3"/>
+    <Unit symbol="mol_per_um3" dimension="concentration" power="15"/>
  
     <!-- Simulation specifications -->
     <Simulation id="sim1" length="50ms" step="0.001ms" target="net1">
 
-      <Display id="d1" title="Membrane Potential (mV)" timeScale="1ms" xmin="0" xmax="50" ymin="-70" ymax="-10">
-        <Line id="V" quantity="pop/0/olm1/v" scale="1mV"  color="#ffffff" timeScale="1ms"/>
-      </Display>
 
-      <Display id="d2" title="Internal Ca concentration (mM)" timeScale="1ms" xmin="0" xmax="50" ymin="0" ymax="0.1">
-        <Line id="caConc" quantity="pop/0/olm1/caConc" scale="1e-6 mM"  color="#ff0000" timeScale="1ms"/>
+      <Display id="d1" title="ca0=cai (mM)" timeScale="1ms" xmin="0" xmax="50" ymin="4.5" ymax="5.5">
+        <Line id="ca0" quantity="pop/0/olm1/biophysicalProperties/intracellularProperties/ca/epic_Capool/concentration" scale="1e-6 mM"  color="#ff0000" timeScale="1ms"/>
       </Display>
       
-      <Display id="d3" title="External Ca concentration (mM)" timeScale="1ms" xmin="0" xmax="50" ymin="1.5" ymax="2.5">
-        <Line id="caConcExt" quantity="pop/0/olm1/caConcExt" scale="1e-6 mM"  color="#0000ff" timeScale="1ms"/>
+      <Display id="d2" title="ca1 (mM)" timeScale="1ms" xmin="0" xmax="50" ymin="4.5" ymax="5.5">
+        <Line id="ca1" quantity="pop/0/olm1/biophysicalProperties/intracellularProperties/ca/epic_Capool/ca1" scale="1e-6 mM"  color="#00ff00" timeScale="1ms"/>
       </Display>
+      
+      <Display id="d3" title="ca2 (mM)" timeScale="1ms" xmin="0" xmax="50" ymin="4.5" ymax="5.5">
+        <Line id="ca2" quantity="pop/0/olm1/biophysicalProperties/intracellularProperties/ca/epic_Capool/ca1" scale="1e-6 mM"  color="#ffff00" timeScale="1ms"/>
+      </Display>
+      
+      <Display id="d4" title="ca3 (mM)" timeScale="1ms" xmin="0" xmax="50" ymin="4.5" ymax="5.5">
+        <Line id="ca3" quantity="pop/0/olm1/biophysicalProperties/intracellularProperties/ca/epic_Capool/ca1" scale="1e-6 mM"  color="#0000ff" timeScale="1ms"/>
+      </Display>
+      
+      <!--
+      <Display id="d5" title="f_flux (mol/cm2)?" timeScale="1ms" xmin="0" xmax="50" ymin="0" ymax="1">
+        <Line id="f_flux" quantity="pop/0/olm1/biophysicalProperties/intracellularProperties/ca/epic_Capool/f_flux" scale="1 mol_per_ms"  color="#0ff0ff" timeScale="1ms"/>
+      </Display>
+      
+      <Display id="d6" title="b_flux (mol/cm2)?" timeScale="1ms" xmin="0" xmax="50" ymin="0" ymax="1">
+        <Line id="b_flux" quantity="pop/0/olm1/biophysicalProperties/intracellularProperties/ca/epic_Capool/b_flux" scale="1 mol_per_ms"  color="#fff0ff" timeScale="1ms"/>
+      </Display>
+      -->
 
       <OutputFile id="of0" fileName="lems_ca.dat">
-        <OutputColumn id="v" quantity="pop/0/olm1/v"/>
-        <OutputColumn id="ca_i" quantity="pop/0/olm1/caConc"/>
-        <OutputColumn id="ca_e" quantity="pop/0/olm1/caConcExt"/>
+        <OutputColumn id="ca0" quantity="pop/0/olm1/biophysicalProperties/intracellularProperties/ca/epic_Capool/concentration"/>
+        <OutputColumn id="ca1" quantity="pop/0/olm1/biophysicalProperties/intracellularProperties/ca/epic_Capool/ca1"/>
+        <OutputColumn id="ca2" quantity="pop/0/olm1/biophysicalProperties/intracellularProperties/ca/epic_Capool/ca2"/>
+        <OutputColumn id="ca3" quantity="pop/0/olm1/biophysicalProperties/intracellularProperties/ca/epic_Capool/ca3"/>
       </OutputFile>
     
     </Simulation>
