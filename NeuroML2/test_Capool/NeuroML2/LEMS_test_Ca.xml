@@ -9,6 +9,7 @@
 
     <Include file="../../Capool.channel.nml"/>
     <Include file="LawrenceOLM_test_Ca.net.nml"/>
+    <Include file="ica_clamp.channel.nml"/>
     
     <Dimension name="substancedensity" n="1" l="-2"/>
     <Unit symbol="mol_per_cm2" dimension="substancedensity" power="-4"/>
@@ -17,40 +18,45 @@
     <Unit symbol="mol_per_um3" dimension="concentration" power="15"/>
  
     <!-- Simulation specifications -->
-    <Simulation id="sim1" length="50ms" step="0.001ms" target="net1">
+    <Simulation id="sim1" length="200ms" step="0.001ms" target="net1">
 
 
-      <Display id="d1" title="ca0=cai (mM)" timeScale="1ms" xmin="0" xmax="50" ymin="4.5" ymax="5.5">
+      <Display id="d1" title="ca0 (mM)" timeScale="1ms" xmin="0" xmax="200" ymin="4.5" ymax="5.5">
         <Line id="ca0" quantity="pop/0/olm1/biophysicalProperties/intracellularProperties/ca/epic_Capool/concentration" scale="1e-6 mM"  color="#ff0000" timeScale="1ms"/>
       </Display>
       
-      <Display id="d2" title="ca1 (mM)" timeScale="1ms" xmin="0" xmax="50" ymin="4.5" ymax="5.5">
+      <Display id="d2" title="ca1 (mM)" timeScale="1ms" xmin="0" xmax="200" ymin="4.5" ymax="5.5">
         <Line id="ca1" quantity="pop/0/olm1/biophysicalProperties/intracellularProperties/ca/epic_Capool/ca1" scale="1e-6 mM"  color="#00ff00" timeScale="1ms"/>
       </Display>
       
-      <Display id="d3" title="ca2 (mM)" timeScale="1ms" xmin="0" xmax="50" ymin="4.5" ymax="5.5">
+      <Display id="d3" title="ca2 (mM)" timeScale="1ms" xmin="0" xmax="200" ymin="4.5" ymax="5.5">
         <Line id="ca2" quantity="pop/0/olm1/biophysicalProperties/intracellularProperties/ca/epic_Capool/ca1" scale="1e-6 mM"  color="#ffff00" timeScale="1ms"/>
       </Display>
       
-      <Display id="d4" title="ca3 (mM)" timeScale="1ms" xmin="0" xmax="50" ymin="4.5" ymax="5.5">
+      <Display id="d4" title="ca3 (mM)" timeScale="1ms" xmin="0" xmax="200" ymin="4.5" ymax="5.5">
         <Line id="ca3" quantity="pop/0/olm1/biophysicalProperties/intracellularProperties/ca/epic_Capool/ca1" scale="1e-6 mM"  color="#0000ff" timeScale="1ms"/>
       </Display>
-      
+
       <!--
-      <Display id="d5" title="pump (mol/cm2)" timeScale="1ms" xmin="0" xmax="50" ymin="0" ymax="1">
+      <Display id="d5" title="pump (mol/cm2)" timeScale="1ms" xmin="0" xmax="300" ymin="0" ymax="1">
         <Line id="pump" quantity="pop/0/olm1/biophysicalProperties/intracellularProperties/ca/epic_Capool/pump" scale="1 mol_per_cm2"  color="#0ff0ff" timeScale="1ms"/>
       </Display>
       
-      <Display id="d6" title="pumpca (mol/cm2)" timeScale="1ms" xmin="0" xmax="50" ymin="0" ymax="1">
+      <Display id="d6" title="pumpca (mol/cm2)" timeScale="1ms" xmin="0" xmax="300" ymin="0" ymax="1">
         <Line id="pumpca" quantity="pop/0/olm1/biophysicalProperties/intracellularProperties/ca/epic_Capool/pumpca" scale="1 mol_per_cm2"  color="#fff0ff" timeScale="1ms"/>
       </Display>
       -->
+      
+      <Display id="d7" title="iCa (nA)" timeScale="1ms" xmin="0" xmax="200" ymin="0" ymax="1">
+        <Line id="iCa" quantity="pop/0/olm1/iCa" scale="1 nA"  color="#05501f" timeScale="1ms"/>
+      </Display>
 
       <OutputFile id="of0" fileName="lems_ca.dat">
         <OutputColumn id="ca0" quantity="pop/0/olm1/biophysicalProperties/intracellularProperties/ca/epic_Capool/concentration"/>
         <OutputColumn id="ca1" quantity="pop/0/olm1/biophysicalProperties/intracellularProperties/ca/epic_Capool/ca1"/>
         <OutputColumn id="ca2" quantity="pop/0/olm1/biophysicalProperties/intracellularProperties/ca/epic_Capool/ca2"/>
         <OutputColumn id="ca3" quantity="pop/0/olm1/biophysicalProperties/intracellularProperties/ca/epic_Capool/ca3"/>
+        <OutputColumn id="iCa" quantity="pop/0/olm1/iCa"/>
       </OutputFile>
     
     </Simulation>

@@ -70,15 +70,15 @@ def run(tstop=10, dt=0.001):
 
 comp = create_comp('soma')
 
-#stim = h.IClamp(0.5, sec=comp)
-#stim.delay = 4
-#stim.dur = 6.0
-#stim.amp = 0.005
+stim = h.IClamp(0.5, sec=comp)
+stim.delay = 50
+stim.dur = 100
+stim.amp = 0.005
 
 varlist = ['ca0_cad', 'ca1_cad', 'ca2_cad', 'ca3_cad', 'pump_cad', 'pumpca_cad', 'ica']
 ds = create_dumps(comp, varlist)
 
-run(500, 0.001)
+run(200, 0.001)
 
 plot_timeseries(ds, varlist)
 dump_to_file(ds, varlist)

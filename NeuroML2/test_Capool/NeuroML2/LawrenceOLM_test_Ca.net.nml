@@ -5,10 +5,10 @@
          id="olm1">
     
     <include href="../../Capool.channel.nml"/>
+    <include href="ica_clamp.channel.nml"/>
 
     <!-- Passive conductance -->
-    <ionChannel id="leak" type="ionChannelPassive" conductance="10pS" species="non_specific"/>
-    
+    <ionChannel id="passive_chan" type="ionChannelPassive" conductance="10pS" species="non_specific"/>
 
     
     <!-- Cellular properties -->
@@ -31,7 +31,8 @@
 
             <membraneProperties>
 
-                <channelDensity condDensity="0.3 mS_per_cm2" id="passive" ionChannel="leak" erev="-65 mV" ion="non_specific"/>
+                <channelDensity condDensity="0.3 mS_per_cm2" id="passive" ionChannel="passive_chan" erev="-65 mV" ion="non_specific"/>
+                <channelDensity condDensity="0.001 mS_per_cm2" id="ica_camp_all" ionChannel="ica_clamp" erev="50mV" ion="ca"/>
 
                 <spikeThresh value="0 mV"/>
                 <specificCapacitance value="1.0 uF_per_cm2"/>
@@ -53,7 +54,7 @@
     </cell>
 
     <!-- Point process: Current clamp -->
-    <pulseGenerator id="IClamp" delay="4ms" duration="6ms" amplitude="0.005nA"/>
+    <pulseGenerator id="IClamp" delay="50ms" duration="100ms" amplitude="0.005nA"/>
 
 
     <!-- Create a single-cell network -->
@@ -63,6 +64,7 @@
                 <location x="0" y="0" z="0"/>
             </instance>
         </population>
+
 
         <inputList id="IClamp" component="IClamp" population="pop">
             <input id="0" target="../pop/0/olm1" destination="synapses"/>
