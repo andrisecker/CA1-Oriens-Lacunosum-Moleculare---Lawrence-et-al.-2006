@@ -32,7 +32,7 @@
             <membraneProperties>
 
                 <channelDensity condDensity="0.3 mS_per_cm2" id="passive" ionChannel="passive_chan" erev="-65 mV" ion="non_specific"/>
-                <channelDensity condDensity="0.001 mS_per_cm2" id="ica_clamp_all" ionChannel="ica_clamp" erev="50mV" ion="ca"/>
+                <channelDensity condDensity="1e-6 mS_per_cm2" id="ica_clamp_all" ionChannel="ica_clamp" erev="50mV" ion="ca"/>
 
                 <spikeThresh value="0 mV"/>
                 <specificCapacitance value="1.0 uF_per_cm2"/>
@@ -54,7 +54,7 @@
     </cell>
 
     <!-- Point process: Current clamp -->
-    <pulseGenerator id="IClamp" delay="50ms" duration="100ms" amplitude="0.005nA"/>
+    <pulseGenerator id="IClamp" delay="40ms" duration="120ms" amplitude="0.005nA"/>
 
 
     <!-- Create a single-cell network -->
