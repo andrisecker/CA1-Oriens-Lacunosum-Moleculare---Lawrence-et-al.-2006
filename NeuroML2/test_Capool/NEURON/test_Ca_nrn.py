@@ -75,7 +75,7 @@ stim.delay = 50
 stim.dur = 100
 stim.amp = 0.005
 
-varlist = ['ca0_cad', 'ca1_cad', 'ca2_cad', 'ca3_cad', 'pump_cad', 'pumpca_cad', 'ica']
+varlist = ['ca0_cad', 'ca1_cad', 'ca2_cad', 'ca3_cad', 'pump_cad', 'pumpca_cad', 'ica', 'ica_clamp_ica_clamp']
 ds = create_dumps(comp, varlist)
 
 run(200, 0.001)
