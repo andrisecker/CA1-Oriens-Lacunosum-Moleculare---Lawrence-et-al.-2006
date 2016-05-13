@@ -22,7 +22,7 @@
         <Dynamics>
             <ConditionalDerivedVariable name="x" exposure="x" dimension="none">
                 <Case condition="t .lt. delay" value="0"/>
-                <Case condition="t .geq. delay .and. t .lt. duration + delay" value="0.001"/>
+                <Case condition="t .geq. delay .and. t .lt. duration + delay" value="1"/>
                 <Case condition="t .geq. duration + delay" value="0"/>
             </ConditionalDerivedVariable>
         </Dynamics>

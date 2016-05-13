@@ -2,7 +2,7 @@
 NEURON {
     SUFFIX ica_clamp
     USEION ca WRITE ica
-    RANGE ica_clamp  
+    RANGE ica_clamp
 }
 
 UNITS {
@@ -13,8 +13,8 @@ UNITS {
 PARAMETER {
     delay = 50 (ms)
     duration = 100 (ms)
-    magnitude = 0.001
-    gbar = 0.001 (mho/cm2)
+    magnitude = 1
+    gbar = 1e-6 (mho/cm2)
     E = 50 (mV)
 }
 
@@ -38,6 +38,6 @@ BREAKPOINT {
         ica_clamp = 0
     }
 
-    ica = -gbar*ica_clamp*(v-E)
+    ica = gbar*ica_clamp*(v-E)
 }
 

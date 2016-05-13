@@ -12,13 +12,14 @@ def create_comp(name = 'soma'):
     
     comp.insert('cad')
     comp.insert('ica_clamp')
+    comp.eca = 50
 
     comp.nseg = 1
     comp.L = 1
     comp.diam = 1
     
     comp.insert('pas')
-    comp(0.5).g_pas = 3e-4
+    comp(0.5).g_pas = 3e-4 # S/cm2
     comp(0.5).e_pas = -65
 
     h.cao0_ca_ion = 2
@@ -71,11 +72,11 @@ def run(tstop=10, dt=0.001):
 comp = create_comp('soma')
 
 stim = h.IClamp(0.5, sec=comp)
-stim.delay = 50
-stim.dur = 100
-stim.amp = 0.005
+stim.delay = 40
+stim.dur = 120
+stim.amp = 0.001
 
-varlist = ['ca0_cad', 'ca1_cad', 'ca2_cad', 'ca3_cad', 'pump_cad', 'pumpca_cad', 'ica', 'ica_clamp_ica_clamp']
+varlist = ['v', 'ca0_cad', 'ca1_cad', 'ca2_cad', 'ca3_cad', 'ica']
 ds = create_dumps(comp, varlist)
 
 run(200, 0.001)

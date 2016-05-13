@@ -45,7 +45,6 @@
         <Constant name="frat3" dimension="none" value="3.14159265"/>
 
         <Requirement name="iCa" dimension="current"/>
-        <Requirement name="surfaceArea" dimension="area"/>
         
         <Exposure name="concentration" dimension="concentration"/>
         <Exposure name="ca1" dimension="concentration"/>

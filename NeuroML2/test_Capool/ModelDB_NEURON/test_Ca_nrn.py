@@ -12,6 +12,7 @@ def create_comp(name = 'soma'):
     
     comp.insert('cad_orig')
     comp.insert('ica_clamp')
+    comp.eca = 50
 
     comp.nseg = 1
     comp.L = 1
@@ -71,9 +72,9 @@ def run(tstop=10, dt=0.001):
 comp = create_comp('soma')
 
 stim = h.IClamp(0.5, sec=comp)
-stim.delay = 50
-stim.dur = 150
-stim.amp = 0.005
+stim.delay = 40
+stim.dur = 120
+stim.amp = 0.001
 
 varlist = ['debugVal0_cad_orig', 'debugVal1_cad_orig', 'debugVal2_cad_orig', 'debugVal3_cad_orig', 'pump_cad_orig', 'pumpca_cad_orig', 'ica']
 ds = create_dumps(comp, varlist)

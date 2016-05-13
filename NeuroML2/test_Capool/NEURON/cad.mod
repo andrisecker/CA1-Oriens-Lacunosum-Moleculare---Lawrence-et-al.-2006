@@ -1,7 +1,7 @@
 
 NEURON {
     SUFFIX cad
-    USEION ca READ cai, cao, ica WRITE cai, ica
+    USEION ca READ cai, cao, ica WRITE cai
     RANGE ica_pump
     GLOBAL vrat0, vrat1, vrat2, vrat3
     :read cai- to init buffer, reads ica- which is the Ca++ influx into outermost shell, reads cao- which is used in pump reaction scheme

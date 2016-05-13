@@ -58,7 +58,6 @@
         <OutputColumn id="ca2" quantity="pop/0/olm1/biophysicalProperties/intracellularProperties/ca/epic_Capool/ca2"/>
         <OutputColumn id="ca3" quantity="pop/0/olm1/biophysicalProperties/intracellularProperties/ca/epic_Capool/ca3"/>
         <OutputColumn id="iCa_chans" quantity="pop/0/olm1/biophysicalProperties/intracellularProperties/ca/epic_Capool/debugVal"/>
-        <OutputColumn id="iCa" quantity="pop/0/olm1/iCa"/>
       </OutputFile>
     
     </Simulation>
