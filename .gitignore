@@ -1,0 +1,7 @@
+x86_64
+*~
+*.dat
+NeuroML2/*.svg
+NeuroML2/*.hoc
+NeuroML2/*.mod
+NeuroML2/*_nrn.py
