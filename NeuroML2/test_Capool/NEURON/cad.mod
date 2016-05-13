@@ -24,10 +24,10 @@ PARAMETER {
     k1buf = 500       (/mM-ms)
     k2buf = 0.5       (/ms)
     TotalBuffer = 1.2 (mM)
-    k1=1.e7           (um3/ms)
-    k2=50.e4          (/ms)	 : k1*50.e-3
-    k3=1.e7           (/ms)	 : k1
-    k4=5.e3	          (um3/ms): k1*5.e-4
+    k1=1e-11    (/mM-ms)
+    k2=50e4     (/ms)	
+    k3=1e7      (/ms)	
+    k4=5e-18	(/mM-ms)
     TotalPump = 0.2   (mol/cm2)
     PCa0 = 2.e-22     (mol/cm2)
 	area		      (um2)
@@ -87,7 +87,7 @@ INITIAL {
     : 2nd step of initialization -> initialize state variables
     Kd = k2buf/k1buf
 
-    pump = TotalPump / (1 + 1.e-18*k4/k3 * cao)
+    pump = TotalPump / (1 + 1.e3 * k4/k3 * cao)
     pumpca = PCa0
 
     ca0 = cai
@@ -173,12 +173,13 @@ DERIVATIVE state {
     dsqvol3 = dsq*vrat3
 
     ca0_efl  = - (ica)*PI*diam/dsqvol0 / (2*FARADAY)
+    printf("ica: %g, ca_efflux: %g \n",ica, ca0_efl)
     ca0_dif  = - (DCa*frat1/dsqvol0)*ca0 + (DCa*frat1/dsqvol0)*ca1
     ca0_buf  = - k1buf*ca0*Buffer0 + k2buf*CaBuffer0
-    ca0_pump = - ((1.e-8)*k1*area)*ca0*pump/dsqvol0 + ((1.e10)*k2*area)*pumpca/dsqvol0
+    ca0_pump = - ((1.e10)*k1*area)*ca0*pump/dsqvol0 + ((1.e10)*k2*area)*pumpca/dsqvol0
     :printf("ica: %g, ica_pump: %g, efflux: %g \n",ica, ica_pump, ca0_efl)
 
-    ca0' = ca0_dif + ca0_buf: + ca0_efl + ca0_pump
+    ca0' = ca0_dif + ca0_buf + ca0_efl: + ca0_pump
     ca1' = (DCa*frat1/dsqvol1)*ca0 - ((DCa*frat1/dsqvol1)+(DCa*frat2/dsqvol1))*ca1 + (DCa*frat2/dsqvol1)*ca2 - k1buf*ca1*Buffer1 + k2buf*CaBuffer1
     ca2' = (DCa*frat2/dsqvol2)*ca1 - ((DCa*frat2/dsqvol2)+(DCa*frat3/dsqvol2))*ca2 + (DCa*frat3/dsqvol2)*ca3 - k1buf*ca2*Buffer2 + k2buf*CaBuffer2
     ca3' = (DCa*frat3/dsqvol3)*ca2 - (DCa*frat3/dsqvol3)*ca3 - k1buf*ca3*Buffer3 + k2buf*CaBuffer3
@@ -192,12 +193,12 @@ DERIVATIVE state {
     Buffer3'   = -k1buf*ca3*Buffer3 + k2buf*CaBuffer3
     CaBuffer3' =  k1buf*ca3*Buffer3 - k2buf*CaBuffer3
     
-    :pump'   = (-((1.e-8)*k1*area)*ca0*pump + (((1.e10)*k2*area)+((1.e10)*k3*area))*pumpca - ((1.e-8)*k4*area)*pump*cao/volo) / (1e10)*area
-    :pumpca' =  (((1.e-8)*k1*area)*ca0*pump - (((1.e10)*k2*area)+((1.e10)*k3*area))*pumpca + ((1.e-8)*k4*area)*pump*cao/volo) / (1e10)*area
-    :pump'   = -(1.e-18)*k1*ca0*pump + (k2+k3)*pumpca - (1.e-18)*k4*pump*cao
-    :pumpca' =  (1.e-18)*k1*ca0*pump - (k2+k3)*pumpca + (1.e-18)*k4*pump*cao
+    :pump'   = (-((1.e10)*k1*area)*ca0*pump + (((1.e10)*k2*area)+((1.e10)*k3*area))*pumpca - ((1.e10)*k4*area)*pump*cao/volo) / (1e10)*area
+    :pumpca' =  (((1.e10)*k1*area)*ca0*pump - (((1.e10)*k2*area)+((1.e10)*k3*area))*pumpca + ((1.e10)*k4*area)*pump*cao/volo) / (1e10)*area
+    :pump'   = -k1*ca0*pump + (k2+k3)*pumpca - k4*pump*cao
+    :pumpca' =  k1*ca0*pump - (k2+k3)*pumpca + k4*pump*cao
     :f_flux =   ((1.e10)*k3*area)*pumpca
-    :b_flux =   ((1.e-8)*k4*area)*pump*cao
+    :b_flux =   ((1.e10)*k4*area)*pump*cao
     :ica_pump = 2*FARADAY*(f_flux-b_flux) / area
     :printf("f_flux: %g, b_flux: %g \n", f_flux, b_flux)
 
