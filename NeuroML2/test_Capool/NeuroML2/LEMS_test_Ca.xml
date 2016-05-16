@@ -19,6 +19,7 @@
     <Unit symbol="mol_per_cm2" dimension="substancedensity" power="4"/>
     <Dimension name="substance_per_time" n="1" t="-1"/>
     <Unit symbol="mol_per_ms" dimension="substance_per_time" power="3"/>
+    <Dimension name="concentration_per_time" n="1" l="-3" t="-1" />
 
  
     <!-- Simulation specifications -->
@@ -52,9 +53,16 @@
         <OutputColumn id="ca0" quantity="pop/0/olm1/biophysicalProperties/intracellularProperties/ca/epic_Capool/concentration"/>
         <OutputColumn id="ca1" quantity="pop/0/olm1/biophysicalProperties/intracellularProperties/ca/epic_Capool/ca1"/>
         <OutputColumn id="ca2" quantity="pop/0/olm1/biophysicalProperties/intracellularProperties/ca/epic_Capool/ca2"/>
-        <OutputColumn id="ca3" quantity="pop/0/olm1/biophysicalProperties/intracellularProperties/ca/epic_Capool/ca3"/>
+        <OutputColumn id="ca3" quantity="pop/0/olm1/biophysicalProperties/intracellularProperties/ca/epic_Capool/ca3"/>   
         <OutputColumn id="pump" quantity="pop/0/olm1/biophysicalProperties/intracellularProperties/ca/epic_Capool/pump"/>
         <OutputColumn id="pumpca" quantity="pop/0/olm1/biophysicalProperties/intracellularProperties/ca/epic_Capool/pumpca"/>
+        <!--
+        <OutputColumn id="ica_chans" quantity="pop/0/olm1/biophysicalProperties/intracellularProperties/ca/epic_Capool/iCa_chans"/>
+        <OutputColumn id="f_flux" quantity="pop/0/olm1/biophysicalProperties/intracellularProperties/ca/epic_Capool/f_flux_nml"/>
+        <OutputColumn id="b_flux" quantity="pop/0/olm1/biophysicalProperties/intracellularProperties/ca/epic_Capool/b_flux_nml"/>
+        <OutputColumn id="ica_pump" quantity="pop/0/olm1/biophysicalProperties/intracellularProperties/ca/epic_Capool/iCa_pump"/>
+        <OutputColumn id="debug" quantity="pop/0/olm1/biophysicalProperties/intracellularProperties/ca/epic_Capool/debugVal"/>ű
+        -->
       </OutputFile>
     
     </Simulation>

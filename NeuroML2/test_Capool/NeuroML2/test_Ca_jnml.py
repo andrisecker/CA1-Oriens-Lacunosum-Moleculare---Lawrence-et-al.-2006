@@ -4,7 +4,7 @@ from pyneuroml import pynml
 
 lems_file = 'LEMS_test_Ca.xml'
 
-results = pynml.run_lems_with_jneuroml(lems_file, nogui=True, load_saved_data=True)
+results = pynml.run_lems_with_jneuroml(lems_file, max_memory='2G', nogui=True, load_saved_data=True)
 
 if not '-nogui' in sys.argv:
     
