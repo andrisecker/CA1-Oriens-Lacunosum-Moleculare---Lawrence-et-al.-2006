@@ -1,8 +1,8 @@
 ### test Ca++ channels
 
-The driving force of the Ca++ channels ([NEURON/ICaL.mod](https://github.com/andrisecker/Lawrence2006-CA1-OLM/blob/master/NeuroML2/test_Ca_chans/NEURON/ICaL.mod), [NEURON/ICaT.mod](https://github.com/andrisecker/Lawrence2006-CA1-OLM/blob/master/NeuroML2/test_Ca_chans/NEURON/ICaT.mod)) in the model neruon is based on a modified (Jaffe 1994) Goldman–Hodgkin–Katz flux equation [wikipedia](https://en.wikipedia.org/wiki/GHK_flux_equation).
+The driving force of the Ca++ channels ([NEURON/ICaL.mod](https://github.com/andrisecker/Lawrence2006-CA1-OLM/blob/master/NeuroML2/test_Ca_chans/NEURON/ICaL.mod), [NEURON/ICaT.mod](https://github.com/andrisecker/Lawrence2006-CA1-OLM/blob/master/NeuroML2/test_Ca_chans/NEURON/ICaT.mod)) in the model neruon is based on a modified Goldman–Hodgkin–Katz flux equation. [wikipedia of GHK](https://en.wikipedia.org/wiki/GHK_flux_equation)
 
-We tested the NeuroML2 implementation of this channels with a simple Ca++ buffer. See more about the Ca++ dynamics of the model [here](https://github.com/andrisecker/Lawrence2006-CA1-OLM/tree/master/NeuroML2/test_Capool).
+We tested the NeuroML2 implementation of this channels with a simple Ca++ buffer. See more about the actual Ca++ dynamics of the model [here](https://github.com/andrisecker/Lawrence2006-CA1-OLM/tree/master/NeuroML2/test_Capool).
 
     cd NEURON
     python test_Ca_nrn.py
