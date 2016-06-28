@@ -2,8 +2,8 @@
 
 To run the scripts, [install NEURON](https://www.neuron.yale.edu/neuron/download) and run:
 
-    git clone https://github.com/andrisecker/CA1-Oriens-Lacunosum-Moleculare---Lawrence-et-al.-2006.git # clone git repository
-    cd CA1-Oriens-Lacunosum-Moleculare---Lawrence-et-al.-2006/NEURON
+    git clone https://github.com/andrisecker/Lawrence2006-CA1-OLM.git # clone git repository
+    cd Lawrence2006-CA1-OLM/ModelDB_NEURON
     nrnivmodl  # compile .mod files
     nrngui mosinit.hoc  # runs the simulation
 
