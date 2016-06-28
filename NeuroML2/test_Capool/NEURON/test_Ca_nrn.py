@@ -14,13 +14,13 @@ def create_comp(name = 'soma'):
     #comp.eca = 50
 
     comp.insert('cal')
-    comp(0.5).cal.gcalbar = 0//2e-5
+    comp(0.5).cal.gcalbar = 2e-4
 
     comp.insert('cat')
-    comp(0.5).cat.gbar = 0//2e-5
+    comp(0.5).cat.gbar = 2e-5
 
     comp.insert('kca')
-    comp(0.5).kca.gkbar = 0//1e-4
+    comp(0.5).kca.gkbar = 1e-4
     comp.ek = -95
 
     comp.nseg = 1
