@@ -1,5 +1,5 @@
 COMMENT
-Ca dynamics: Ca buffering + pump in concentric rings
+Ca dynamics: Ca diffusion, buffering + pump in concentric rings
 Simplified(/modified - ODEs instead of kinetic schemes) version of cad.mod of ModelDB:102288 (Lawrence 2006)
 Note: COMPARTMENT statements are replaced with hard coded scaling where it was needed
 Note: Nannuli = 4 (and it's "consequences") are hard coded
