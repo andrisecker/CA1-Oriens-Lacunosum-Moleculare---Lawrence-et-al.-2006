@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<neuroml xmlns="http://www.neuroml.org/schema/neuroml2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.neuroml.org/schema/neuroml2 https://raw.github.com/NeuroML/NeuroML2/development/Schemas/NeuroML2/NeuroML_v2beta4.xsd" id="Golgi_KC">
+<neuroml xmlns="http://www.neuroml.org/schema/neuroml2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.neuroml.org/schema/neuroml2 https://raw.github.com/NeuroML/NeuroML2/development/Schemas/NeuroML2/NeuroML_v2beta4.xsd" id="NeuroML_ionChannel">
 
-    <notes>ChannelML file containing a single Ca++ dependent K+ channel description from Lawrence et al 2006</notes>
+    <notes>NeuroML file containing a single ion channel</notes>
 
-    <ionChannel id="IKCa" conductance="0.055pS" type="ionChannelHH" species="k">
+    <ionChannel id="IKCa" conductance="1pS" type="ionChannelHH" species="k">
+        
+        <notes>Ca++ activated mAHP K+ channel description (from Moczydlowski and Latorre 1983 - modeled by Poirazi 2003 modified by Lawrence 2006)</notes>
         
         <gateHHrates id="o" instances="1">
             <forwardRate type="Lawrence2006_IKCa_alphao"/>
@@ -11,9 +13,6 @@
         </gateHHrates>
         
     </ionChannel>
-    
-    <!-- TODO: check dimensions -->
-       
        
     <ComponentType name="Lawrence2006_IKCa_alphao"
             extends="baseVoltageConcDepRate"
@@ -35,7 +34,7 @@
             <ConditionalDerivedVariable name="r" extends="r" dimension="per_time">
                 <Case condition="volt_dep .neq. 0." value="((0.28*ca_conc_i) / (ca_conc_i + volt_dep)) / TIME_SCALE"/>
                 <Case condition="volt_dep .eq. 0." value="0 / TIME_SCALE"/>
-            </ConditionalDerivedVariable>>
+            </ConditionalDerivedVariable>
             
         </Dynamics>
           

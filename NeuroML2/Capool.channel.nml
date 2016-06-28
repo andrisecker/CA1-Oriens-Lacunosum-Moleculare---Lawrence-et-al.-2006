@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<neuroml xmlns="http://www.neuroml.org/schema/neuroml2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.neuroml.org/schema/neuroml2 https://raw.github.com/NeuroML/NeuroML2/development/Schemas/NeuroML2/NeuroML_v2beta4.xsd" id="Golgi_KC">
+<neuroml xmlns="http://www.neuroml.org/schema/neuroml2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.neuroml.org/schema/neuroml2 https://raw.github.com/NeuroML/NeuroML2/development/Schemas/NeuroML2/NeuroML_v2beta4.xsd" id="NeuroML_ionChannel">
 
-    <notes> ChannelML file containing internal Ca++ dynamics from Lawrence et al 2006 </notes>
+    <notes>NeuroML file containing internal Ca++ dynamics from Lawrence 2006</notes>
 
     <!-- Intracellular Calcium dynamics -->
     <LawrenceCaConcentrationModel id="epic_Capool" ion="ca"
@@ -63,9 +63,9 @@
         <Exposure name="pumpca" dimension="substancedensity"/>
         <Exposure name="f_flux_nml" dimension="substance_per_time"/>
         <Exposure name="b_flux_nml" dimension="substance_per_time"/>
-
+        <!--
         <Exposure name="debugVal" dimension="concentration_per_time"/>
-
+        -->
         <Text name="ion"/> <!-- TODO: check why this isn't inherited from concentrationModel -->
 
         <Dynamics>
@@ -93,9 +93,9 @@
             
             <DerivedVariable name="Kd" dimension="concentration" value="k2buf/k1buf * CONC_SCALE"/>
              
-            <DerivedVariable name="iCa_chans" dimesnio="currentDensity" value="-100*iCa/surfaceArea"/>
+            <DerivedVariable name="iCa_chans" dimension="currentDensity" value="-100*iCa/surfaceArea"/>
      
-            <TimeDerivative variable="concentration" value="-(((iCa_chans-iCa_pump)*surfaceArea) / (2*FARADAY*dsqvol0*L_nml)) - ((DCa*AREA_SCALEum2*frat1/dsqvol0)*concentration) + (DCa*AREA_SCALEum2*frat1/dsqvol0)*ca1 - ((k1buf/CONC_SCALE)*concentration*buffer0) + k2buf*caBuffer0 - (k1/CONC_SCALE)*concentration*pump*surfaceArea/(dsqvol0*L_nml)) + k2*pumpca*surfaceArea/(dsqvol0*L_nml)"/>
+            <TimeDerivative variable="concentration" value="-(((iCa_chans-iCa_pump)*surfaceArea) / (2*FARADAY*dsqvol0*L_nml)) - ((DCa*AREA_SCALEum2*frat1/dsqvol0)*concentration) + (DCa*AREA_SCALEum2*frat1/dsqvol0)*ca1 - ((k1buf/CONC_SCALE)*concentration*buffer0) + k2buf*caBuffer0 - (k1/CONC_SCALE)*concentration*pump*surfaceArea/(dsqvol0*L_nml) + k2*pumpca*surfaceArea/(dsqvol0*L_nml)"/>
             <TimeDerivative variable="ca1" value="(DCa*AREA_SCALEum2*frat1/dsqvol1)*concentration - ((DCa*AREA_SCALEum2*frat1/dsqvol1)+(DCa*AREA_SCALEum2*frat2/dsqvol1))*ca1 + (DCa*AREA_SCALEum2*frat2/dsqvol1)*ca2- (k1buf/CONC_SCALE)*ca1*buffer1 + k2buf*caBuffer1"/>
             <TimeDerivative variable="ca2" value="(DCa*AREA_SCALEum2*frat2/dsqvol2)*ca1 - ((DCa*AREA_SCALEum2*frat2/dsqvol2)+(DCa*AREA_SCALEum2*frat3/dsqvol2))*ca2 + (DCa*AREA_SCALEum2*frat3/dsqvol2)*ca3 - (k1buf/CONC_SCALE)*ca2*buffer2 + k2buf*caBuffer2"/>
             <TimeDerivative variable="ca3" value="(DCa*AREA_SCALEum2*frat3/dsqvol3)*ca2 - (DCa*AREA_SCALEum2*frat3/dsqvol3)*ca3 - (k1buf/CONC_SCALE)*ca3*buffer3 + k2buf*caBuffer3"/>
@@ -113,9 +113,9 @@
             <DerivedVariable name="f_flux_nml" dimension="substance_per_time" value="(1e18*k3)*pumpca*surfaceArea" exposure="f_flux_nml"/>
             <DerivedVariable name="b_flux_nml" dimension="substance_per_time" value="(1e18*k4/CONC_SCALE)*extConcentration*pump*surfaceArea" exposure="b_flux_nml"/>
             <DerivedVariable name="iCa_pump" dimension="currentDensity" value="2*FARADAY*(f_flux_nml-b_flux_nml) / (surfaceArea*1e20)"/>
-
+            <!--
             <DerivedVariable name="debugVal" dimension="concentration_per_time" value="-(((iCa_chans-iCa_pump)*surfaceArea) / (2*FARADAY*dsqvol0*L_nml)))" exposure="debugVal"/>
-
+            -->
             <OnStart>
                 <StateAssignment variable="concentration" value="initialConcentration"/>
                 <StateAssignment variable="ca1" value="initialConcentration"/>
@@ -152,6 +152,9 @@
             </OnCondition>
             <OnCondition test="pumpca .lt. pumpca_test">
                 <StateAssignment variable="pumpca" value="pumpca_test"/>
+            </OnCondition>
+            <OnCondition test="pumpca .gt. TotalPump">
+                <StateAssignment variable="pumpca" value="TotalPump"/>
             </OnCondition>
             
         </Dynamics>

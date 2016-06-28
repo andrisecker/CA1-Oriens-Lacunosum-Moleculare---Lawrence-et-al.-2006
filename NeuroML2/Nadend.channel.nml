@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<neuroml xmlns="http://www.neuroml.org/schema/neuroml2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.neuroml.org/schema/neuroml2 https://raw.github.com/NeuroML/NeuroML2/development/Schemas/NeuroML2/NeuroML_v2beta4.xsd" id="Golgi_KC">
+<neuroml xmlns="http://www.neuroml.org/schema/neuroml2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.neuroml.org/schema/neuroml2 https://raw.github.com/NeuroML/NeuroML2/development/Schemas/NeuroML2/NeuroML_v2beta4.xsd" id="NeuroML_ionChannel">
 
-    <notes>ChannelML file containing a single Channel description from Lawrence et al 2006</notes>
+    <notes>NeuroML file containing a single ion channel</notes>
 
-    <ionChannel id="Nadend" conductance="117pS" type="ionChannelHH" species="na">
+    <ionChannel id="Nadend" conductance="1pS" type="ionChannelHH" species="na">
+        
+        <notes>Na+ channel description (from Martina, Vida and Jonas 2000, Marina and Jonas 1997 - modeled by Skinner lab 2003, modified by Lawrence 2006)</notes>
         
         <gateHHrates id="m" instances="3">
             <forwardRate type="HHExpLinearRate" rate="1per_ms" midpoint="-45mV" scale="10mV"/>
@@ -17,22 +19,5 @@
         </gateHHrates>
                             
     </ionChannel>
-
-    <!--  Original NEURON version:
-    <ComponentType name="Lawrence2006_INa_rate"
-                   extends="baseHHRate"
-                   description="conditional ExpLinearRate to describe INa in Saraga 2003">
-
-        <Dynamics>         
-            <DerivedVariable name="tmp" value="(v - midpoint)/scale" dimension="none"/>
-
-            <ConditionalDerivedVariable name="r" exposure="r" dimension="per_time">
-                <Case condition="abs(tmp) .lt. 1e-6" value="scale * (1 + tmp/2)"/>
-                <Case condition="abs(tmp) .geq. 1e-6" value="(rate * tmp) / (1 - exp(-tmp) )"/>
-            </ConditionalDerivedVariable>
-        </Dynamics>
-
-    </ComponentType>
-    -->
     
 </neuroml>

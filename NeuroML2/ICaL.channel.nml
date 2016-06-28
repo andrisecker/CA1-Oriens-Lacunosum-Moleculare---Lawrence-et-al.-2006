@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<neuroml xmlns="http://www.neuroml.org/schema/neuroml2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.neuroml.org/schema/neuroml2 https://raw.github.com/NeuroML/NeuroML2/development/Schemas/NeuroML2/NeuroML_v2beta4.xsd" id="Golgi_KC">
+<neuroml xmlns="http://www.neuroml.org/schema/neuroml2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.neuroml.org/schema/neuroml2 https://raw.github.com/NeuroML/NeuroML2/development/Schemas/NeuroML2/NeuroML_v2beta4.xsd" id="NeuroML_ionChannel">
 
-    <notes>ChannelML file containing a single l-type Ca++ channel description from Lawrence et al 2006</notes>
+    <notes>NeuroML file containing a single ion channel</notes>
 
-    <ionChannel id="ICaL" conductance="2.5pS" type="ionChannelHH" species="ca">
+    <ionChannel id="ICaL" conductance="1pS" type="ionChannelHH" species="ca">
+        
+        <notes>L type Ca++ channel (from Jaffe 1994 - (similar modeled by Poirazi 2003) modeled by Lawrence 2006)</notes>
         
         <gateHHrates id="m" instances="2">
             <forwardRate type="HHExpLinearRate" rate="156.9per_ms" midpoint="81.5mV" scale="10mV"/>
             <reverseRate type="HHExpRate" rate="0.29per_ms" midpoint="0mV" scale="-10.86mV"/>
         </gateHHrates>
         
-        <gateHHtauInf id="h" instances="1">
-            <timeCourse type="fixedTimeCourse" tau="1ms"/>
+        <gateHHInstantaneous id="h" instances="1">
             <steadyState type="Lawrence2006_ICaL_ss"/>
-        </gateHHtauInf>
+        </gateHHInstantaneous>
                             
     </ionChannel>
     
