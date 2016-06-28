@@ -10,7 +10,7 @@ In order to implement it in NeuroML2 we created a simplified(/modified) NEURON v
     cd NEURON
     python test_Ca_nrn.py
 
-Based on the simplified NEURON code we created a NeuroML2 file [../../Capool.channel.nml](https://github.com/andrisecker/Lawrence2006-CA1-OLM/blob/master/NeuroML2/Capool.channel.nml) reprodes the same behaviour without the pump, but has some limitations when used with the Ca++ pump on the membrane. Still in development ...
+Based on the simplified NEURON code we created a NeuroML2 file [../../Capool.channel.nml](https://github.com/andrisecker/Lawrence2006-CA1-OLM/blob/master/NeuroML2/Capool.channel.nml), which reprodes the same behaviour without the pump, but has some limitations when used with the Ca++ pump on the membrane. Still in development ...
 
     cd NeuroML2
     python test_Ca_jnml.py
