@@ -12,11 +12,48 @@
             <reverseRate type="HHExpRate" rate="0.009per_ms" midpoint="0mV" scale="-22.03mV"/>
         </gateHHrates>
         
-        <gateHHrates id="h" instances="1">
-            <forwardRate type="HHExpRate" rate="1e-06per_ms" midpoint="0mV" scale="-16.26mV"/>
-            <reverseRate type="HHSigmoidRate" rate="1per_ms" midpoint="29.79mV" scale="10mV"/>
-        </gateHHrates>
+        <gateHHtauInf id="h" instances="1"> <!-- alpha is different in tau and inf ...-->
+            <timeCourse type="Lawrence2006_ICaT_tauh"/>
+            <steadyState type="Lawrence2006_ICaT_ssh"/>
+        </gateHHtauInf>
                             
     </ionChannel>
+    
+    
+    <ComponentType name="Lawrence2006_ICaT_tauh"
+                   extends="baseVoltageDepTime"
+                   description="Tau parameter to describe ICaT in Lawrence 2006">
+        
+        <Constant name="TIME_SCALE" dimension="time" value="1 ms"/>
+        <Constant name="VOLT_SCALE" dimension="voltage" value="1 mV"/>
+
+        <Dynamics>
+            <DerivedVariable name="V" dimension="none" value="v / VOLT_SCALE"/>
+            
+            <DerivedVariable name="alpha" dimension="none" value="1e-5 * exp(V/-16.26)"/>
+            <DerivedVariable name="beta" dimension="none" value="1 / (1 + exp(-(V-29.79)/10))"/>
+            
+            <DerivedVariable name="t" dimension="time" value="( 1 / (alpha + beta) ) * TIME_SCALE"  exposure="t"/>
+        </Dynamics>
+
+    </ComponentType>
+    
+    
+    <ComponentType name="Lawrence2006_ICaT_ssh"
+                   extends="baseVoltageDepVariable"
+                   description="steadyState parameter to describe ICaT in Lawrence 2006">
+        
+        <Constant name="VOLT_SCALE" dimension="voltage" value="1 mV"/>
+
+        <Dynamics>
+            <DerivedVariable name="V" dimension="none" value="v / VOLT_SCALE"/>
+            
+            <DerivedVariable name="alpha" dimension="none" value="1e-6 * exp(V/-16.26)"/>
+            <DerivedVariable name="beta" dimension="none" value="1 / (1 + exp(-(V-29.79)/10))"/>
+            
+            <DerivedVariable name="x" exposure="x" dimension="none" value="alpha / (alpha + beta)"/>
+        </Dynamics>
+
+    </ComponentType>
     
 </neuroml>
