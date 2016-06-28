@@ -13,10 +13,10 @@ def create_comp(name = 'soma'):
     comp.insert('cat')
     comp.insert('kca')
 
-    #comp.insert('cabuff')
-    comp.insert('pas')
+    comp.insert('cabuff')
+    #comp.insert('CaClamp')
 
-    comp.insert('CaClamp')
+    comp.insert('pas')
 
     comp.nseg = 1
     comp.L = 10
@@ -28,12 +28,6 @@ def create_comp(name = 'soma'):
     comp(0.5).cal.gcalbar = 2e-5
     comp(0.5).cat.gbar = 2e-5
     comp(0.5).kca.gkbar = 1e-4
-    
-    #phi will be multiplied by ica _density_
-    area = h.area(0.5)
-    phi = 3e-3
-    print '0.1 * phi * area to be used in lems', 0.1 * phi * area 
-    #comp(0.5).cabuff.phi = phi
 
     h.cao0_ca_ion = 2
     h.cai0_ca_ion = 5e-6
@@ -89,7 +83,7 @@ stim.delay = 4
 stim.dur = 30
 stim.amp = 0.005
 
-varlist = ['v', 'ica_cal', 'ica_cat', 'cai']
+varlist = ['v', 'ica_cal', 'ica_cat', 'ica', 'cai']
 ds = create_dumps(comp, varlist)
 
 run(50, 0.001)

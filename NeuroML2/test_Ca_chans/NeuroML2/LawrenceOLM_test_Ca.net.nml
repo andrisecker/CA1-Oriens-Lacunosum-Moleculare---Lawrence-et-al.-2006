@@ -7,7 +7,7 @@
     <include href="../../IKCa.channel.nml"/>
     <include href="../../ICaL.channel.nml"/>
     <include href="../../ICaT.channel.nml"/>
-    <include href="../../channelDensityGHK2.xml"/>
+    <include href="channelDensityGHK2.xml"/>
     <include href="CaClamp.nml"/>
 
     <!-- Passive conductance -->
@@ -42,8 +42,8 @@
 
                 <channelDensity condDensity="0.1 mS_per_cm2" id="kca_all" ionChannel="IKCa" erev="-95 mV" ion="k"/>
                 <channelDensity condDensity="0.3 mS_per_cm2" id="passive" ionChannel="leak" erev="-65 mV" ion="non_specific"/>
-                <channelDensityGHK2 condDensity="0.02 mS_per_cm2" id="cal_all" ionChannel="ICaT" ion="ca"/>
-                <channelDensityGHK2 condDensity="0.02 mS_per_cm2" id="cat_all" ionChannel="ICaL" ion="ca"/>
+                <channelDensityGHK2 condDensity="0.02 mS_per_cm2" id="cat_all" ionChannel="ICaT" ion="ca"/>
+                <channelDensityGHK2 condDensity="0.02 mS_per_cm2" id="cal_all" ionChannel="ICaL" ion="ca"/>
 
                 <spikeThresh value="0 mV"/>
                 <specificCapacitance value="1.0 uF_per_cm2"/>
@@ -52,17 +52,17 @@
             </membraneProperties>
 
             <intracellularProperties>
-                <!-- 
+                 
                 <species id="ca" ion="ca"
                     concentrationModel="simple_decay"
                     initialConcentration="5e-6 mM"
                     initialExtConcentration="2 mM"/>
-                -->            
+                <!--            
                 <species id="ca" ion="ca"
                     concentrationModel="CaClamp"
                     initialConcentration="5e-6 mM"
                     initialExtConcentration="2 mM"/>
-                
+                -->
                 <resistivity value="0.1 kohm_cm"/>
 
             </intracellularProperties>
