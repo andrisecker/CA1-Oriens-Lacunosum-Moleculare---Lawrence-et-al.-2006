@@ -7,20 +7,25 @@
     <Include file="Networks.xml"/>
     <Include file="Simulation.xml"/>
 
-    <Include file="../../Capool.channel.nml"/>
     <Include file="LawrenceOLM_test_Ca.net.nml"/>
+    
+    <Include file="../../Capool.channel.nml"/>
     <Include file="ica_clamp.channel.nml"/>
-    <!--
+
     <Include file="../../ICaL.channel.nml"/>
-    <Include file="../../channelDensityGHK2.xml"/>
-    -->
+    <Include file="../../ICaT.channel.nml"/>
+    <Include file="../../IKCa.channel.nml"/>
+    <Include file="channelDensityGHK2.xml"/>
+
+    
 
     <Dimension name="substancedensity" n="1" l="-2"/>
     <Unit symbol="mol_per_cm2" dimension="substancedensity" power="4"/>
     <Dimension name="substance_per_time" n="1" t="-1"/>
     <Unit symbol="mol_per_ms" dimension="substance_per_time" power="3"/>
+    <!--
     <Dimension name="concentration_per_time" n="1" l="-3" t="-1" />
-
+    -->
  
     <!-- Simulation specifications -->
     <Simulation id="sim1" length="200ms" step="0.001ms" target="net1">
@@ -50,6 +55,7 @@
       </Display>
       
       <OutputFile id="of0" fileName="lems_ca.dat">
+        <OutputColumn id="v" quantity="pop/0/olm1/v"/>
         <OutputColumn id="ca0" quantity="pop/0/olm1/biophysicalProperties/intracellularProperties/ca/epic_Capool/concentration"/>
         <OutputColumn id="ca1" quantity="pop/0/olm1/biophysicalProperties/intracellularProperties/ca/epic_Capool/ca1"/>
         <OutputColumn id="ca2" quantity="pop/0/olm1/biophysicalProperties/intracellularProperties/ca/epic_Capool/ca2"/>
@@ -61,7 +67,7 @@
         <OutputColumn id="f_flux" quantity="pop/0/olm1/biophysicalProperties/intracellularProperties/ca/epic_Capool/f_flux_nml"/>
         <OutputColumn id="b_flux" quantity="pop/0/olm1/biophysicalProperties/intracellularProperties/ca/epic_Capool/b_flux_nml"/>
         <OutputColumn id="ica_pump" quantity="pop/0/olm1/biophysicalProperties/intracellularProperties/ca/epic_Capool/iCa_pump"/>
-        <OutputColumn id="debug" quantity="pop/0/olm1/biophysicalProperties/intracellularProperties/ca/epic_Capool/debugVal"/>ű
+        <OutputColumn id="debug" quantity="pop/0/olm1/biophysicalProperties/intracellularProperties/ca/epic_Capool/debugVal"/>
         -->
       </OutputFile>
     

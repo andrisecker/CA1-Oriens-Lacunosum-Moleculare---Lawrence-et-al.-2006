@@ -8,14 +8,23 @@ from nrn import *
 def create_comp(name = 'soma'):
     
     comp = h.Section('soma')
-
-    
+   
     comp.insert('cad')
-    comp.insert('ica_clamp')
-    comp.eca = 50
+    #comp.insert('ica_clamp')
+    #comp.eca = 50
+
+    comp.insert('cal')
+    comp(0.5).cal.gcalbar = 0//2e-5
+
+    comp.insert('cat')
+    comp(0.5).cat.gbar = 0//2e-5
+
+    comp.insert('kca')
+    comp(0.5).kca.gkbar = 0//1e-4
+    comp.ek = -95
 
     comp.nseg = 1
-    comp.L = 1
+    comp.L = 10
     comp.diam = 1
     
     comp.insert('pas')
@@ -76,7 +85,7 @@ stim.delay = 40
 stim.dur = 120
 stim.amp = 0.001
 
-varlist = ['v', 'ca0_cad', 'ca1_cad', 'ca2_cad', 'ca3_cad', 'ica']
+varlist = ['v', 'ica', 'ca0_cad', 'ca1_cad', 'ca2_cad', 'ca3_cad', 'pump_cad', 'pumpca_cad']
 ds = create_dumps(comp, varlist)
 
 run(200, 0.001)
