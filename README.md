@@ -6,14 +6,14 @@ Model from: Somatodendritic Kv7-KCNQ-M channels control interspike interval in h
 
 This model was originally developed in [NEURON](https://www.neuron.yale.edu/neuron/)
 
-More details on the original NEURON version of this model [here](https://github.com/andrisecker/CA1-Oriens-Lacunosum-Moleculare---Lawrence-et-al.-2006/tree/master/NEURON) (The repository was forked from @agmccrei).
+More details on the original NEURON version of this model [here](Lawrence2006-CA1-OLM) (The repository was forked from @agmccrei).
 
 -------------------------------------------------------------------------------------------------------------------------------
 
 ### NeuroML2/LEMS version of model
 
 This model will be converted to NeuroML2/LEMS ...
+(when we solved the problem with the Ca++ dynamics ... see more [here](https://github.com/andrisecker/Lawrence2006-CA1-OLM/tree/master/NeuroML2/test_Capool))
 
-
-[![Build Status](https://travis-ci.org/andrisecker/CA1-Oriens-Lacunosum-Moleculare---Lawrence-et-al.-2006.svg?branch=master)](https://travis-ci.org/andrisecker/CA1-Oriens-Lacunosum-Moleculare---Lawrence-et-al.-2006)
+[![Build Status](https://travis-ci.org/andrisecker/Lawrence2006-CA1-OLM.svg?branch=master)](https://travis-ci.org/andrisecker/Lawrence2006-CA1-OLM)
 
