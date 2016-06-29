@@ -23,6 +23,7 @@
             1) numeric stability: see pumpca_test
             2) ica (NEURON's, which is much complex than iCa[nA] in nml, which is only the current from the Ca++ channels) should set to iCa_pump at the end of the iterations
             -> the Ca++ level should change in every time step without any Ca++ chans
+            András Ecker 05/2016
         </notes>
             
         <Parameter name="diam_nml" dimension="length"/> <!-- TODO: this should not be a parameter ... -->
