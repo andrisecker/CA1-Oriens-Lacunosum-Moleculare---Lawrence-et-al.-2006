@@ -80,8 +80,8 @@ STATE {
 BREAKPOINT {
     SOLVE state METHOD cnexp
 
-    ica = ica_pump :ensure that the pump current is reckoned in NEURON's calculation of cai
-    last_pump = ica_pump
+    :ica = ica_pump :ensure that the pump current is reckoned in NEURON's calculation of cai
+    :last_pump = ica_pump
     :printf("breakpoint: t %g, ica: %g, ica_pump: %g \n", t, ica, ica_pump)
 }
 
@@ -98,8 +98,8 @@ INITIAL {
     : 2nd step of initialization -> initialize state variables
     Kd = k2buf/k1buf
 
-    pump = TotalPump / (1 + 1.e3 * k4/k3 * cao)
-    pumpca = PCa0
+    :pump = TotalPump / (1 + 1.e3 * k4/k3 * cao)
+    :pumpca = PCa0
 
     ca0 = cai
     CaBuffer0 = (TotalBuffer*ca0) / (Kd + ca0)
@@ -114,7 +114,7 @@ INITIAL {
     CaBuffer3 = (TotalBuffer*ca3) / (Kd + ca3)
     Buffer3 = TotalBuffer - CaBuffer3
 
-    ica_pump = 0
+    :ica_pump = 0
 
 }
 
@@ -183,13 +183,15 @@ DERIVATIVE state {
     dsqvol2 = dsq*vrat2
     dsqvol3 = dsq*vrat3
 
-    ca0_efl  = - (ica-last_pump)*PI*diam/dsqvol0 / (2*FARADAY)
+    :ca0_efl  = - (ica-last_pump)*PI*diam/dsqvol0 / (2*FARADAY)
+    ca0_efl  = - ica*PI*diam/dsqvol0 / (2*FARADAY)
+    :printf("ca0_efl: %g\n", ca0_efl)
     ca0_dif  = - (DCa*frat1/dsqvol0)*ca0 + (DCa*frat1/dsqvol0)*ca1
     ca0_buf  = - k1buf*ca0*Buffer0 + k2buf*CaBuffer0
-    ca0_pump = - ((1.e10)*k1*area)*ca0*pump/dsqvol0 + ((1.e10)*k2*area)*pumpca/dsqvol0
+    :ca0_pump = - ((1.e10)*k1*area)*ca0*pump/dsqvol0 + ((1.e10)*k2*area)*pumpca/dsqvol0
     :printf("solver: ica: %g, last_pump: %g, efflux: %g \n",ica, last_pump, ca0_efl)
 
-    ca0' = ca0_dif + ca0_buf + ca0_efl + ca0_pump
+    ca0' = ca0_dif + ca0_buf + ca0_efl: + ca0_pump
     ca1' = (DCa*frat1/dsqvol1)*ca0 - ((DCa*frat1/dsqvol1)+(DCa*frat2/dsqvol1))*ca1 + (DCa*frat2/dsqvol1)*ca2 - k1buf*ca1*Buffer1 + k2buf*CaBuffer1
     ca2' = (DCa*frat2/dsqvol2)*ca1 - ((DCa*frat2/dsqvol2)+(DCa*frat3/dsqvol2))*ca2 + (DCa*frat3/dsqvol2)*ca3 - k1buf*ca2*Buffer2 + k2buf*CaBuffer2
     ca3' = (DCa*frat3/dsqvol3)*ca2 - (DCa*frat3/dsqvol3)*ca3 - k1buf*ca3*Buffer3 + k2buf*CaBuffer3
@@ -203,11 +205,11 @@ DERIVATIVE state {
     Buffer3'   = -k1buf*ca3*Buffer3 + k2buf*CaBuffer3
     CaBuffer3' =  k1buf*ca3*Buffer3 - k2buf*CaBuffer3
     
-    pump'   = -k1*ca0*pump + (k2+k3)*pumpca - k4*pump*cao
-    pumpca' =  k1*ca0*pump - (k2+k3)*pumpca + k4*pump*cao
-    f_flux =   ((1.e10)*k3*area)*pumpca
-    b_flux =   ((1.e10)*k4*area)*pump*cao
-    ica_pump = 2*FARADAY*(f_flux-b_flux) / area
+    :pump'   = -k1*ca0*pump + (k2+k3)*pumpca - k4*pump*cao
+    :pumpca' =  k1*ca0*pump - (k2+k3)*pumpca + k4*pump*cao
+    :f_flux =   ((1.e10)*k3*area)*pumpca
+    :b_flux =   ((1.e10)*k4*area)*pump*cao
+    :ica_pump = 2*FARADAY*(f_flux-b_flux) / area
     :printf("end solver: f_flux: %g, b_flux: %g, area: %g, ica_pump %g \n", f_flux, b_flux, area, ica_pump)
 
     cai = ca0

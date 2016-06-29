@@ -24,8 +24,8 @@ def create_comp(name = 'soma'):
     comp.ek = -95
 
     comp.nseg = 1
-    comp.L = 10
-    comp.diam = 1
+    comp.L = 56.5
+    comp.diam = 0.5
     
     comp.insert('pas')
     comp(0.5).g_pas = 3e-4 # S/cm2
