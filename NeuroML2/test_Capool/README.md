@@ -7,10 +7,11 @@ The model uses a very complex internal Ca++ dynamics, which includes Ca++ diffus
 
 In order to implement it in NeuroML2 we created a simplified(/modified) NEURON version [NEURON/cad.mod](https://github.com/andrisecker/Lawrence2006-CA1-OLM/blob/master/NeuroML2/test_Capool/NEURON/cad.mod) with ODE's (and hard coded variables) instead of the original kinetic schemes (which is producing the same behaviour as the original one).
 
-    cd NEURON
+    cd ../NEURON
     python test_Ca_nrn.py
 
 Based on the simplified NEURON code we created a NeuroML2 file [../../Capool.channel.nml](https://github.com/andrisecker/Lawrence2006-CA1-OLM/blob/master/NeuroML2/Capool.channel.nml), which reprodes the same behaviour without the pump, but has some limitations when used with the Ca++ pump on the membrane. Still in development ...
 
-    cd NeuroML2
+    cd ../NeuroML2
     python test_Ca_jnml.py
+    python compare_mod_nml.py  # loads in the new NEURON and the NeuroML2 results and plots them together
