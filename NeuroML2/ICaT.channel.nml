@@ -40,8 +40,15 @@
     
     
     <ComponentType name="Lawrence2006_ICaT_ssh"
-                   extends="baseVoltageDepVariable"
+                   extends="baseVoltageConcDepVariable"
                    description="steadyState parameter to describe ICaT in Lawrence 2006">
+        
+        <note>
+            This should extend only baseVoltageDepVariable, but ...
+            the NEURON mod file writer put's cai and cao into ASSIGNED if there is at least on baseVoltageConcDepVariable
+            which is perfectly fine if the gating variables don't depend on cai ...
+            but cai is necessary if it's used with GHK2(v, cai, cao) - András
+        </note>
         
         <Constant name="VOLT_SCALE" dimension="voltage" value="1 mV"/>
 
