@@ -3,5 +3,5 @@ system: Testing Saraga et al 2003 CA1 O-LM cell model
 experiments:
   current clamp:
     expected:
-      spike times: [6.222, 74.554, 159.31699999999998, 247.233, 335.72400000000005, 424.48900000000003]
+      spike times: [9.75, 115.82, 163.01]
 

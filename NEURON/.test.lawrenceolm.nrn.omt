@@ -1,4 +1,4 @@
-target: tester.hoc
+target: test_lawrenceolm.hoc
 engine: NEURON
 mep: ../.test.lawrenceolm.mep
 
@@ -9,7 +9,7 @@ experiments:
         file:
           path: lawrenceolm.dat
           columns: [0, 1]
-          scaling: [1000, 1000]
+          scaling: [1, 1]
         spike detection:
           method: threshold
           threshold: 0
