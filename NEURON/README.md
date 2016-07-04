@@ -8,5 +8,3 @@ To run the scripts, [install NEURON](https://www.neuron.yale.edu/neuron/download
     cd Lawrence2006-CA1-OLM/NEURON
     nrnivmodl  # compile .mod files
     nrngui test_lawrenceolm.hoc  # runs a simulation (single cell, current clamp) and saves data into lawrenceolm.dat
-
-![](https://raw.githubusercontent.com/andrisecker/Lawrence2006-CA1-OLM/master/NEURON/lawrence2006olm.png)
