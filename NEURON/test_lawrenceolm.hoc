@@ -20,12 +20,12 @@ CELL.soma {
     stim = new IClamp(0.5)
     stim.del = 100.0
     stim.dur = 100.0
-    stim.amp = 0.2
+    stim.amp = 0.5
 }
 
 tstop = 300.0
-dt = 0.01
-steps_per_ms = 100
+dt = 0.001
+steps_per_ms = 1000
 
 objref Test_v
 

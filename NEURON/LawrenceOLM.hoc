@@ -45,7 +45,7 @@ proc topol() { local i
   for i = 46, 47 connect dendrite[i](0), dendrite[40](1)
   for i = 48, 49 connect dendrite[i](0), dendrite[46](1)
   for i = 50, 51 connect dendrite[i](0), dendrite[47](1)
-  connect axon(0), dendrite[21](1)
+  connect axon[0](0), dendrite[21](1)
   for i = 1, 3 connect axon[i](0), axon[i-1](1)
   connect axon[4](0), axon[2](1)
   basic_shape()
@@ -1365,72 +1365,90 @@ proc geom() {
 
 proc biophys() {
 
+    Vrest = -65
+    celsius = 24.0
+
   forsec all {
 	Ra = 300
     cm = 0.9
   }
 
   forsec Soma {
-    insert passsd
-	g_passsd=1.1231e-05
-	erev_passsd=-66.164
+    //insert passsd
+	    //g_passsd = 1.1231e-05
+	    //erev_passsd = -66.164
+    insert pas
+        e_pas = -66.164
+        g_pas = 1.1231e-05
 	insert Kleaksd
-	gkl_Kleaksd=3.2258e-06
-    ek=-95
+	    gkl_Kleaksd = 3.2258e-06
+    
 	insert IM
-	gbar_IM = 0.0003
+	    gbar_IM = 0.0003
 	insert Ikdrf
-	gbar_Ikdrf = 0.0006
+	    gbar_Ikdrf = 0.0006
 	insert Ikdrs
-	gbar_Ikdrs = 0.00023
+	    gbar_Ikdrs = 0.00023
 	insert Ika
-	gbar_Ika = 0.00025
+	    gbar_Ika = 0.00025
 	insert Nasoma
-	gna_Nasoma = 0.0107
-	ena=90
+	    gna_Nasoma = 0.0107	
 	insert Ih
-	gkhbar_Ih = 0.00005
+	    gkhbar_Ih = 0.00005
+
+    ek=-95
 	eh=-32
+    ena=90
   }
 
   forsec Dendrites {
-    insert passsd
-	g_passsd=1.1231e-05
-	erev_passsd=-66.164
+    //insert passsd
+	    //g_passsd = 1.1231e-05
+	    //erev_passsd = -66.164
+    insert pas
+        e_pas = -66.164
+        g_pas = 1.1231e-05
 	insert Kleaksd
-	gkl_Kleaksd=3.2258e-06
+	    gkl_Kleaksd = 3.2258e-06
+
 	insert Ikdrf
-	gbar_Ikdrf = 0.0006
+	    gbar_Ikdrf = 0.0006
 	insert Ikdrs
-	gbar_Ikdrs = 0.00023
+	    gbar_Ikdrs = 0.00023
 	insert Ika
-	gbar_Ika = 0.00025
-	ek=-95
+	    gbar_Ika = 0.00025
 	insert Nadend
-	gna_Nadend = 0.0117
-	ena=90
-	insert cal
-	gcalbar_cal = 0.0025
-	insert cad
+	    gna_Nadend = 0.0117
+    insert cad	
+    insert cal
+	    gcalbar_cal = 0.0025
 	insert cat
-	gbar_cat = 0.00025
+	    gbar_cat = 0.00025
 	insert kca
-	gkbar_kca=0.00055
+	    gkbar_kca = 0.00055
+
+    ek=-95
+	ena=90
   }
 
   forsec Axon {
-    insert passaxon
-    g_passaxon=6.1771e-05
-	erev_passaxon=-66.164
+    //insert passaxon
+        //g_passaxon = 6.1771e-05
+	    //erev_passaxon = -66.164
+    insert pas
+        e_pas = -66.164
+        g_pas = 6.1771e-05
 	insert Kleakaxon
-	gkl_Kleakaxon=1.7742e-05
+	    gkl_Kleakaxon = 1.7742e-05
+
 	insert Ikdrfaxon
-	gbar_Ikdrfaxon = 0.0006
+	    gbar_Ikdrfaxon = 0.0006
 	insert Ikdrsaxon
-	gbar_Ikdrsaxon = 0.00023
-	ek=-95
+	    gbar_Ikdrsaxon = 0.00023
 	insert Naaxon
-	gna_Nadendaxon = 0.0117
+	    gna_Naaxon = 0.0117
+
+	ek=-95
 	ena=90
   } 
 
