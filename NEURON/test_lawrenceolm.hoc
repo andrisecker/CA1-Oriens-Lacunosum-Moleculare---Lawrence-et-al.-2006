@@ -20,7 +20,7 @@ CELL.soma {
     stim = new IClamp(0.5)
     stim.del = 100.0
     stim.dur = 100.0
-    stim.amp = 0.5
+    stim.amp = 0.3
 }
 
 tstop = 300.0
