@@ -27,7 +27,7 @@
 
         <Dynamics>
             <DerivedVariable name="ca_conc_i" dimension="none" value="caConc / CONC_SCALE"/>
-            <DerivedVariable name="x" exposure="x" dimension="none" value="0.001 / (0.001 + ca_conc_i)"/>
+            <DerivedVariable name="x" dimension="none" value="0.001 / (0.001 + ca_conc_i)" exposure="x" />
         </Dynamics>
 
     </ComponentType>

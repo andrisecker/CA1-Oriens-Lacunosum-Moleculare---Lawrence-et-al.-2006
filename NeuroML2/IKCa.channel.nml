@@ -18,23 +18,21 @@
             extends="baseVoltageConcDepRate"
             description="forward rate to describe IKCa in Lawrence 2006">
         
-        <Requirement name="temperature" dimension="temperature"/>
-        
-        <Constant name="R" dimension="idealGasConstantDims" value="8.3144621 J_per_K_per_mol"/>
+        <Constant name="R" dimension="idealGasConstantDims" value="8.313424 J_per_K_per_mol"/>
         <Constant name="zCa" dimension="none" value="2"/>
-        <Constant name="F" dimension="charge_per_mole" value="96485.3 C_per_mol"/> 
+        <Constant name="F" dimension="charge_per_mole" value="96485.3 C_per_mol"/> <!-- NEURON's built in Faraday -->
         <Constant name="TIME_SCALE" dimension="time" value="1 ms"/>
         <Constant name="CONC_SCALE" dimension="concentration" value="1 mM"/>
+        
+        <Requirement name="temperature" dimension="temperature"/>
         
         <Dynamics>
             <DerivedVariable name="ca_conc_i" dimension="none" value="caConc / CONC_SCALE"/>
             
             <DerivedVariable name="K" dimension="per_voltage" value="(zCa * 0.84 * F) / (R * temperature)"/> 
             <DerivedVariable name="volt_dep" dimension="none" value="4.8e-04 * exp(-K * v)"/>
-            <ConditionalDerivedVariable name="r" extends="r" dimension="per_time">
-                <Case condition="volt_dep .neq. 0." value="((0.28*ca_conc_i) / (ca_conc_i + volt_dep)) / TIME_SCALE"/>
-                <Case condition="volt_dep .eq. 0." value="0 / TIME_SCALE"/>
-            </ConditionalDerivedVariable>
+            
+            <DerivedVariable name="r" dimension="per_time" value="((0.28*ca_conc_i) / (ca_conc_i + volt_dep)) / TIME_SCALE"/>
             
         </Dynamics>
           
@@ -45,13 +43,13 @@
             extends="baseVoltageConcDepRate"
             description="reverse rate to describe IKCa in Lawrence 2006">
         
-        <Requirement name="temperature" dimension="temperature"/>
-        
-        <Constant name="R" dimension="idealGasConstantDims" value="8.3144621 J_per_K_per_mol"/>
+        <Constant name="R" dimension="idealGasConstantDims" value="8.313424 J_per_K_per_mol"/>
         <Constant name="zCa" dimension="none" value="2"/>
-        <Constant name="F" dimension="charge_per_mole" value="96485.3 C_per_mol"/> 
+        <Constant name="F" dimension="charge_per_mole" value="96485.3 C_per_mol"/> <!-- NEURON's built in Faraday --> 
         <Constant name="TIME_SCALE" dimension="time" value="1 ms"/>
         <Constant name="CONC_SCALE" dimension="concentration" value="1 mM"/>
+        
+        <Requirement name="temperature" dimension="temperature"/>
         
         <Dynamics>
             <DerivedVariable name="ca_conc_i" dimension="none" value="caConc / CONC_SCALE"/>
@@ -59,10 +57,7 @@
             <DerivedVariable name="K" dimension="per_voltage" value="(zCa * F) / (R * temperature)"/> 
             <DerivedVariable name="volt_dep" dimension="none" value="1.3e-07 * exp(-K * v)"/>
             
-            <ConditionalDerivedVariable name="r" extends="r" dimension="per_time">
-                <Case condition="volt_dep .neq. 0." value="(0.48 / (1.0 + (ca_conc_i/volt_dep))) / TIME_SCALE"/>
-                <Case condition="volt_dep .eq. 0." value="0.48 / TIME_SCALE"/>
-            </ConditionalDerivedVariable>
+            <DerivedVariable name="r" dimension="per_time" value="(0.48 / (1.0 + (ca_conc_i/volt_dep))) / TIME_SCALE"/>
             
         </Dynamics>
           

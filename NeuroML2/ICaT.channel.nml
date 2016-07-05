@@ -43,12 +43,12 @@
                    extends="baseVoltageConcDepVariable"
                    description="steadyState parameter to describe ICaT in Lawrence 2006">
         
-        <note>
+        <!--
             This should extend only baseVoltageDepVariable, but ...
             the NEURON mod file writer put's cai and cao into ASSIGNED if there is at least on baseVoltageConcDepVariable
             which is perfectly fine if the gating variables don't depend on cai ...
-            but cai is necessary if it's used with GHK2(v, cai, cao) - András
-        </note>
+            but cai is necessary if it's used with GHK2(v, cai, cao) - Andras
+        -->
         
         <Constant name="VOLT_SCALE" dimension="voltage" value="1 mV"/>
 
@@ -58,7 +58,7 @@
             <DerivedVariable name="alpha" dimension="none" value="1e-6 * exp(V/-16.26)"/>
             <DerivedVariable name="beta" dimension="none" value="1 / (1 + exp(-(V-29.79)/10))"/>
             
-            <DerivedVariable name="x" exposure="x" dimension="none" value="alpha / (alpha + beta)"/>
+            <DerivedVariable name="x" dimension="none" value="alpha / (alpha + beta)" exposure="x" />
         </Dynamics>
 
     </ComponentType>
