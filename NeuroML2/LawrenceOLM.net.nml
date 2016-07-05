@@ -7,7 +7,7 @@
     <include href="LawrenceOLM.cell.nml"/>
 
     <!-- Point process: Current clamp -->  
-    <pulseGenerator id="IClamp0" delay="0ms" duration="500ms" amplitude="0.1nA" />
+    <pulseGenerator id="IClamp0" delay="100ms" duration="100ms" amplitude="0.25nA" />
     
     <!-- Create a single-cell network -->
     <network id="network" type="networkWithTemperature" temperature="24 degC">
@@ -18,8 +18,8 @@
             </instance>
         </population>
 
-        <inputList id="IClamp0" component="IClamp0" population="pop">
-            <input id="0" target="../Pop_SaragaOLM_Case2/0/SaragaOLM_Case2" destination="synapses"/>
+        <inputList id="IClamp0" component="IClamp0" population="Pop_LawrenceOLM">
+            <input id="0" target="../Pop_LawrenceOLM/0/LawrenceOLM" destination="synapses"/>
         </inputList>
 
     </network>

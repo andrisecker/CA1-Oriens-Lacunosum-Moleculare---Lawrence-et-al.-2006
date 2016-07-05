@@ -200,7 +200,7 @@
     
     
     
-    <!-- just initialize caConc and caConcExt and holds them there
+    <!-- just initialize caConc and caConcExt and holds them there -->
     <FixedCaConcentrationModel id="fixedCapool" ion="ca"/>
     
     
@@ -224,7 +224,6 @@
             
         </Dynamics>
 
-    </ComponentType>
-    -->
+    </ComponentType>  
     
 </neuroml>

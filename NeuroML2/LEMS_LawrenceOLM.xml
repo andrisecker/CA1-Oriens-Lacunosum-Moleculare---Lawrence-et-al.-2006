@@ -11,27 +11,33 @@
     <Include file="LawrenceOLM.net.nml"/>
     <Include file="LawrenceOLM.cell.nml"/>
 
+    <Include file="leak_chan.channel.nml"/>
+    <Include file="Kleak_chan.channel.nml"/>
+    
+    <Include file="Capool.channel.nml"/>
+    
     <Include file="ICaL.channel.nml"/>
     <Include file="ICaT.channel.nml"/>
     <Include file="IKCa.channel.nml"/>
+    <Include file="IKa.channel.nml"/>
     <Include file="IMmintau.channel.nml"/>
     <Include file="Ih.channel.nml"/>
     <Include file="Ikdrf.channel.nml"/>
     <Include file="Ikdrs.channel.nml"/>
-    <Include file="Kleak_chan.channel.nml"/>
     <Include file="Nadend.channel.nml"/>
     <Include file="Nasoma.channel.nml"/>
-    <Include file="leak_chan.channel.nml"/>
+
+    
  
 <!-- Simulation specifications -->
 
-    <Simulation id="sim1" length="500ms" step="0.01ms" target="network">
+    <Simulation id="sim1" length="300ms" step="0.001ms" target="network">
 
-        <Display id="d1" title="Lawrence 2006 CA1 OLM cell with 0.1nA input" timeScale="1ms" xmin="-10" xmax="510" ymin="-85" ymax="55">
-            <Line id="OLM soma[0].v(0.5)" quantity="Pop_LawrenceOLM/0/LawrenceOLM/v" scale="1mV" color="#000000" timeScale="1ms"/>
+        <Display id="d1" title="Lawrence 2006 CA1 OLM cell with 0.25nA input" timeScale="1ms" xmin="-10" xmax="510" ymin="-85" ymax="55">
+            <Line id="OLM V (mV)" quantity="Pop_LawrenceOLM/0/LawrenceOLM/v" scale="1mV" color="#000000" timeScale="1ms"/>
         </Display>
     
-        <OutputFile id="of0" fileName="saragaolm.dat">
+        <OutputFile id="of0" fileName="lawrenceolm.dat">
             <OutputColumn id="olm" quantity="Pop_LawrenceOLM/0/LawrenceOLM/v"/>
         </OutputFile>
       

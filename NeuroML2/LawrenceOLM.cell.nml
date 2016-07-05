@@ -5950,7 +5950,6 @@
                 <channelDensity id="Nasoma_soma_group" ionChannel="Nasoma" condDensity="10.7mS_per_cm2" segmentGroup="soma_group" erev="90mV" ion="na"/>
                 <channelDensity id="Nadend_dendrite_group" ionChannel="Nadend" condDensity="11.7mS_per_cm2" segmentGroup="dendrite_group" erev="90mV" ion="na"/>
                 <channelDensity id="Nasoma_axon_group" ionChannel="Nasoma" condDensity="11.7mS_per_cm2" segmentGroup="axon_group" erev="90mV" ion="na"/>
-
                 <spikeThresh value="0mV"/>
                 <specificCapacitance value="0.9uF_per_cm2"/>
                 <initMembPotential value="-65mV"/>
@@ -5962,9 +5961,8 @@
                 <species id="capool" concentrationModel="capool_diam_1_87669438445" segmentGroup="dendrite_group"
                          ion="ca" initialConcentration="5e-6mM" initialExtConcentration="2mM"/>
                 -->
-                <species id="ca" concentrationModel="fixedCapool" segmentGroup="dendrite_group"
-                         ion="ca" initialConcentration="5e-6 mM" initialExtConcentration="2 mM"/>
-                
+                <species id="fixCapool" concentrationModel="fixedCapool" segmentGroup="dendrite_group"
+                         ion="ca" initialConcentration="5e-5mM" initialExtConcentration="2mM"/>
                 <resistivity value="0.3kohm_cm"/>
             </intracellularProperties>
             
