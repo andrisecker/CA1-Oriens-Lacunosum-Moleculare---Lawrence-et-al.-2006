@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <neuroml xmlns="http://www.neuroml.org/schema/neuroml2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.neuroml.org/schema/neuroml2 https://raw.github.com/NeuroML/NeuroML2/development/Schemas/NeuroML2/NeuroML_v2beta4.xsd" id="NeuroML_ionChannel">
 
+
     <notes> NeuroML file containing internal Ca++ dynamics
         
             The component type tries/should reproduce the behavior of cad.mod in Lawrence 2006 (ModelDB:102288)
@@ -14,10 +15,9 @@
             3) the code works out the length of a segment from the surface area and the specified diam_nml, but this doesn't work with multicompartmental models
                (-> the usage of the length makes it impossible to use the mechanism with hard coded (averaged over dendrite group) diam_nml)
         
-            --> The model is passing omv test without this Ca++ dynamics (and I'm sure that it could be replaced with something much simpler)
+            -> The model is passing omv test without this Ca++ dynamics (and I'm sure that it could be replaced with something much simpler)
             Andras Ecker 05/2016
-        </notes>
-
+    </notes>
 
     <LawrenceCaConcentrationModel id="capool_diam_1_87669438445" ion="ca" diam_nml="1.87669um" DCa="0.6per_ms" TotalBuffer="1.2mM" k1buf="500per_ms" k2buf="0.5per_ms"/>
 
@@ -200,7 +200,7 @@
     
     
     
-    <!-- just initialize caConc and caConcExt and holds them there -->
+    <!-- just initialize caConc and caConcExt and holds them there
     <FixedCaConcentrationModel id="fixedCapool" ion="ca"/>
     
     
@@ -225,5 +225,6 @@
         </Dynamics>
 
     </ComponentType>
+    -->
     
 </neuroml>
