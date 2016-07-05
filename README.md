@@ -13,7 +13,7 @@ More details on the original NEURON version of this model [here](Lawrence2006-CA
 ### NeuroML2/LEMS version of model
 
 This model has been converted to NeuroML2/LEMS ...
-- there is an issue with the Ca++ dynamics ... see more [here](https://github.com/andrisecker/Lawrence2006-CA1-OLM/tree/master/NeuroML2/test_Capool))
+- there is an issue with the Ca++ dynamics ... see more [here](https://github.com/andrisecker/Lawrence2006-CA1-OLM/tree/master/NeuroML2/test_Capool)
 
 [![Build Status](https://travis-ci.org/andrisecker/Lawrence2006-CA1-OLM.svg?branch=master)](https://travis-ci.org/andrisecker/Lawrence2006-CA1-OLM)
 
